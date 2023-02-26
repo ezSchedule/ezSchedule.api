@@ -1,4 +1,4 @@
-package br.com.ezschedule.apischedule;
+package br.com.ezschedule.apischedule.model;
 
 import java.util.ArrayList;
 import java.util.List;

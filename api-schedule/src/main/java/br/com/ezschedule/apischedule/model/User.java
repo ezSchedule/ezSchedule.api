@@ -1,18 +1,24 @@
 package br.com.ezschedule.apischedule.model;
 
-public class UserJsonAnswer {
+abstract class User {
     private String name;
     private String phoneNumber;
     private String email;
+    private String password;
     private String cpf;
+
     private boolean isAuthenticated;
 
-    public UserJsonAnswer(String name, String phoneNumber, String email, String cpf, boolean isAuthenticated) {
+    public User(String name, String phoneNumber, String email, String password, String cpf) {
         this.name = name;
         this.phoneNumber = phoneNumber;
         this.email = email;
+        this.password = password;
         this.cpf = cpf;
-        this.isAuthenticated = isAuthenticated;
+        this.isAuthenticated = false;
+    }
+
+    public User() {
     }
 
     public String getName() {
@@ -39,6 +45,14 @@ public class UserJsonAnswer {
         this.email = email;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     public String getCpf() {
         return cpf;
     }
@@ -53,5 +67,15 @@ public class UserJsonAnswer {
 
     public void setAuthenticated(boolean authenticated) {
         isAuthenticated = authenticated;
+    }
+
+    @Override
+    public String toString() {
+        return "User" +
+                "name='" + name + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", cpf='" + cpf + '\'' ;
     }
 }

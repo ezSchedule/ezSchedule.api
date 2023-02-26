@@ -1,7 +1,4 @@
-package br.com.ezschedule.apischedule;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
-
+package br.com.ezschedule.apischedule.model;
 public class Client extends User {
 
     public Client(String name, String phoneNumber, String email, String password, String cpf) {
