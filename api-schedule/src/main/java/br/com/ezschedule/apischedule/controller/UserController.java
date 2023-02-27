@@ -1,6 +1,6 @@
 package br.com.ezschedule.apischedule.controller;
 
-import br.com.ezschedule.apischedule.adapter.JsonReponseAdapter;
+import br.com.ezschedule.apischedule.adapter.JsonResponseAdapter;
 import br.com.ezschedule.apischedule.model.Client;
 import br.com.ezschedule.apischedule.model.JsonResponse;
 import br.com.ezschedule.apischedule.model.UpdatePasswordForm;
@@ -16,72 +16,71 @@ public class UserController {
 
     //Show all user's
     @GetMapping
-    public List<JsonResponse> showAllUsers(){
+    public List<JsonResponse> showAllUsers() {
         List<JsonResponse> listJsonAnswer = new ArrayList<>();
-         for(Client c: listUsers){
-             listJsonAnswer.add(JsonReponseAdapter.Dto(c));
-         }
-         return listJsonAnswer;
+        for (Client c : listUsers) {
+            listJsonAnswer.add(JsonResponseAdapter.Dto(c));
+        }
+        return listJsonAnswer;
     }
 
     //Register new user
     @PostMapping
-    public JsonResponse register(@RequestBody Client newUser){
-         listUsers.add(newUser);
-         return JsonReponseAdapter.Dto(newUser);
+    public JsonResponse register(@RequestBody Client newUser) {
+        listUsers.add(newUser);
+        return JsonResponseAdapter.Dto(newUser);
     }
 
     //login for user
     @PostMapping("/login/{email}/{password}")
-    public JsonResponse login(@PathVariable String email, @PathVariable String password){
-        for (Client user : listUsers){
-            if (user.getEmail().equals(email) && user.getPassword().equals(password)){
+    public JsonResponse login(@PathVariable String email, @PathVariable String password) {
+        for (Client user : listUsers) {
+            if (user.getEmail().equals(email) && user.getPassword().equals(password)) {
                 user.setAuthenticated(true);
-                return JsonReponseAdapter.Dto(user);
+                return JsonResponseAdapter.Dto(user);
             }
         }
         return null;
     }
 
     //Delete user by email
-    @DeleteMapping ("/delete/{email}")
-    public String removeByCpf(@PathVariable String email){
-        for (Client user : listUsers){
-            if (user.getEmail().equals(email)){
+    @DeleteMapping("/delete/{email}")
+    public String removeByCpf(@PathVariable String email) {
+        for (Client user : listUsers) {
+            if (user.getEmail().equals(email)) {
                 listUsers.remove(user);
-                return "Usuário deletado com sucesso!!!";
+                return "User deleted successfully!!!";
             }
         }
-        return "Usuário não foi encontrado";
+        return "User not found.";
     }
 
     //logout
     @PostMapping("/logout/{email}")
-    public String logout(@PathVariable String email){
-        for (Client user : listUsers){
-            if (user.getEmail().equals(email)){
-                if(user.isAuthenticated()) {
+    public String logout(@PathVariable String email) {
+        for (Client user : listUsers) {
+            if (user.getEmail().equals(email)) {
+                if (user.isAuthenticated()) {
                     user.setAuthenticated(false);
-                    return "Usuário foi deslogado com sucesso!!";
-                }
-                else{
-                    return "Usuário não está autenticado.";
+                    return "User has been logged out successfully!!";
+                } else {
+                    return "User is not authenticated .";
                 }
             }
         }
-        return "Usuário não foi encontrado\"";
+        return "User not found.";
     }
 
     @PutMapping
     public String updatePassword(
             @RequestBody UpdatePasswordForm updatePasswordForm) {
-        for(Client u:listUsers){
-            if(u.getEmail().equals(updatePasswordForm.getEmail()) && u.getPassword().equals(updatePasswordForm.getPassword())){
+        for (Client u : listUsers) {
+            if (u.getEmail().equals(updatePasswordForm.getEmail()) && u.getPassword().equals(updatePasswordForm.getPassword())) {
                 u.setPassword(updatePasswordForm.getNewPassword());
-                return "Senha atualizada com sucesso!!!";
+                return "Password updated successfully";
             }
         }
-        return "Usuario ou senha estão incorretos!!";
+        return "User and/or password incorrect";
     }
 
 }
