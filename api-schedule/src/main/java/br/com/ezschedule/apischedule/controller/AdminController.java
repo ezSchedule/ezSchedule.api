@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/usersAdmin")
 public class AdminController {
 
     List<Administrator> listUsers = new ArrayList<>();
