@@ -5,6 +5,7 @@ import br.com.ezschedule.apischedule.model.Administrator;
 import br.com.ezschedule.apischedule.model.Client;
 import br.com.ezschedule.apischedule.model.JsonResponse;
 import br.com.ezschedule.apischedule.model.UpdatePasswordForm;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -18,71 +19,74 @@ public class AdminController {
 
     //Show all user's
     @GetMapping
-    public List<JsonResponse> showAllUsers() {
+    public ResponseEntity<List<JsonResponse>> showAllUsers() {
         List<JsonResponse> listJsonAnswer = new ArrayList<>();
+        if (listUsers.isEmpty()){
+            return ResponseEntity.status(204).build();
+        }
         for (Administrator a : listUsers) {
             listJsonAnswer.add(JsonResponseAdapter.Dto(a));
         }
-        return listJsonAnswer;
+        return ResponseEntity.status(200).body(listJsonAnswer);
     }
 
     //Register new user
     @PostMapping
-    public JsonResponse register(@RequestBody Administrator newUser) {
+    public ResponseEntity<JsonResponse> register(@RequestBody Administrator newUser) {
         listUsers.add(newUser);
-        return JsonResponseAdapter.Dto(newUser);
+        return ResponseEntity.status(200).body(JsonResponseAdapter.Dto(newUser));
     }
 
     //login for user
     @PostMapping("/login/{email}/{password}")
-    public JsonResponse login(@PathVariable String email, @PathVariable String password) {
+    public ResponseEntity<JsonResponse> login(@PathVariable String email, @PathVariable String password) {
         for (Administrator user : listUsers) {
             if (user.getEmail().equals(email) && user.getPassword().equals(password)) {
                 user.setAuthenticated(true);
-                return JsonResponseAdapter.Dto(user);
+                return ResponseEntity.status(200).body(JsonResponseAdapter.Dto(user));
             }
         }
-        return null;
+        return ResponseEntity.status(401).build();
     }
 
     //Delete user by email
     @DeleteMapping("/delete/{email}")
-    public String removeByCpf(@PathVariable String email) {
+    public ResponseEntity<Void> removeByCpf(@PathVariable String email) {
         for (Administrator user : listUsers) {
             if (user.getEmail().equals(email)) {
                 listUsers.remove(user);
-                return "User deleted successfully!!!";
+                return ResponseEntity.status(200).build();
             }
         }
-        return "User not found.";
+        return ResponseEntity.status(404).build();
     }
 
     //logout
     @PostMapping("/logout/{email}")
-    public String logout(@PathVariable String email) {
+    public ResponseEntity<Void> logout(@PathVariable String email) {
         for (Administrator user : listUsers) {
             if (user.getEmail().equals(email)) {
                 if (user.isAuthenticated()) {
                     user.setAuthenticated(false);
-                    return "User has been logged out successfully!!";
+                    return ResponseEntity.status(200).build();
                 } else {
-                    return "User is not authenticated .";
+                    return ResponseEntity.status(401).build();
                 }
             }
         }
-        return "User not found.";
+        return ResponseEntity.status(404).build();
     }
 
     @PutMapping
-    public String updatePassword(
+    public ResponseEntity<Administrator> updatePassword(
             @RequestBody UpdatePasswordForm updatePasswordForm) {
         for (Administrator u : listUsers) {
             if (u.getEmail().equals(updatePasswordForm.getEmail()) && u.getPassword().equals(updatePasswordForm.getPassword())) {
                 u.setPassword(updatePasswordForm.getNewPassword());
-                return "Password updated successfully";
+                return ResponseEntity.status(200).build();
             }
         }
-        return "User and/or password incorrect";
+        return ResponseEntity.status(404).build();
     }
 
 }
