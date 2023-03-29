@@ -4,6 +4,9 @@ import br.com.ezschedule.apischedule.adapter.JsonResponseAdapter;
 import br.com.ezschedule.apischedule.model.Client;
 import br.com.ezschedule.apischedule.model.JsonResponse;
 import br.com.ezschedule.apischedule.model.UpdatePasswordForm;
+import br.com.ezschedule.apischedule.repository.RepositoryAdministrator;
+import br.com.ezschedule.apischedule.repository.RepositoryClient;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,6 +16,9 @@ import java.util.List;
 @RestController
 @RequestMapping("/users")
 public class ClientController {
+
+    @Autowired
+    private RepositoryClient action;
     List<Client> listUsers = new ArrayList<>();
 
     //Show all user's
@@ -32,6 +38,7 @@ public class ClientController {
     @PostMapping
     public ResponseEntity<JsonResponse> register(@RequestBody Client newUser) {
         listUsers.add(newUser);
+        action.save(newUser);
         return ResponseEntity.status(200).body(JsonResponseAdapter.Dto(newUser));
     }
 

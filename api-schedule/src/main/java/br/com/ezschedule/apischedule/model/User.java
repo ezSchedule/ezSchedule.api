@@ -1,6 +1,16 @@
 package br.com.ezschedule.apischedule.model;
 
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.MappedSuperclass;
+
+@MappedSuperclass
 abstract class User {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int idUser;
     private String name;
     private String phoneNumber;
     private String email;
@@ -78,4 +88,5 @@ abstract class User {
                 ", password='" + password + '\'' +
                 ", cpf='" + cpf + '\'' ;
     }
+
 }
