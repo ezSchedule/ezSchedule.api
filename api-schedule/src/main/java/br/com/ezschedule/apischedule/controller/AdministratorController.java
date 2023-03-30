@@ -17,7 +17,7 @@ import java.util.List;
 public class AdministratorController {
 
     @Autowired
-    private RepositoryAdministrator action;
+    private RepositoryAdministrator repositoryAdministrator;
 
     List<Administrator> listUsers = new ArrayList<>();
 
@@ -38,7 +38,7 @@ public class AdministratorController {
     @PostMapping
     public ResponseEntity<JsonResponse> register(@RequestBody Administrator newUser) {
         listUsers.add(newUser);
-        action.save(newUser);
+        repositoryAdministrator.save(newUser);
         return ResponseEntity.status(200).body(JsonResponseAdapter.Dto(newUser));
     }
 
@@ -54,14 +54,12 @@ public class AdministratorController {
         return ResponseEntity.status(401).build();
     }
 
-    //Delete user by email
+    //Delete user by Id
     @DeleteMapping("/delete/{email}")
-    public ResponseEntity<Void> removeByCpf(@PathVariable String email) {
-        for (Administrator user : listUsers) {
-            if (user.getEmail().equals(email)) {
-                listUsers.remove(user);
-                return ResponseEntity.status(200).build();
-            }
+    public ResponseEntity<Void> removeById(@PathVariable Integer id) {
+        if (repositoryAdministrator.existsById(id)){
+            repositoryAdministrator.deleteById(id);
+            return ResponseEntity.status(204).build();
         }
         return ResponseEntity.status(404).build();
     }

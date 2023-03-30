@@ -6,6 +6,7 @@ import br.com.ezschedule.apischedule.model.JsonResponse;
 import br.com.ezschedule.apischedule.model.UpdatePasswordForm;
 import br.com.ezschedule.apischedule.repository.RepositoryAdministrator;
 import br.com.ezschedule.apischedule.repository.RepositoryClient;
+import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +19,7 @@ import java.util.List;
 public class ClientController {
 
     @Autowired
-    private RepositoryClient action;
+    private RepositoryClient repositoryClient;
     List<Client> listUsers = new ArrayList<>();
 
     //Show all user's
@@ -38,7 +39,7 @@ public class ClientController {
     @PostMapping
     public ResponseEntity<JsonResponse> register(@RequestBody Client newUser) {
         listUsers.add(newUser);
-        action.save(newUser);
+        repositoryClient.save(newUser);
         return ResponseEntity.status(200).body(JsonResponseAdapter.Dto(newUser));
     }
 
@@ -54,13 +55,13 @@ public class ClientController {
         return ResponseEntity.status(401).build();
     }
 
-    //Delete user by email
-    @DeleteMapping("/delete/{email}")
-    public ResponseEntity<Void> removeByCpf(@PathVariable String email) {
+    //Delete user by id
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Void> removeById(@PathVariable Integer id) {
         for (Client user : listUsers) {
-            if (user.getEmail().equals(email)) {
-                listUsers.remove(user);
-                return ResponseEntity.status(200).build();
+            if (repositoryClient.existsById(id)){
+                this.repositoryClient.deleteById(id);
+                return ResponseEntity.status(204).build();
             }
         }
         return ResponseEntity.status(404).build();
