@@ -8,21 +8,31 @@ public interface JsonResponseAdapter {
 
     public static JsonResponse Dto(Client c) {
         return new JsonResponse(
-                c.getName(),
-                c.getPhoneNumber(),
                 c.getEmail(),
                 c.getCpf(),
-                c.isAuthenticated()
-        );
+                c.getPassword(),
+                c.getName(),
+                c.getResidentsBlock(),
+                c.getApartmentNumber(),
+                c.getPhoneNumber(),
+                c.getPhoneNumber(),
+                c.isAuthenticated(),
+                c.isAdmin());
+
     }
 
     public static JsonResponse Dto(Administrator a) {
         return new JsonResponse(
-                a.getName(),
-                a.getPhoneNumber(),
                 a.getEmail(),
                 a.getCpf(),
-                a.isAuthenticated());
+                a.getPassword(),
+                a.getName(),
+                a.getResidentsBlock(),
+                a.getApartmentNumber(),
+                a.getPhoneNumber(),
+                a.getPhoneNumber(),
+                a.isAuthenticated(),
+                a.isAdmin());
     }
 
 }
