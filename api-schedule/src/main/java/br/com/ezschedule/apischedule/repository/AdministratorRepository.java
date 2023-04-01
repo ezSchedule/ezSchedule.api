@@ -13,7 +13,7 @@ import java.util.List;
 public interface AdministratorRepository extends JpaRepository<Administrator, Integer> {
 
     @Query(value = "SELECT id_user, email, cpf, name, residents_block, apartment_number, phone_number, is_authenticated, is_admin  FROM Client", nativeQuery = true)
-    List<Object> listUserClient();
+    List<Object> listUserAdministrator();
 
     @Transactional
     @Modifying

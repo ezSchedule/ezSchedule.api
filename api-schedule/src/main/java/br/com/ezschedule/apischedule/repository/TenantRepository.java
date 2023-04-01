@@ -1,19 +1,17 @@
 package br.com.ezschedule.apischedule.repository;
 
-import br.com.ezschedule.apischedule.model.Administrator;
-import br.com.ezschedule.apischedule.model.Client;
+import br.com.ezschedule.apischedule.model.Tenant;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
 
 import javax.transaction.Transactional;
 import java.util.List;
 
-public interface ClientRepository extends JpaRepository<Client, Integer> {
+public interface TenantRepository extends JpaRepository<Tenant, Integer> {
 
     @Query(value = "SELECT id_user, email, cpf, name, residents_block, apartment_number, phone_number, is_authenticated, is_admin  FROM Client", nativeQuery = true)
-    List<Object> listUserClient();
+    List<Object> listUserTenant();
 
     @Transactional
     @Modifying

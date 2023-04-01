@@ -1,10 +1,10 @@
 package br.com.ezschedule.apischedule.controller;
 
 import br.com.ezschedule.apischedule.adapter.JsonResponseAdapter;
-import br.com.ezschedule.apischedule.model.Client;
+import br.com.ezschedule.apischedule.model.Tenant;
 import br.com.ezschedule.apischedule.model.JsonResponse;
 import br.com.ezschedule.apischedule.model.UpdatePasswordForm;
-import br.com.ezschedule.apischedule.repository.ClientRepository;
+import br.com.ezschedule.apischedule.repository.TenantRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,16 +13,15 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/users")
-public class ClientController {
+public class TenantController {
 
     @Autowired
-    private ClientRepository repositoryClient;
-//    List<Client> listUsers = new ArrayList<>();
+    private TenantRepository tenantRepository;
 
     //Show all user's
     @GetMapping
     public ResponseEntity<List<Object>> showAllUsers() {
-        List<Object> users = this.repositoryClient.listUserClient();
+        List<Object> users = this.tenantRepository.listUserTenant();
         if (users.isEmpty()){
             return ResponseEntity.status(204).build();
         }else {
@@ -33,15 +32,15 @@ public class ClientController {
 
     //Register new user
     @PostMapping
-    public ResponseEntity<JsonResponse> register(@RequestBody Client newUser) {
-        this.repositoryClient.save(newUser);
+    public ResponseEntity<JsonResponse> register(@RequestBody Tenant newUser) {
+        this.tenantRepository.save(newUser);
         return ResponseEntity.status(200).body(JsonResponseAdapter.Dto(newUser));
     }
 
    //login for user
     @PostMapping("/login/{email}/{password}")
     public ResponseEntity<Object> login(@PathVariable String email, @PathVariable String password) {
-        Object user = this.repositoryClient.userAuthenticated(email, password);
+        Object user = this.tenantRepository.userAuthenticated(email, password);
         if (user.equals(0)){
             return ResponseEntity.status(401).build();
         }
@@ -51,8 +50,8 @@ public class ClientController {
     //Delete user by id
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> removeById(@PathVariable Integer id) {
-            if (repositoryClient.existsById(id)){
-                this.repositoryClient.deleteById(id);
+            if (tenantRepository.existsById(id)){
+                this.tenantRepository.deleteById(id);
                 return ResponseEntity.status(204).build();
             }
         return ResponseEntity.status(404).build();
@@ -61,7 +60,7 @@ public class ClientController {
     //logout
     @PostMapping("/logout/{email}")
     public ResponseEntity<Void> logout(@PathVariable String email) {
-        Object user = this.repositoryClient.logoutUser(email);
+        Object user = this.tenantRepository.logoutUser(email);
         if (user.equals(1)) {
             return ResponseEntity.status(200).build();
         } else {
@@ -74,7 +73,7 @@ public class ClientController {
         if (updatePasswordForm.getPassword().equals(updatePasswordForm.getNewPassword())){
             return ResponseEntity.status(404).build();
         }else {
-            Object user = this.repositoryClient.updatePasswordUser(updatePasswordForm.getEmail(), updatePasswordForm.getPassword(), updatePasswordForm.getNewPassword());
+            Object user = this.tenantRepository.updatePasswordUser(updatePasswordForm.getEmail(), updatePasswordForm.getPassword(), updatePasswordForm.getNewPassword());
             return ResponseEntity.status(200).build();
         }
     }

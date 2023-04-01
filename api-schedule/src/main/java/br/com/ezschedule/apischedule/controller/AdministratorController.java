@@ -2,7 +2,6 @@ package br.com.ezschedule.apischedule.controller;
 
 import br.com.ezschedule.apischedule.adapter.JsonResponseAdapter;
 import br.com.ezschedule.apischedule.model.Administrator;
-import br.com.ezschedule.apischedule.model.Client;
 import br.com.ezschedule.apischedule.model.JsonResponse;
 import br.com.ezschedule.apischedule.model.UpdatePasswordForm;
 import br.com.ezschedule.apischedule.repository.AdministratorRepository;
@@ -23,7 +22,7 @@ public class AdministratorController {
     //Show all user's
     @GetMapping
     public ResponseEntity<List<Object>> showAllUsers() {
-        List<Object> users = this.repositoryAdministrator.listUserClient();
+        List<Object> users = this.repositoryAdministrator.listUserAdministrator();
         if (users.isEmpty()){
             return ResponseEntity.status(204).build();
         }else {
