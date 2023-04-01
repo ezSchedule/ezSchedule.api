@@ -1,12 +1,10 @@
 package br.com.ezschedule.apischedule.adapter;
 
-import br.com.ezschedule.apischedule.model.Administrator;
-import br.com.ezschedule.apischedule.model.Client;
-import br.com.ezschedule.apischedule.model.JsonResponse;
+import br.com.ezschedule.apischedule.model.*;
 
 public interface JsonResponseAdapter {
 
-    public static JsonResponse Dto(Client c) {
+    public static JsonResponse Dto(Tenant c) {
         return new JsonResponse(
                 c.getEmail(),
                 c.getCpf(),
@@ -33,6 +31,15 @@ public interface JsonResponseAdapter {
                 a.getPhoneNumber(),
                 a.isAuthenticated(),
                 a.isAdmin());
+    }
+
+    public static ForumPost forumDTO(UpdateForumPostForm f){
+        return new ForumPost(
+                f.getId(),
+                f.getTextContent(),
+                f.getTypeMessage(),
+                f.getDateTimePost(),
+                f.isEdited());
     }
 
 }
