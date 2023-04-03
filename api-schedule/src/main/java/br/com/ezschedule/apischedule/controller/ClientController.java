@@ -1,10 +1,11 @@
 package br.com.ezschedule.apischedule.controller;
 
 import br.com.ezschedule.apischedule.adapter.JsonResponseAdapter;
+import br.com.ezschedule.apischedule.email.SendMail;
+import br.com.ezschedule.apischedule.messages.EmailMessages;
 import br.com.ezschedule.apischedule.model.Client;
 import br.com.ezschedule.apischedule.model.JsonResponse;
 import br.com.ezschedule.apischedule.model.UpdatePasswordForm;
-import br.com.ezschedule.apischedule.repository.RepositoryAdministrator;
 import br.com.ezschedule.apischedule.repository.RepositoryClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/users")
@@ -19,7 +21,10 @@ public class ClientController {
 
     @Autowired
     private RepositoryClient action;
+    @Autowired
+    private SendMail sendMail;
     List<Client> listUsers = new ArrayList<>();
+    private String token = "";
 
     //Show all user's
     @GetMapping
@@ -92,5 +97,42 @@ public class ClientController {
         }
         return ResponseEntity.status(404).build();
     }
+
+
+
+    @GetMapping("/recovery-password/{email}")
+    public ResponseEntity<Void> recoveryPassword(@PathVariable String email){
+
+        boolean exists = action.existsByEmail(email);
+
+        if(exists) {
+            Client cliente = null;
+            for (int i = 0; i < listUsers.size(); i++) {
+                if (email.equals(listUsers.get(i).getEmail())) {
+                    cliente = listUsers.get(i);
+                }
+            }
+
+           this.token = UUID.randomUUID().toString().replace("-", "");
+            this.sendMail.send(email, EmailMessages.createTitle(cliente), EmailMessages.messageRecoveryPassword(cliente, this.token));
+
+            return ResponseEntity.status(200).build();
+        }
+
+        return ResponseEntity.status(404).build();
+    }
+
+    @GetMapping("/input-token/{tokenInput}")
+    public ResponseEntity<Void> insertingToken(@PathVariable String tokenInput){
+        if(tokenInput.equals(this.token)){
+            token = "";
+            return ResponseEntity.status(200).build();
+        }
+
+        return ResponseEntity.status(404).build();
+
+    }
+
+
 
 }
