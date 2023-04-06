@@ -12,7 +12,7 @@ import java.util.List;
 @Repository
 public interface TenantRepository extends JpaRepository<Tenant, Integer> {
 
-    @Query(value = "SELECT id_tenant, email, cpf, name, residents_block, apartment_number, phone_number, is_authenticated, is_admin  FROM Tenant", nativeQuery = true)
+    @Query(value = "SELECT id_user, email, cpf, name, residents_block, apartment_number, phone_number, is_authenticated, is_admin  FROM Tenant", nativeQuery = true)
     List<Object> listUserTenant();
 
     @Transactional
