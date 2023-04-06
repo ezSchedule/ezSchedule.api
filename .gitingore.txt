@@ -1,0 +1,3 @@
+#A linha abaixo remove a pasta ".idea" que é um arquivo da ferramenta IntelliJ
+
+.ide

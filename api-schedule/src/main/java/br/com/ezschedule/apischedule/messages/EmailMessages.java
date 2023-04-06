@@ -1,14 +1,14 @@
 package br.com.ezschedule.apischedule.messages;
 
-import br.com.ezschedule.apischedule.model.Client;
+import br.com.ezschedule.apischedule.model.Tenant;
 
 public class EmailMessages {
 
-    public static String createTitle(Client cliente){
+    public static String createTitle(Tenant cliente){
         return cliente.getName() + " você esqueceu sua senha do ezSchedule?";
     }
 
-    public static String messageRecoveryPassword(Client cliente, String token){
+    public static String messageRecoveryPassword(Tenant cliente, String token){
         return "Olá " + cliente.getName()
         + "!\nPara verificar sua identidade, use o seguinte código: \n\n"
         + token //Colocar o link aqui direto
