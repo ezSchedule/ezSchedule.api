@@ -35,14 +35,12 @@ public class ForumController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ForumPost> updatePostById(@RequestBody @Valid UpdateForumPostForm updatedPost,@PathVariable int id){
-        if(forumRepository.existsById(id)){
+    public ResponseEntity<ForumPost> updatePostById(@RequestBody @Valid UpdateForumPostForm updatePost,@PathVariable int id){
+        if(forumRepository.findById(id).isPresent()){
          Optional<ForumPost> oldPost = forumRepository.findById(id);
-         updatedPost.setId(id);
-         updatedPost.setDateTimePost(oldPost.get().getDateTimePost());
-         updatedPost.setEdited(true);
-         forumRepository.save(JsonResponseAdapter.forumDTO(updatedPost));
-         return ResponseEntity.status(200).body(JsonResponseAdapter.forumDTO(updatedPost));
+         ForumPost updatedPost = JsonResponseAdapter.forumDTO(updatePost,id,oldPost.get().getDateTimePost());
+         forumRepository.save(updatedPost);
+         return ResponseEntity.status(200).body(updatedPost);
         }
         return ResponseEntity.status(404).build();
     }

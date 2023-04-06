@@ -2,6 +2,8 @@ package br.com.ezschedule.apischedule.adapter;
 
 import br.com.ezschedule.apischedule.model.*;
 
+import java.time.LocalDateTime;
+
 public interface JsonResponseAdapter {
 
     public static JsonResponse Dto(Tenant c) {
@@ -33,13 +35,13 @@ public interface JsonResponseAdapter {
                 a.isAdmin());
     }
 
-    public static ForumPost forumDTO(UpdateForumPostForm f){
+    public static ForumPost forumDTO(UpdateForumPostForm f, int id, LocalDateTime time){
         return new ForumPost(
-                f.getId(),
+                id,
                 f.getTextContent(),
                 f.getTypeMessage(),
-                f.getDateTimePost(),
-                f.isEdited());
+                time,
+                true);
     }
 
 }
