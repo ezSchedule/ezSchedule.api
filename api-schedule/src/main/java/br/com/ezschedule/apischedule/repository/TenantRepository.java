@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface TenantRepository extends JpaRepository<Tenant, Integer> {
@@ -34,4 +35,7 @@ public interface TenantRepository extends JpaRepository<Tenant, Integer> {
 
     //Existe pelo email
     Boolean existsByEmail(String email);
+
+
+    Optional<Tenant> findByEmail(String email);
 }

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface AdministratorRepository extends JpaRepository<Administrator, Integer> {
@@ -30,4 +31,6 @@ public interface AdministratorRepository extends JpaRepository<Administrator, In
     @Query(value = "UPDATE Client SET password = ?3 WHERE email = ?1 AND password = ?2 ", nativeQuery = true)
     Object updatePasswordUser(String email, String password, String newPassword);
 
+
+    Optional<Administrator> findByEmail(String email);
 }
