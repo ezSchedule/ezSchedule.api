@@ -7,6 +7,8 @@ import br.com.ezschedule.apischedule.model.UpdatePasswordForm;
 import br.com.ezschedule.apischedule.repository.AdministratorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCrypt;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -34,6 +36,9 @@ public class AdministratorController {
     //Register new user
     @PostMapping
     public ResponseEntity<JsonResponse> register(@RequestBody Administrator newUser) {
+        BCryptPasswordEncoder crypt = new BCryptPasswordEncoder(5);
+        newUser.setPassword(crypt.encode(newUser.getPassword()));
+        System.out.println(newUser.getPassword());
         this.repositoryAdministrator.save(newUser);
         return ResponseEntity.status(200).body(JsonResponseAdapter.Dto(newUser));
     }
@@ -42,6 +47,7 @@ public class AdministratorController {
     @PostMapping("/login/{email}/{password}")
     public ResponseEntity<Object> login(@PathVariable String email, @PathVariable String password) {
         Object user = this.repositoryAdministrator.userAuthenticated(email, password);
+
         if (user.equals(0)){
             return ResponseEntity.status(401).build();
         }

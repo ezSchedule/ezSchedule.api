@@ -34,6 +34,8 @@ public class JWTconfigurationAdministrator extends WebSecurityConfigurerAdapter 
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable().authorizeHttpRequests().
                 antMatchers(HttpMethod.POST, "/login").permitAll().
+                antMatchers(HttpMethod.POST, "/usersAdmin").permitAll().
+                antMatchers(HttpMethod.GET, "/**").permitAll().
                 anyRequest().authenticated().
                 and().
                 addFilter(new JWTauthenticateFilterAdministrator(authenticationManager())).

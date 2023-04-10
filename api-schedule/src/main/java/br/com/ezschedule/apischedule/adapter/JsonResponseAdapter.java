@@ -10,7 +10,6 @@ public interface JsonResponseAdapter {
         return new JsonResponse(
                 c.getEmail(),
                 c.getCpf(),
-                c.getPassword(),
                 c.getName(),
                 c.getResidentsBlock(),
                 c.getApartmentNumber(),
@@ -25,7 +24,6 @@ public interface JsonResponseAdapter {
         return new JsonResponse(
                 a.getEmail(),
                 a.getCpf(),
-                a.getPassword(),
                 a.getName(),
                 a.getResidentsBlock(),
                 a.getApartmentNumber(),
