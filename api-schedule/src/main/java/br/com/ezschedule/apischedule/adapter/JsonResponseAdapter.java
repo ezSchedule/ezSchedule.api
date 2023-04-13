@@ -14,7 +14,6 @@ public interface JsonResponseAdapter {
                 c.getResidentsBlock(),
                 c.getApartmentNumber(),
                 c.getPhoneNumber(),
-                c.getPhoneNumber(),
                 c.isAuthenticated(),
                 c.isAdmin());
 
@@ -27,7 +26,6 @@ public interface JsonResponseAdapter {
                 a.getName(),
                 a.getResidentsBlock(),
                 a.getApartmentNumber(),
-                a.getPhoneNumber(),
                 a.getPhoneNumber(),
                 a.isAuthenticated(),
                 a.isAdmin());

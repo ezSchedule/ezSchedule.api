@@ -18,7 +18,7 @@ public class JsonResponse {
 
     private Boolean isAdmin;
 
-    public JsonResponse(String email, String cpf, String name, String residentsBlock, Integer apartmentNumber, String phoneNumber, String number, boolean isAuthenticated, Boolean isAdmin) {
+    public JsonResponse(String email, String cpf, String name, String residentsBlock, Integer apartmentNumber, String phoneNumber, boolean isAuthenticated, Boolean isAdmin) {
         this.email = email;
         this.cpf = cpf;
         this.name = name;
