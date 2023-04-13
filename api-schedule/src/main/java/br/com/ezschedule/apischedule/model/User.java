@@ -7,7 +7,9 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
-@MappedSuperclass
+@Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "type", discriminatorType = DiscriminatorType.INTEGER)
 abstract class User {
 
     @Id
@@ -40,9 +42,9 @@ abstract class User {
 
     private boolean isAuthenticated;
 
-    private boolean isAdmin;
+    private Integer isAdmin;
 
-    public User(String email, String cpf, String password, String name, String residentsBlock, Integer apartmentNumber, String phoneNumber, boolean isAdmin) {
+    public User(String email, String cpf, String password, String name, String residentsBlock, Integer apartmentNumber, String phoneNumber) {
         this.email = email;
         this.cpf = cpf;
         this.password = password;
@@ -51,7 +53,6 @@ abstract class User {
         this.apartmentNumber = apartmentNumber;
         this.phoneNumber = phoneNumber;
         this.isAuthenticated = false;
-        this.isAdmin = isAdmin;
     }
 
     public User() {
@@ -129,11 +130,11 @@ abstract class User {
         isAuthenticated = authenticated;
     }
 
-    public boolean isAdmin() {
+    public Integer isAdmin() {
         return isAdmin;
     }
 
-    public void setAdmin(boolean admin) {
+    public void setAdmin(Integer admin) {
         isAdmin = admin;
     }
 

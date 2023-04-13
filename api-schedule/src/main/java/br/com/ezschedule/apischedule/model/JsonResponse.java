@@ -16,9 +16,9 @@ public class JsonResponse {
 
     private boolean isAuthenticated;
 
-    private Boolean isAdmin;
+    private Integer isAdmin;
 
-    public JsonResponse(String email, String cpf, String name, String residentsBlock, Integer apartmentNumber, String phoneNumber, boolean isAuthenticated, Boolean isAdmin) {
+    public JsonResponse(String email, String cpf, String name, String residentsBlock, Integer apartmentNumber, String phoneNumber, boolean isAuthenticated, Integer isAdmin) {
         this.email = email;
         this.cpf = cpf;
         this.name = name;
@@ -85,11 +85,11 @@ public class JsonResponse {
         isAuthenticated = authenticated;
     }
 
-    public Boolean getAdmin() {
+    public Integer getAdmin() {
         return isAdmin;
     }
 
-    public void setAdmin(Boolean admin) {
+    public void setAdmin(Integer admin) {
         isAdmin = admin;
     }
 }
