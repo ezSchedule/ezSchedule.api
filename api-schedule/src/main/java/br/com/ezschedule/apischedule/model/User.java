@@ -10,7 +10,7 @@ import javax.validation.constraints.Size;
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "type", discriminatorType = DiscriminatorType.INTEGER)
-@Table(name = "Person")
+@Table(name = "Tenant")
 public abstract class User {
 
     @Id
