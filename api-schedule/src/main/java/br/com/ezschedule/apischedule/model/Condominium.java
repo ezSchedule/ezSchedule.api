@@ -1,26 +1,41 @@
 package br.com.ezschedule.apischedule.model;
 
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity
 public class Condominium {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
     private String name;
     private String street;
     private String city;
     private String state;
     private String postalCode;
     private String country;
+    @OneToMany(mappedBy = "condominium",fetch = FetchType.LAZY)
+    private List<Tenant> tenantList;
+    @OneToMany(mappedBy = "condominium",fetch = FetchType.LAZY)
+    private List<Saloon> saloonList;
+    @OneToMany(mappedBy = "condominium",fetch = FetchType.LAZY)
+    private List<ForumPost> forumPostList;
+    @OneToMany(mappedBy = "condominium",fetch = FetchType.LAZY)
+    private List<Report> reportList;
 
-    private List<User> userList;
 
-    public Condominium(String name, String street, String city, String state, String postalCode, String country,List<User> userList) {
+    public Condominium(String name, String street, String city, String state, String postalCode, String country, List<Tenant> tenantList, List<Saloon> saloonList, List<ForumPost> forumPostList, List<Report> reportList) {
         this.name = name;
         this.street = street;
         this.city = city;
         this.state = state;
         this.postalCode = postalCode;
         this.country = country;
-        this.userList = userList;
+        this.tenantList = tenantList;
+        this.saloonList = saloonList;
+        this.forumPostList = forumPostList;
+        this.reportList = reportList;
     }
 
     public Condominium(String name, String street, String city, String state, String postalCode, String country) {
@@ -30,10 +45,18 @@ public class Condominium {
         this.state = state;
         this.postalCode = postalCode;
         this.country = country;
-        this.userList = new ArrayList<>();
+        this.tenantList = new ArrayList<>();
     }
 
     public Condominium() {
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -84,15 +107,49 @@ public class Condominium {
         this.country = country;
     }
 
-    @Override
-    public String toString() {
-        return "Condominium " +
-                "name ='" + name + '\'' +
-                ", street = '" + street + '\'' +
-                ", city = '" + city + '\'' +
-                ", state = '" + state + '\'' +
-                ", postalCode = '" + postalCode + '\'' +
-                ", country = '" + country + '\'' +
-                ", userList = " + userList;
+    public List<Tenant> getTenantList() {
+        return tenantList;
+    }
+
+    public void setTenantList(List<Tenant> tenantList) {
+        this.tenantList = tenantList;
+    }
+
+    public List<Saloon> getSaloonList() {
+        return saloonList;
+    }
+
+    public void setSaloonList(List<Saloon> saloonList) {
+        this.saloonList = saloonList;
+    }
+
+    public List<ForumPost> getForumPostList() {
+        return forumPostList;
+    }
+
+    public void setForumPostList(List<ForumPost> forumPostList) {
+        this.forumPostList = forumPostList;
+    }
+
+    public List<Report> getReportList() {
+        return reportList;
+    }
+
+    public void setReportList(List<Report> reportList) {
+        this.reportList = reportList;
+    }
+
+    public Condominium(int id, String name, String street, String city, String state, String postalCode, String country, List<Tenant> tenantList, List<Saloon> saloonList, List<ForumPost> forumPostList, List<Report> reportList) {
+        this.id = id;
+        this.name = name;
+        this.street = street;
+        this.city = city;
+        this.state = state;
+        this.postalCode = postalCode;
+        this.country = country;
+        this.tenantList = tenantList;
+        this.saloonList = saloonList;
+        this.forumPostList = forumPostList;
+        this.reportList = reportList;
     }
 }

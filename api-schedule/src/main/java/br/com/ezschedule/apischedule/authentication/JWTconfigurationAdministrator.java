@@ -33,14 +33,17 @@ public class JWTconfigurationAdministrator extends WebSecurityConfigurerAdapter 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable().authorizeHttpRequests().
-                antMatchers(HttpMethod.POST, "/login").permitAll().
-                antMatchers(HttpMethod.POST, "/usersAdmin").permitAll().
+                antMatchers(HttpMethod.POST, "/userAdmin").permitAll().
+                antMatchers(HttpMethod.POST, "/usersAdmin/**","/h2-console/**","/condominium/**").permitAll().
                 antMatchers(HttpMethod.GET, "/**").permitAll().
                 anyRequest().authenticated().
                 and().
                 addFilter(new JWTauthenticateFilterAdministrator(authenticationManager())).
                 addFilter(new JWTvalidationFilterAdministrator(authenticationManager())).
                 sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+
+        http.csrf().disable();
+        http.headers().frameOptions().disable();
     }
 
     @Bean

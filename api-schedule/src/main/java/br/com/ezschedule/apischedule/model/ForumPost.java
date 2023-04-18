@@ -1,9 +1,6 @@
 package br.com.ezschedule.apischedule.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.PastOrPresent;
 import javax.validation.constraints.Size;
@@ -24,19 +21,31 @@ public class ForumPost {
     @PastOrPresent
     private LocalDateTime dateTimePost;
     private boolean isEdited;
+    @ManyToOne
+    private Condominium condominium;
 
-    public ForumPost(Integer id,String textContent, String typeMessage, LocalDateTime dateTimePost,boolean isEdited) {
+
+    public ForumPost(String textContent, String typeMessage, LocalDateTime dateTimePost, boolean isEdited, Condominium condominium) {
+        this.textContent = textContent;
+        this.typeMessage = typeMessage;
+        this.dateTimePost = dateTimePost;
+        this.isEdited = isEdited;
+        this.condominium = condominium;
+    }
+
+    public ForumPost(Integer id, String textContent, String typeMessage, LocalDateTime dateTimePost, boolean isEdited) {
         this.id = id;
         this.textContent = textContent;
         this.typeMessage = typeMessage;
         this.dateTimePost = dateTimePost;
         this.isEdited = isEdited;
     }
-    public ForumPost(String textContent, String typeMessage, LocalDateTime dateTimePost) {
+    public ForumPost(String textContent, String typeMessage, LocalDateTime dateTimePost, Condominium condominium) {
         this.textContent = textContent;
         this.typeMessage = typeMessage;
         this.dateTimePost = dateTimePost;
         this.isEdited = false;
+        this.condominium = condominium;
     }
 
     public ForumPost() {
@@ -80,6 +89,14 @@ public class ForumPost {
 
     public void setEdited(boolean edited) {
         isEdited = edited;
+    }
+
+    public Condominium getCondominium() {
+        return condominium;
+    }
+
+    public void setCondominium(Condominium condominium) {
+        this.condominium = condominium;
     }
 
     @Override
