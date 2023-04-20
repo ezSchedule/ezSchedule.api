@@ -2,8 +2,8 @@ package br.com.ezschedule.apischedule.controller;
 
 import br.com.ezschedule.apischedule.adapter.JsonResponseAdapter;
 import br.com.ezschedule.apischedule.model.Administrator;
-import br.com.ezschedule.apischedule.model.JsonResponse;
-import br.com.ezschedule.apischedule.model.UpdatePasswordForm;
+import br.com.ezschedule.apischedule.model.DtoClasses.JsonResponse;
+import br.com.ezschedule.apischedule.model.DtoClasses.UpdatePasswordForm;
 import br.com.ezschedule.apischedule.repository.AdministratorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

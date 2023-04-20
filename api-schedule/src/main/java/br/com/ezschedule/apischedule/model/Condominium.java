@@ -46,7 +46,12 @@ public class Condominium {
         this.postalCode = postalCode;
         this.country = country;
         this.tenantList = new ArrayList<>();
+        this.saloonList = new ArrayList<>();
+        this.forumPostList = new ArrayList<>();
+        this.reportList = new ArrayList<>();
     }
+
+
 
     public Condominium() {
     }

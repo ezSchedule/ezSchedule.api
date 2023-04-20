@@ -30,6 +30,16 @@ public class Schedule {
         this.tenant = tenant;
     }
 
+    public Schedule(int id,String nameEvent, String typeEvent, LocalDateTime dateEvent, int totalNumberGuests, List<Saloon> saloon, Tenant tenant) {
+        this.id = id;
+        this.nameEvent = nameEvent;
+        this.typeEvent = typeEvent;
+        this.dateEvent = dateEvent;
+        this.totalNumberGuests = totalNumberGuests;
+        this.saloon = saloon;
+        this.tenant = tenant;
+    }
+
     public int getId() {
         return id;
     }

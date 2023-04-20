@@ -2,7 +2,7 @@ package br.com.ezschedule.apischedule.controller;
 
 import br.com.ezschedule.apischedule.adapter.JsonResponseAdapter;
 import br.com.ezschedule.apischedule.model.ForumPost;
-import br.com.ezschedule.apischedule.model.UpdateForumPostForm;
+import br.com.ezschedule.apischedule.model.DtoClasses.UpdateForumPostForm;
 import br.com.ezschedule.apischedule.repository.ForumRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/forum")
+@RequestMapping("{uri.forum}")
 public class ForumController {
 
     @Autowired
@@ -34,16 +34,16 @@ public class ForumController {
         return ResponseEntity.status(200).body(post);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<ForumPost> updatePostById(@RequestBody @Valid UpdateForumPostForm updatePost,@PathVariable int id){
-        if(forumRepository.findById(id).isPresent()){
-         Optional<ForumPost> oldPost = forumRepository.findById(id);
-         ForumPost updatedPost = JsonResponseAdapter.forumDTO(updatePost,id,oldPost.get().getDateTimePost());
-         forumRepository.save(updatedPost);
-         return ResponseEntity.status(200).body(updatedPost);
-        }
-        return ResponseEntity.status(404).build();
-    }
+//    @PutMapping("/{id}")
+//    public ResponseEntity<ForumPost> updatePostById(@RequestBody @Valid UpdateForumPostForm updatePost,@PathVariable int id){
+//        if(forumRepository.findById(id).isPresent()){
+//         Optional<ForumPost> oldPost = forumRepository.findById(id);
+//         ForumPost updatedPost = JsonResponseAdapter.forumDTO(updatePost,id,oldPost.get().getDateTimePost());
+//         forumRepository.save(updatedPost);
+//         return ResponseEntity.status(200).body(updatedPost);
+//        }
+//        return ResponseEntity.status(404).build();
+//    }
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> deletePostById(@PathVariable int id){

@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
-public class Report {
+public class    Report {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -31,6 +31,10 @@ public class Report {
         this.schedule = schedule;
         this.condominium = condominium;
         this.tenant = tenant;
+    }
+
+    public Report(){
+
     }
 
     public int getId() {

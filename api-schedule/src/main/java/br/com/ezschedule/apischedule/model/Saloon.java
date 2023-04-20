@@ -26,6 +26,21 @@ public class Saloon {
         this.condominium = condominium;
     }
 
+    public Saloon(int id ,String saloonName, Double saloonPrice, String saloonBlock, Condominium condominium) {
+        this.id = id;
+        this.saloonName = saloonName;
+        this.saloonPrice = saloonPrice;
+        this.saloonBlock = saloonBlock;
+        this.condominium = condominium;
+    }
+
+    public Saloon(String saloonName, Double saloonPrice, String saloonBlock, Condominium condominium) {
+        this.saloonName = saloonName;
+        this.saloonPrice = saloonPrice;
+        this.saloonBlock = saloonBlock;
+        this.condominium = condominium;
+    }
+
     public Saloon() {
     }
 

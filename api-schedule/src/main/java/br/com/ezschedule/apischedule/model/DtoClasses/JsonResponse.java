@@ -1,4 +1,4 @@
-package br.com.ezschedule.apischedule.model;
+package br.com.ezschedule.apischedule.model.DtoClasses;
 
 public class JsonResponse {
 
