@@ -1,5 +1,7 @@
 package br.com.ezschedule.apischedule.controller;
 
+import br.com.ezschedule.apischedule.CSV.CsvAdministrator;
+import br.com.ezschedule.apischedule.CSV.ListaObj;
 import br.com.ezschedule.apischedule.adapter.JsonResponseAdapter;
 import br.com.ezschedule.apischedule.model.Administrator;
 import br.com.ezschedule.apischedule.model.JsonResponse;
@@ -7,7 +9,6 @@ import br.com.ezschedule.apischedule.model.UpdatePasswordForm;
 import br.com.ezschedule.apischedule.repository.AdministratorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,13 +20,6 @@ public class AdministratorController {
 
     @Autowired
     private AdministratorRepository repositoryAdministrator;
-
-    private final PasswordEncoder encoder;
-
-    public AdministratorController(PasswordEncoder encoder) {
-        this.encoder = encoder;
-    }
-
 
     //Show all user's
     @GetMapping
@@ -42,8 +36,6 @@ public class AdministratorController {
     //Register new user
     @PostMapping
     public ResponseEntity<JsonResponse> register(@RequestBody Administrator newUser) {
-        newUser.setPassword(encoder.encode(newUser.getPassword()));
-        System.out.println(newUser.getPassword());
         this.repositoryAdministrator.save(newUser);
         return ResponseEntity.status(200).body(JsonResponseAdapter.Dto(newUser));
     }
@@ -90,6 +82,25 @@ public class AdministratorController {
             Administrator user = this.repositoryAdministrator.updatePasswordUser(updatePasswordForm.getEmail(), updatePasswordForm.getPassword(), updatePasswordForm.getNewPassword());
             return ResponseEntity.status(200).build();
         }
+    }
+
+    @GetMapping("/gerar-csv-administrator")
+    public ResponseEntity<byte[]> gerarCsv(){
+
+        List<Administrator> administrators = repositoryAdministrator.findAll();
+
+        if(!administrators.isEmpty()){
+
+            ListaObj<Administrator> adms = new ListaObj<Administrator>(administrators.size());
+            for(Administrator administrator : administrators){
+                adms.adiciona(administrator);
+            }
+
+            CsvAdministrator.gravaArquivoCsvAdministrador(adms, "administrator");
+            return CsvAdministrator.buscarArquivo("administrator");
+        }
+
+        return ResponseEntity.status(404).build();
     }
 
 //    public List<JsonResponse> convertJsonResponse(List) {
