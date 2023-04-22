@@ -1,6 +1,7 @@
 package br.com.ezschedule.apischedule.controller;
 
 import br.com.ezschedule.apischedule.adapter.JsonResponseAdapter;
+import br.com.ezschedule.apischedule.model.DtoClasses.SaloonDTO;
 import br.com.ezschedule.apischedule.model.DtoClasses.UpdateSaloonForm;
 import br.com.ezschedule.apischedule.model.Saloon;
 import br.com.ezschedule.apischedule.repository.SaloonRepository;
@@ -20,21 +21,21 @@ public class SaloonController {
     SaloonRepository saloonRepository;
 
     @GetMapping
-    public ResponseEntity<List<Saloon>> showAllSaloons(){
+    public ResponseEntity<List<SaloonDTO>> showAllSaloons(){
         List<Saloon> allSaloons = saloonRepository.findAll();
         if(allSaloons.isEmpty()){
             return ResponseEntity.status(204).build();
         }
-        return ResponseEntity.status(200).body(allSaloons);
+        return ResponseEntity.status(200).body(JsonResponseAdapter.listSaloonDTO(allSaloons));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Saloon> showASaloonById(@PathVariable  int id){
+    public ResponseEntity<SaloonDTO> showASaloonById(@PathVariable  int id){
         Optional<Saloon> saloon = saloonRepository.findById(id);
         if(saloon.isEmpty()){
             return ResponseEntity.status(204).build();
         }
-        return ResponseEntity.status(200).body(saloon.get());
+        return ResponseEntity.status(200).body(JsonResponseAdapter.saloonDTO(saloon.get()));
     }
 
     @PostMapping

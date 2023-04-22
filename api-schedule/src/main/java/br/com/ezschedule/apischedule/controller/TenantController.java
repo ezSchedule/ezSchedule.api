@@ -3,6 +3,7 @@ package br.com.ezschedule.apischedule.controller;
 import br.com.ezschedule.apischedule.adapter.JsonResponseAdapter;
 import br.com.ezschedule.apischedule.email.SendMail;
 import br.com.ezschedule.apischedule.messages.EmailMessages;
+import br.com.ezschedule.apischedule.model.DtoClasses.TenantResponse;
 import br.com.ezschedule.apischedule.model.Tenant;
 import br.com.ezschedule.apischedule.model.DtoClasses.JsonResponse;
 import br.com.ezschedule.apischedule.model.DtoClasses.UpdatePasswordForm;
@@ -29,21 +30,21 @@ public class TenantController {
 
     //Show all user's
     @GetMapping
-    public ResponseEntity<List<Object>> showAllUsers() {
-        List<Object> users = this.tenantRepository.listUserTenant();
+    public ResponseEntity<List<TenantResponse>> showAllUsers() {
+        List<Tenant> users = this.tenantRepository.findAll();
         if (users.isEmpty()){
             return ResponseEntity.status(204).build();
         }else {
-            return ResponseEntity.status(200).body(users);
+            return ResponseEntity.status(200).body(JsonResponseAdapter.listTenantDTO(users));
         }
 
     }
 
     //Register new user
     @PostMapping
-    public ResponseEntity<JsonResponse> register(@RequestBody Tenant newUser) {
+    public ResponseEntity<TenantResponse> register(@RequestBody Tenant newUser) {
         this.tenantRepository.save(newUser);
-        return ResponseEntity.status(200).body(JsonResponseAdapter.Dto(newUser));
+        return ResponseEntity.status(200).body(JsonResponseAdapter.tentantDTO(newUser));
     }
 
    //login for user

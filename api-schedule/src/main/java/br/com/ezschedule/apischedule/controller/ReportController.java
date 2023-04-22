@@ -1,6 +1,7 @@
 package br.com.ezschedule.apischedule.controller;
 
 import br.com.ezschedule.apischedule.adapter.JsonResponseAdapter;
+import br.com.ezschedule.apischedule.model.DtoClasses.ReportDTO;
 import br.com.ezschedule.apischedule.model.Report;
 import br.com.ezschedule.apischedule.repository.ReportRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,18 +20,18 @@ public class ReportController {
     ReportRepository reportRepository;
 
     @GetMapping
-    public ResponseEntity<List<Report>> showAllReports(){
+    public ResponseEntity<List<ReportDTO>> showAllReports(){
         List<Report> allPosts = reportRepository.findAll();
         if(allPosts.isEmpty()){
             return ResponseEntity.status(204).build();
         }
-        return ResponseEntity.status(200).body(allPosts);
+        return ResponseEntity.status(200).body(JsonResponseAdapter.listReportDTO(allPosts));
     }
 
     @PostMapping
-    public ResponseEntity<Report> newReport(@RequestBody @Valid Report report){
+    public ResponseEntity<ReportDTO> newReport(@RequestBody @Valid Report report){
         reportRepository.save(report);
-        return ResponseEntity.status(200).body(report);
+        return ResponseEntity.status(200).body(JsonResponseAdapter.reportDTO(report));
     }
 
 

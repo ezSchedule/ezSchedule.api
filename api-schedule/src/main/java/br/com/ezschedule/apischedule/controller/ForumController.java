@@ -1,8 +1,10 @@
 package br.com.ezschedule.apischedule.controller;
 
 import br.com.ezschedule.apischedule.adapter.JsonResponseAdapter;
-import br.com.ezschedule.apischedule.model.ForumPost;
+import br.com.ezschedule.apischedule.model.DtoClasses.CondominiumResponse.ForumCondoDTO;
+import br.com.ezschedule.apischedule.model.DtoClasses.ForumDTO;
 import br.com.ezschedule.apischedule.model.DtoClasses.UpdateForumPostForm;
+import br.com.ezschedule.apischedule.model.ForumPost;
 import br.com.ezschedule.apischedule.repository.ForumRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -20,30 +22,38 @@ public class ForumController {
     private ForumRepository forumRepository;
 
     @GetMapping
-    public ResponseEntity<List<ForumPost>> showAllPosts(){
+    public ResponseEntity<List<ForumDTO>> showAllPosts(){
        List<ForumPost> allPosts = forumRepository.findAll();
        if(allPosts.isEmpty()){
            return ResponseEntity.status(204).build();
        }
-       return ResponseEntity.status(200).body(allPosts);
+       return ResponseEntity.status(200).body(JsonResponseAdapter.listForumDTO(allPosts));
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ForumDTO> getPostById(@PathVariable int id){
+        if(forumRepository.findById(id).isPresent()){
+            return ResponseEntity.status(200).body(JsonResponseAdapter.forumDTO(forumRepository.findById(id).get()));
+        }
+        return ResponseEntity.status(404).build();
     }
 
     @PostMapping
-    public ResponseEntity<ForumPost> newPost(@RequestBody @Valid ForumPost post){
+    public ResponseEntity<ForumDTO> newPost(@RequestBody @Valid ForumPost post){
         forumRepository.save(post);
-        return ResponseEntity.status(200).body(post);
+        return ResponseEntity.status(200).body(JsonResponseAdapter.forumDTO(post));
     }
 
-//    @PutMapping("/{id}")
-//    public ResponseEntity<ForumPost> updatePostById(@RequestBody @Valid UpdateForumPostForm updatePost,@PathVariable int id){
-//        if(forumRepository.findById(id).isPresent()){
-//         Optional<ForumPost> oldPost = forumRepository.findById(id);
-//         ForumPost updatedPost = JsonResponseAdapter.forumDTO(updatePost,id,oldPost.get().getDateTimePost());
-//         forumRepository.save(updatedPost);
-//         return ResponseEntity.status(200).body(updatedPost);
-//        }
-//        return ResponseEntity.status(404).build();
-//    }
+    @PutMapping("/{id}")
+    public ResponseEntity<ForumDTO> updatePostById(@RequestBody @Valid UpdateForumPostForm updatePost, @PathVariable int id){
+        if(forumRepository.findById(id).isPresent()){
+         Optional<ForumPost> oldPost = forumRepository.findById(id);
+         ForumPost updatedPost = JsonResponseAdapter.updateForumDTO(updatePost,id,oldPost.get());
+         forumRepository.save(updatedPost);
+         return ResponseEntity.status(200).body(JsonResponseAdapter.forumDTO(updatedPost));
+        }
+        return ResponseEntity.status(404).build();
+    }
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> deletePostById(@PathVariable int id){

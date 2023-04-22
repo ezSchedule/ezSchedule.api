@@ -24,6 +24,14 @@ public class ForumPost {
     @ManyToOne
     private Condominium condominium;
 
+    public ForumPost(int id,String textContent, String typeMessage, LocalDateTime dateTimePost, Condominium condominium) {
+        this.id = id;
+        this.textContent = textContent;
+        this.typeMessage = typeMessage;
+        this.dateTimePost = dateTimePost;
+        this.condominium = condominium;
+        isEdited = true;
+    }
 
     public ForumPost(String textContent, String typeMessage, LocalDateTime dateTimePost, boolean isEdited, Condominium condominium) {
         this.textContent = textContent;

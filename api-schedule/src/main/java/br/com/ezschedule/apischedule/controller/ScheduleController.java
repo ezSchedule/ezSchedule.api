@@ -42,23 +42,23 @@ public class ScheduleController {
         return ResponseEntity.status(200).body(s);
     }
 
-//    @PutMapping("/{id}")
-//    public ResponseEntity<Schedule> updateScheduleById(@RequestBody @Valid UpdateScheduleForm newSchedule, @PathVariable int id){
-//        Optional<Schedule> oldSchedule = scheduleRepository.findById(id);
-//
-//        if(oldSchedule.isPresent()){
-//            Schedule updatedSchedule = JsonResponseAdapter.scheduleDTO(
-//                    newSchedule,
-//                    id,
-//                    oldSchedule.get().getSaloon(),
-//                    oldSchedule.get().getTenant()
-//            );
-//
-//            scheduleRepository.save(updatedSchedule);
-//            return ResponseEntity.status(200).body(updatedSchedule);
-//        }
-//        return ResponseEntity.status(404).build();
-//    }
+    @PutMapping("/{id}")
+    public ResponseEntity<Schedule> updateScheduleById(@RequestBody @Valid UpdateScheduleForm newSchedule, @PathVariable int id){
+        Optional<Schedule> oldSchedule = scheduleRepository.findById(id);
+
+        if(oldSchedule.isPresent()){
+            Schedule updatedSchedule = JsonResponseAdapter.scheduleDTO(
+                    newSchedule,
+                    id,
+                    oldSchedule.get().getSaloon(),
+                    oldSchedule.get().getTenant()
+            );
+
+            scheduleRepository.save(updatedSchedule);
+            return ResponseEntity.status(200).body(updatedSchedule);
+        }
+        return ResponseEntity.status(404).build();
+    }
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> deleteScheduleById(@PathVariable int id){

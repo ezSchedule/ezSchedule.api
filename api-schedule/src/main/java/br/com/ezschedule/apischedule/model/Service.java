@@ -6,13 +6,13 @@ import javax.validation.constraints.NotNull;
 
 public class Service {
     @NotBlank
-    private String nomeServico;
+    private String serviceName;
 
     @NotNull
     private Tenant tenant;
 
-    public Service(String nomeServico, Tenant tenant) {
-        this.nomeServico = nomeServico;
+    public Service(String serviceName, Tenant tenant) {
+        this.serviceName = serviceName;
         this.tenant = tenant;
     }
 
@@ -20,12 +20,12 @@ public class Service {
 
     }
 
-    public String getNomeServico() {
-        return nomeServico;
+    public String getServiceName() {
+        return serviceName;
     }
 
-    public void setNomeServico(String nomeServico) {
-        this.nomeServico = nomeServico;
+    public void setServiceName(String serviceName) {
+        this.serviceName = serviceName;
     }
 
     public Tenant getTenant() {
@@ -39,7 +39,7 @@ public class Service {
     @Override
     public String toString() {
         return "Service{" +
-                "nomeServico='" + nomeServico + '\'' +
+                "nomeServico='" + serviceName + '\'' +
                 ", tenant=" + tenant +
                 '}';
     }
