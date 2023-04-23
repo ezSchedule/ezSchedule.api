@@ -6,6 +6,7 @@ import br.com.ezschedule.apischedule.model.DtoClasses.CondominiumResponse.Condom
 import br.com.ezschedule.apischedule.model.DtoClasses.CondominiumResponse.ForumCondoDTO;
 import br.com.ezschedule.apischedule.model.DtoClasses.CondominiumResponse.ReportCondoDTO;
 import br.com.ezschedule.apischedule.model.DtoClasses.CondominiumResponse.SaloonCondoDTO;
+import br.com.ezschedule.apischedule.service.autenticacao.dto.UsuarioTokenDto;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -44,6 +45,22 @@ public interface JsonResponseAdapter {
                 a.getPhoneNumber(),
                 a.isAuthenticated(),
                 a.isAdmin());
+    }
+
+    public static UsuarioTokenDto tenantWTokenDTO(Tenant t,String token){
+        return new UsuarioTokenDto(
+                t.getIdUser(),
+                t.getEmail(),
+                t.getCpf(),
+                t.getName(),
+                t.getPassword(),
+                t.getResidentsBlock(),
+                t.getApartmentNumber(),
+                t.getPhoneNumber(),
+                t.isAuthenticated(),
+                t.isAdmin(),
+                token
+        );
     }
 
     public static TenantResponse tentantDTO(Tenant t){

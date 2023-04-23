@@ -8,6 +8,9 @@ import br.com.ezschedule.apischedule.model.Tenant;
 import br.com.ezschedule.apischedule.model.DtoClasses.JsonResponse;
 import br.com.ezschedule.apischedule.model.DtoClasses.UpdatePasswordForm;
 import br.com.ezschedule.apischedule.repository.TenantRepository;
+import br.com.ezschedule.apischedule.service.TenantService;
+import br.com.ezschedule.apischedule.service.autenticacao.dto.UsuarioLoginDto;
+import br.com.ezschedule.apischedule.service.autenticacao.dto.UsuarioTokenDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +26,8 @@ public class TenantController {
     @Autowired
     private TenantRepository tenantRepository;
 
+    @Autowired
+    private TenantService tenantService;
     @Autowired
     private SendMail sendMail;
     List<Tenant> listUsers = new ArrayList<>();
@@ -42,19 +47,16 @@ public class TenantController {
 
     //Register new user
     @PostMapping
-    public ResponseEntity<TenantResponse> register(@RequestBody Tenant newUser) {
-        this.tenantRepository.save(newUser);
-        return ResponseEntity.status(200).body(JsonResponseAdapter.tentantDTO(newUser));
+    public ResponseEntity<Void> register(@RequestBody Tenant newUser) {
+        this.tenantService.criar(newUser);
+        return ResponseEntity.status(201).build();
     }
 
    //login for user
-    @PostMapping("/login/{email}/{password}")
-    public ResponseEntity<Object> login(@PathVariable String email, @PathVariable String password) {
-        Object user = this.tenantRepository.userAuthenticated(email, password);
-        if (user.equals(0)){
-            return ResponseEntity.status(401).build();
-        }
-        return ResponseEntity.status(200).body(user);
+    @PostMapping("/login")
+    public ResponseEntity<UsuarioTokenDto> login(@RequestBody UsuarioLoginDto usuarioLoginDto) {
+        UsuarioTokenDto usuarioTokenDto = this.tenantService.autenticar(usuarioLoginDto);
+        return ResponseEntity.status(200).body(usuarioTokenDto);
     }
 
     //Delete user by id
