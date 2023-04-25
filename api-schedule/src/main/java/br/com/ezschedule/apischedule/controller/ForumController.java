@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("{uri.forum}")
+@RequestMapping("${uri.forum}")
 public class ForumController {
 
     @Autowired

@@ -12,7 +12,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("/condominium")
+@RequestMapping("${uri.condominium}")
 public class CondominumController {
 
     @Autowired

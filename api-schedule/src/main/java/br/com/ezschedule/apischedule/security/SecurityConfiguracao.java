@@ -49,7 +49,12 @@ public class SecurityConfiguracao {
                 .disable()
                 .authorizeRequests()
                 .antMatchers(
-                        "/users/login","/users", "/h2-console/**", "/users/gerar-csv-tenants"
+
+                        "/users/login","/users", "/h2-console/**", "/users/gerar-csv-tenants",
+                        ,"/error","/error/**",
+                        "/condominium","condominium/**",
+                        "/swagger-ui","/swagger-ui/**",
+                        "/v2/**","/webjar/**","/swagger-resources/**"
                 ).permitAll()
                 .antMatchers().hasAnyRole()
                 .anyRequest().authenticated()
