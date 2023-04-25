@@ -19,9 +19,13 @@ public class CsvTenant {
         Boolean deuRuim = false;
         Path diretorioBase;
 
-        nomeArquivo += ".txt";
+        nomeArquivo += ".csv";
 
-        diretorioBase = Path.of(System.getProperty("user.dir") + "/arquivos");
+        if(System.getProperty("os.name").contains("Windowns")){
+            diretorioBase = Path.of(System.getProperty("java.io.tmpdir") + "/arquivos");
+        } else {
+            diretorioBase = Path.of(System.getProperty("user.dir") + "/arquivos");
+        }
 
         if(!diretorioBase.toFile().exists()){
             diretorioBase.toFile().mkdir();
@@ -67,9 +71,13 @@ public class CsvTenant {
 
     public static ResponseEntity<byte[]> buscarArquivo(String nomeArquivo){
 
-        nomeArquivo +=".txt";
+        nomeArquivo +=".csv";
 
         File arquivoBuscado = Path.of(System.getProperty("user.dir") + "/arquivos/" + nomeArquivo).toFile();
+
+        if(System.getProperty("os.name").contains("Windowns")){
+            arquivoBuscado = Path.of(System.getProperty("java.io.tmpdir") + "/arquivos/" + nomeArquivo).toFile();
+        }
 
         if(!arquivoBuscado.exists()){
             return ResponseEntity.status(404).build();
