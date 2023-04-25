@@ -49,7 +49,9 @@ public class SecurityConfiguracao {
                 .disable()
                 .authorizeRequests()
                 .antMatchers(
-                        "/users/login","/users", "/h2-console/**"
+                        "/users/login","/users",
+                        "/h2-console/**","/error","/error/**",
+                        "/condominium","condominium/**"
                 ).permitAll()
                 .antMatchers().hasAnyRole()
                 .anyRequest().authenticated()
