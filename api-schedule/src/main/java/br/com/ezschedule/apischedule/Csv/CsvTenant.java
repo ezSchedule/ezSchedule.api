@@ -21,7 +21,7 @@ public class CsvTenant {
 
         nomeArquivo += ".csv";
 
-        if(System.getProperty("os.name").contains("Windowns")){
+        if(System.getProperty("os.name").contains("Windows")){
             diretorioBase = Path.of(System.getProperty("java.io.tmpdir") + "/arquivos");
         } else {
             diretorioBase = Path.of(System.getProperty("user.dir") + "/arquivos");
@@ -75,7 +75,7 @@ public class CsvTenant {
 
         File arquivoBuscado = Path.of(System.getProperty("user.dir") + "/arquivos/" + nomeArquivo).toFile();
 
-        if(System.getProperty("os.name").contains("Windowns")){
+        if(System.getProperty("os.name").contains("Windows")){
             arquivoBuscado = Path.of(System.getProperty("java.io.tmpdir") + "/arquivos/" + nomeArquivo).toFile();
         }
 
