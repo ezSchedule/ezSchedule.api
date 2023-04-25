@@ -1,32 +1,30 @@
 package br.com.ezschedule.apischedule.model.DtoClasses;
 
-import br.com.ezschedule.apischedule.model.Tenant;
-
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 public class ServiceDTO {
 
     @NotBlank
-    private String nomeServico;
+    private String serviceName;
 
     @NotNull
     private TenantResponse tenant;
 
-    public ServiceDTO(String nomeServico, TenantResponse tenant) {
-        this.nomeServico = nomeServico;
+    public ServiceDTO(String serviceName, TenantResponse tenant) {
+        this.serviceName = serviceName;
         this.tenant = tenant;
     }
 
     public ServiceDTO() {
     }
 
-    public String getNomeServico() {
-        return nomeServico;
+    public String getServiceName() {
+        return serviceName;
     }
 
-    public void setNomeServico(String nomeServico) {
-        this.nomeServico = nomeServico;
+    public void setServiceName(String serviceName) {
+        this.serviceName = serviceName;
     }
 
     public TenantResponse getTenant() {

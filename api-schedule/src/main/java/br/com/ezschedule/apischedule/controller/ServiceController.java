@@ -17,6 +17,7 @@ import java.util.*;
 public class ServiceController {
 
      ObjectList<Service> servicevector = new ObjectList<Service>(100);
+    ObjectList<Service> orderedVector = new ObjectList<>(100);
 
     @GetMapping
     public ResponseEntity<List<ServiceDTO>> showList() {
@@ -39,8 +40,6 @@ public class ServiceController {
 
     @GetMapping("/nome")
     public ResponseEntity<List<ServiceDTO>> showListOrderedByName() {
-      ObjectList<Service> orderedVector = new ObjectList<>(servicevector.getSize() +1);
-
       for(int i =0;i< servicevector.getSize();i++){
           orderedVector.addObject(servicevector.getByIndex(i));
       }
@@ -58,6 +57,29 @@ public class ServiceController {
             }
         }
         return ResponseEntity.status(200).body(JsonResponseAdapter.serviceArrayDTO(orderedVector.getSize(), orderedVector));
+    }
+
+    @GetMapping("/binarySearch")
+    public ResponseEntity<ServiceDTO> binarySearch(@RequestBody @Valid Service serviceOfChoice){
+        int meio;
+        int inicio = 0;
+        int fim = orderedVector.getSize();
+
+        do{
+            meio = (inicio + fim) /2;
+            Service currentService = orderedVector.getByIndex(meio);
+            if(serviceOfChoice.getServiceName().equals(currentService.getServiceName())){
+                return ResponseEntity.status(200).body(JsonResponseAdapter.serviceDTO(orderedVector.getByIndex(meio)));
+            }
+            else if(serviceOfChoice.getServiceName().compareTo(orderedVector.getByIndex(meio).getServiceName()) < 0) {
+                fim =meio -1;
+            }
+            else{
+                inicio = meio +1;
+            }
+        }while(inicio <= fim);
+
+        return ResponseEntity.status(404).build();
     }
 
 

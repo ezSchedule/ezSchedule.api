@@ -79,6 +79,13 @@ public interface JsonResponseAdapter {
         return t.stream().map(JsonResponseAdapter::tentantDTO).toList();
     }
 
+    public static ServiceDTO serviceDTO(Service s){
+        return  new ServiceDTO(
+                s.getServiceName(),
+                JsonResponseAdapter.tentantDTO(s.getTenant())
+        );
+    }
+
     public static List<ServiceDTO> serviceArrayDTO(int size , ObjectList<Service> serviceVector){
         List<ServiceDTO> serviceDTOList = new ArrayList<>();
         for(int i =0; i < size;i++){
