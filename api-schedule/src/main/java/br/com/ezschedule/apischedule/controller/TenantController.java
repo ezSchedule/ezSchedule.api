@@ -1,11 +1,13 @@
 package br.com.ezschedule.apischedule.controller;
 
+import br.com.ezschedule.apischedule.Csv.CsvTenant;
+import br.com.ezschedule.apischedule.Csv.ListaObj;
 import br.com.ezschedule.apischedule.adapter.JsonResponseAdapter;
 import br.com.ezschedule.apischedule.email.SendMail;
 import br.com.ezschedule.apischedule.messages.EmailMessages;
+import br.com.ezschedule.apischedule.model.Administrator;
 import br.com.ezschedule.apischedule.model.DtoClasses.TenantResponse;
 import br.com.ezschedule.apischedule.model.Tenant;
-import br.com.ezschedule.apischedule.model.DtoClasses.JsonResponse;
 import br.com.ezschedule.apischedule.model.DtoClasses.UpdatePasswordForm;
 import br.com.ezschedule.apischedule.repository.TenantRepository;
 import br.com.ezschedule.apischedule.service.TenantService;
@@ -121,6 +123,20 @@ public class TenantController {
 
         return ResponseEntity.status(404).build();
 
+    }
+
+    @GetMapping("/gerar-csv-tenants")
+    public ResponseEntity<byte[]> gerarCsv(){
+        List<Tenant> tenants = tenantRepository.findAll();
+            if(!tenants.isEmpty()){
+                ListaObj<Tenant> tenantsReturn = new ListaObj<Tenant>(tenants.size());
+                for(Tenant tenant : tenants){
+                    tenantsReturn.adiciona(tenant);
+                }
+                CsvTenant.gravaArquivoCsvTenant(tenantsReturn, "Tenants");
+                return CsvTenant.buscarArquivo("Tenants");
+            }
+            return ResponseEntity.status(404).build();
     }
 
 }

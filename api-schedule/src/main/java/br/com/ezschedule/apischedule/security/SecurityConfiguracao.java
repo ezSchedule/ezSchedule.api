@@ -49,8 +49,9 @@ public class SecurityConfiguracao {
                 .disable()
                 .authorizeRequests()
                 .antMatchers(
-                        "/users/login","/users",
-                        "/h2-console/**","/error","/error/**",
+
+                        "/users/login","/users", "/h2-console/**", "/users/gerar-csv-tenants",
+                        ,"/error","/error/**",
                         "/condominium","condominium/**",
                         "/swagger-ui","/swagger-ui/**",
                         "/v2/**","/webjar/**","/swagger-resources/**"
