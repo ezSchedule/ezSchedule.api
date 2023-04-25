@@ -51,7 +51,9 @@ public class SecurityConfiguracao {
                 .antMatchers(
                         "/users/login","/users",
                         "/h2-console/**","/error","/error/**",
-                        "/condominium","condominium/**"
+                        "/condominium","condominium/**",
+                        "/swagger-ui","/swagger-ui/**",
+                        "/v2/**","/webjar/**","/swagger-resources/**"
                 ).permitAll()
                 .antMatchers().hasAnyRole()
                 .anyRequest().authenticated()
