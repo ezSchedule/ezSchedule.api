@@ -1,7 +1,5 @@
 package br.com.ezschedule.apischedule.controller;
 
-import br.com.ezschedule.apischedule.CSV.CsvAdministrator;
-import br.com.ezschedule.apischedule.CSV.ListaObj;
 import br.com.ezschedule.apischedule.adapter.JsonResponseAdapter;
 import br.com.ezschedule.apischedule.model.Administrator;
 import br.com.ezschedule.apischedule.model.DtoClasses.JsonResponse;
@@ -83,33 +81,4 @@ public class AdministratorController {
             return ResponseEntity.status(200).build();
         }
     }
-
-    @GetMapping("/gerar-csv-administrator")
-    public ResponseEntity<byte[]> gerarCsv(){
-
-        List<Administrator> administrators = repositoryAdministrator.findAll();
-
-        if(!administrators.isEmpty()){
-
-            ListaObj<Administrator> adms = new ListaObj<Administrator>(administrators.size());
-            for(Administrator administrator : administrators){
-                adms.adiciona(administrator);
-            }
-
-            CsvAdministrator.gravaArquivoCsvAdministrador(adms, "administrator");
-            return CsvAdministrator.buscarArquivo("administrator");
-        }
-
-        return ResponseEntity.status(404).build();
-    }
-
-//    public List<JsonResponse> convertJsonResponse(List) {
-//        for (int i = 0; i < users.size();i++) {
-//            usersNoPassword.add(JsonResponseAdapter.Dto(users.get(i)));
-//        }
-//        return
-//    }
-
-
-
 }

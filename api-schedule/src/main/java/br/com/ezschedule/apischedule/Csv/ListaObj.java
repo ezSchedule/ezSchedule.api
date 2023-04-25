@@ -1,4 +1,4 @@
-package br.com.ezschedule.apischedule.CSV;
+package br.com.ezschedule.apischedule.Csv;
 public class ListaObj <T> {
 
         private T[] vetor;
