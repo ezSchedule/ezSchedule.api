@@ -13,7 +13,12 @@ import br.com.ezschedule.apischedule.repository.TenantRepository;
 import br.com.ezschedule.apischedule.service.TenantService;
 import br.com.ezschedule.apischedule.service.autenticacao.dto.UsuarioLoginDto;
 import br.com.ezschedule.apischedule.service.autenticacao.dto.UsuarioTokenDto;
+import io.swagger.annotations.Api;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,6 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+@Api(value = "Condômino", produces = MediaType.APPLICATION_JSON_VALUE, tags = {"condomino"}, description = "requisições relacionadas a condônimo")
 @RestController
 @RequestMapping("/users")
 public class TenantController {
@@ -36,6 +42,9 @@ public class TenantController {
     private String token = "";
 
     //Show all user's
+    @ApiResponse(responseCode = "204", description =
+            "Não há usuários cadastrados.", content = @Content(schema = @Schema(hidden = true)))
+    @ApiResponse(responseCode = "200", description = "usuários encontrados.")
     @GetMapping
     public ResponseEntity<List<TenantResponse>> showAllUsers() {
         List<Tenant> users = this.tenantRepository.findAll();
@@ -48,6 +57,8 @@ public class TenantController {
     }
 
     //Register new user
+    @ApiResponse(responseCode = "201", description =
+            "Usuário cadastrado", content = @Content(schema = @Schema(hidden = true)))
     @PostMapping
     public ResponseEntity<Void> register(@RequestBody Tenant newUser) {
         this.tenantService.criar(newUser);
@@ -55,6 +66,9 @@ public class TenantController {
     }
 
    //login for user
+   @ApiResponse(responseCode = "404", description =
+           "senha ou email incorretos", content = @Content(schema = @Schema(hidden = true)))
+   @ApiResponse(responseCode = "200", description = "usuário logado.")
     @PostMapping("/login")
     public ResponseEntity<UsuarioTokenDto> login(@RequestBody UsuarioLoginDto usuarioLoginDto) {
         UsuarioTokenDto usuarioTokenDto = this.tenantService.autenticar(usuarioLoginDto);
@@ -62,6 +76,9 @@ public class TenantController {
     }
 
     //Delete user by id
+    @ApiResponse(responseCode = "404", description =
+            "Usuário não encontrado.", content = @Content(schema = @Schema(hidden = true)))
+    @ApiResponse(responseCode = "200", description = "usuário deletado com sucesso.")
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> removeById(@PathVariable Integer id) {
             if (tenantRepository.existsById(id)){
@@ -72,6 +89,8 @@ public class TenantController {
     }
 
     //logout
+    @ApiResponse(responseCode = "200", description =
+            "Logout realizado", content = @Content(schema = @Schema(hidden = true)))
     @PostMapping("/logout/{email}")
     public ResponseEntity<Void> logout(@PathVariable String email) {
         Object user = this.tenantRepository.logoutUser(email);
@@ -82,6 +101,9 @@ public class TenantController {
         }
     }
 
+    @ApiResponse(responseCode = "404", description =
+            "senhas iguais", content = @Content(schema = @Schema(hidden = true)))
+    @ApiResponse(responseCode = "200", description = "senha atualizada")
     @PutMapping
     public ResponseEntity<Object> updatePassword(@RequestBody UpdatePasswordForm updatePasswordForm) {
         if (updatePasswordForm.getPassword().equals(updatePasswordForm.getNewPassword())){
