@@ -5,6 +5,10 @@ import br.com.ezschedule.apischedule.model.Administrator;
 import br.com.ezschedule.apischedule.model.DtoClasses.JsonResponse;
 import br.com.ezschedule.apischedule.model.DtoClasses.UpdatePasswordForm;
 import br.com.ezschedule.apischedule.repository.AdministratorRepository;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
+@Tag(name = "Síndico", description = "requisições relacionadas a síndicos")
 @RestController
 @RequestMapping("/usersAdmin")
 public class AdministratorController {
@@ -20,6 +25,9 @@ public class AdministratorController {
     private AdministratorRepository repositoryAdministrator;
 
     //Show all user's
+    @ApiResponse(responseCode = "204", description =
+            "Não há diretores(as) cadastrados.", content = @Content(schema = @Schema(hidden = true)))
+    @ApiResponse(responseCode = "200", description = "diretores(as) encontrados.")
     @GetMapping
     public ResponseEntity<List<JsonResponse>> showAllUsers() {
         List<Administrator> users = this.repositoryAdministrator.findAll();
