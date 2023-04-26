@@ -1,14 +1,22 @@
 package br.com.ezschedule.apischedule.controller;
 
 import br.com.ezschedule.apischedule.adapter.JsonResponseAdapter;
+import br.com.ezschedule.apischedule.model.DtoClasses.InfoDate;
+import br.com.ezschedule.apischedule.model.DtoClasses.ScheduleDTO;
 import br.com.ezschedule.apischedule.model.DtoClasses.UpdateScheduleForm;
 import br.com.ezschedule.apischedule.model.Schedule;
 import br.com.ezschedule.apischedule.repository.ScheduleRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.time.LocalDate;
+import java.time.Month;
+import java.time.Year;
+import java.time.format.TextStyle;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 
 @RestController
@@ -17,6 +25,36 @@ public class ScheduleController {
 
     ScheduleRepository scheduleRepository;
 
+    @Autowired
+    ScheduleDTO scheduleDTO;
+
+    @GetMapping
+    public ResponseEntity<Object> findScheduleByMonth(LocalDate date){
+        List<Schedule> listSchedule = scheduleRepository.findAll();
+        if(listSchedule.isEmpty()){
+            return ResponseEntity.status(204).build();
+        }
+
+        Month monthInt = date.getMonth();
+        Year yearInt = Year.of(date.getYear());
+
+        //Transforma pra string
+        String month = monthInt.toString();
+        String year = yearInt.toString();
+
+        //Busca o mês correspondente com o número
+        Locale locale = Locale.forLanguageTag("pt-br");
+        String monthString = monthInt.getDisplayName(TextStyle.FULL, locale);
+
+
+        //Pesquisar totais
+        Integer totalEventsByMonth = scheduleRepository.countEventsByMonth(month, year);
+        Integer totalGuestsByMonth = scheduleRepository.totalGuestsByMonth(month, year);
+
+        InfoDate infoDate = new InfoDate(monthString, totalGuestsByMonth, totalEventsByMonth);
+
+        return ResponseEntity.status(200).body(infoDate);
+    }
 
     @GetMapping
     public ResponseEntity<List<Schedule>> showAllSchedules(){
@@ -68,4 +106,7 @@ public class ScheduleController {
         }
         return ResponseEntity.status(404).build();
     }
+
+
+
 }

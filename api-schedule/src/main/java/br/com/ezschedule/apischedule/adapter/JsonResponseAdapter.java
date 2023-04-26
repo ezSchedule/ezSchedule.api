@@ -220,6 +220,20 @@ public interface JsonResponseAdapter {
         );
     }
 
+    public static ScheduleDTO scheduleDTO( Schedule s){
+        return new ScheduleDTO(s.getId(),
+                s.getNameEvent(),
+                s.getTypeEvent(),
+                s.getDateEvent(),
+                s.getTotalNumberGuests(),
+                JsonResponseAdapter.listSaloonDTO(s.getSaloon()),
+                JsonResponseAdapter.tentantDTO(s.getTenant()));
+    }
+
+    public static List<ScheduleDTO> listScheduleDTO(List<Schedule> listSchedule){
+
+        return listSchedule.stream().map(JsonResponseAdapter::scheduleDTO).toList();
+    }
     public static List<ReportCondoDTO> listReportCondoDTO(List<Report> r){
         return r.stream().map(JsonResponseAdapter::reportCondoDTO).toList();
     }
