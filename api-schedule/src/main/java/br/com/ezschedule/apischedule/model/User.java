@@ -1,5 +1,6 @@
 package br.com.ezschedule.apischedule.model;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import org.hibernate.validator.constraints.br.CPF;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -12,14 +13,11 @@ import javax.validation.constraints.Size;
 @DiscriminatorColumn(name = "type", discriminatorType = DiscriminatorType.INTEGER)
 @Table(name = "Tenant")
 public abstract class User {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idUser;
-
     @Email
     private String email;
-
     //    @CPF
     private String cpf;
 
@@ -53,7 +51,7 @@ public abstract class User {
         this.residentsBlock = residentsBlock;
         this.apartmentNumber = apartmentNumber;
         this.phoneNumber = phoneNumber;
-        this.isAuthenticated = false;
+        this.isAuthenticated = true;
     }
 
     public User() {
