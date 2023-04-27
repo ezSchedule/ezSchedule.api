@@ -148,7 +148,7 @@ public class TenantController {
     }
 
     @GetMapping("/gerar-csv-tenants")
-    public ResponseEntity<byte[]> gerarCsv(){
+    public ResponseEntity<byte[]> generatorCsv(){
         List<Tenant> tenants = tenantRepository.findAll();
             if(!tenants.isEmpty()){
                 ListaObj<Tenant> tenantsReturn = new ListaObj<Tenant>(tenants.size());
