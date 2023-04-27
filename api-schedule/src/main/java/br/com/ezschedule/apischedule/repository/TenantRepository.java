@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,6 +37,8 @@ public interface TenantRepository extends JpaRepository<Tenant, Integer> {
     //Existe pelo email
     Boolean existsByEmail(String email);
 
+
+    Tenant findTop1Bysubscribed(boolean b);
 
     Optional<Tenant> findByEmail(String email);
 }
