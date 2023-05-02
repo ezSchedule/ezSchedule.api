@@ -38,7 +38,7 @@ public interface TenantRepository extends JpaRepository<Tenant, Integer> {
     Boolean existsByEmail(String email);
 
 
-    Tenant findTop1Bysubscribed(boolean b);
+//    Tenant findTop1Bysubscribed(boolean b);
 
     Optional<Tenant> findByEmail(String email);
 }

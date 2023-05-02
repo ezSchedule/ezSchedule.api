@@ -1,5 +1,6 @@
 package br.com.ezschedule.apischedule.controller;
 
+import aj.org.objectweb.asm.Opcodes;
 import br.com.ezschedule.apischedule.Csv.CsvTenant;
 import br.com.ezschedule.apischedule.Csv.ListaObj;
 import br.com.ezschedule.apischedule.adapter.JsonResponseAdapter;
@@ -7,6 +8,7 @@ import br.com.ezschedule.apischedule.email.SendMail;
 import br.com.ezschedule.apischedule.messages.EmailMessages;
 import br.com.ezschedule.apischedule.model.Administrator;
 import br.com.ezschedule.apischedule.model.DtoClasses.TenantResponse;
+import br.com.ezschedule.apischedule.model.DtoClasses.UpdateTenantDto;
 import br.com.ezschedule.apischedule.model.Tenant;
 import br.com.ezschedule.apischedule.model.DtoClasses.UpdatePasswordForm;
 import br.com.ezschedule.apischedule.repository.TenantRepository;
@@ -24,6 +26,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Api(value = "Condômino", produces = MediaType.APPLICATION_JSON_VALUE, tags = {"condomino"}, description = "requisições relacionadas a condônimo")
@@ -48,9 +51,9 @@ public class TenantController {
     @GetMapping
     public ResponseEntity<List<TenantResponse>> showAllUsers() {
         List<Tenant> users = this.tenantRepository.findAll();
-        if (users.isEmpty()){
+        if (users.isEmpty()) {
             return ResponseEntity.status(204).build();
-        }else {
+        } else {
             return ResponseEntity.status(200).body(JsonResponseAdapter.listTenantDTO(users));
         }
 
@@ -65,10 +68,10 @@ public class TenantController {
         return ResponseEntity.status(201).build();
     }
 
-   //login for user
-   @ApiResponse(responseCode = "404", description =
-           "senha ou email incorretos", content = @Content(schema = @Schema(hidden = true)))
-   @ApiResponse(responseCode = "200", description = "usuário logado.")
+    //login for user
+    @ApiResponse(responseCode = "404", description =
+            "senha ou email incorretos", content = @Content(schema = @Schema(hidden = true)))
+    @ApiResponse(responseCode = "200", description = "usuário logado.")
     @PostMapping("/login")
     public ResponseEntity<UsuarioTokenDto> login(@RequestBody UsuarioLoginDto usuarioLoginDto) {
         UsuarioTokenDto usuarioTokenDto = this.tenantService.autenticar(usuarioLoginDto);
@@ -81,10 +84,10 @@ public class TenantController {
     @ApiResponse(responseCode = "200", description = "usuário deletado com sucesso.")
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> removeById(@PathVariable Integer id) {
-            if (tenantRepository.existsById(id)){
-                this.tenantRepository.deleteById(id);
-                return ResponseEntity.status(204).build();
-            }
+        if (tenantRepository.existsById(id)) {
+            this.tenantRepository.deleteById(id);
+            return ResponseEntity.status(204).build();
+        }
         return ResponseEntity.status(404).build();
     }
 
@@ -106,20 +109,20 @@ public class TenantController {
     @ApiResponse(responseCode = "200", description = "senha atualizada")
     @PutMapping
     public ResponseEntity<Object> updatePassword(@RequestBody UpdatePasswordForm updatePasswordForm) {
-        if (updatePasswordForm.getPassword().equals(updatePasswordForm.getNewPassword())){
+        if (updatePasswordForm.getPassword().equals(updatePasswordForm.getNewPassword())) {
             return ResponseEntity.status(404).build();
-        }else {
+        } else {
             Object user = this.tenantRepository.updatePasswordUser(updatePasswordForm.getEmail(), updatePasswordForm.getPassword(), updatePasswordForm.getNewPassword());
             return ResponseEntity.status(200).build();
         }
     }
 
     @GetMapping("/recovery-password/{email}")
-    public ResponseEntity<Void> recoveryPassword(@PathVariable String email){
+    public ResponseEntity<Void> recoveryPassword(@PathVariable String email) {
 
         boolean exists = tenantRepository.existsByEmail(email);
 
-        if(exists) {
+        if (exists) {
             Tenant tenant = null;
             for (int i = 0; i < listUsers.size(); i++) {
                 if (email.equals(listUsers.get(i).getEmail())) {
@@ -137,8 +140,8 @@ public class TenantController {
     }
 
     @GetMapping("/input-token/{tokenInput}")
-    public ResponseEntity<Void> insertingToken(@PathVariable String tokenInput){
-        if(tokenInput.equals(this.token)){
+    public ResponseEntity<Void> insertingToken(@PathVariable String tokenInput) {
+        if (tokenInput.equals(this.token)) {
             token = "";
             return ResponseEntity.status(200).build();
         }
@@ -147,18 +150,43 @@ public class TenantController {
 
     }
 
+    @PutMapping("/update-tenant")
+    public ResponseEntity<TenantResponse> updateTenantInformation(@RequestParam int id, @RequestBody UpdateTenantDto newTenant) {
+        Optional<Tenant> oldTenant = tenantRepository.findById(id);
+        if (oldTenant.isPresent()) {
+            Tenant t = oldTenant.get();
+            Tenant updatedTenant = new Tenant(
+                    id,
+                    newTenant.getEmail(),
+                    newTenant.getCpf(),
+                    t.getPassword(),
+                    newTenant.getName(),
+                    newTenant.getResidentsBlock(),
+                    newTenant.getApartmentNumber(),
+                    newTenant.getPhoneNumber(),
+                    t.isAdmin(),
+                    t.getReportList(),
+                    t.getScheduleList(),
+                    t.getCondominium()
+            );
+            Tenant tenant = tenantRepository.save(updatedTenant);
+            return ResponseEntity.status(200).body(JsonResponseAdapter.tentantDTO(tenant));
+        }
+        return ResponseEntity.status(204).build();
+    }
+
     @GetMapping("/gerar-csv-tenants")
-    public ResponseEntity<byte[]> generatorCsv(){
+    public ResponseEntity<byte[]> generatorCsv() {
         List<Tenant> tenants = tenantRepository.findAll();
-            if(!tenants.isEmpty()){
-                ListaObj<Tenant> tenantsReturn = new ListaObj<Tenant>(tenants.size());
-                for(Tenant tenant : tenants){
-                    tenantsReturn.adiciona(tenant);
-                }
-                CsvTenant.gravaArquivoCsvTenant(tenantsReturn, "Tenants");
-                return CsvTenant.buscarArquivo("Tenants");
+        if (!tenants.isEmpty()) {
+            ListaObj<Tenant> tenantsReturn = new ListaObj<Tenant>(tenants.size());
+            for (Tenant tenant : tenants) {
+                tenantsReturn.adiciona(tenant);
             }
-            return ResponseEntity.status(404).build();
+            CsvTenant.gravaArquivoCsvTenant(tenantsReturn, "Tenants");
+            return CsvTenant.buscarArquivo("Tenants");
+        }
+        return ResponseEntity.status(404).build();
     }
 
 }
