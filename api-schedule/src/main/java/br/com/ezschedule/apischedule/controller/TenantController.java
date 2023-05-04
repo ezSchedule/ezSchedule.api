@@ -1,12 +1,10 @@
 package br.com.ezschedule.apischedule.controller;
 
-import aj.org.objectweb.asm.Opcodes;
-import br.com.ezschedule.apischedule.Csv.CsvTenant;
-import br.com.ezschedule.apischedule.Csv.ListaObj;
+import br.com.ezschedule.apischedule.csv.CsvUser;
+import br.com.ezschedule.apischedule.csv.ListaObj;
 import br.com.ezschedule.apischedule.adapter.JsonResponseAdapter;
 import br.com.ezschedule.apischedule.email.SendMail;
 import br.com.ezschedule.apischedule.messages.EmailMessages;
-import br.com.ezschedule.apischedule.model.Administrator;
 import br.com.ezschedule.apischedule.model.DtoClasses.TenantResponse;
 import br.com.ezschedule.apischedule.model.DtoClasses.UpdateTenantDto;
 import br.com.ezschedule.apischedule.model.Tenant;
@@ -64,6 +62,14 @@ public class TenantController {
             "Usuário cadastrado", content = @Content(schema = @Schema(hidden = true)))
     @PostMapping
     public ResponseEntity<Void> register(@RequestBody Tenant newUser) {
+
+        Optional<Tenant> $validation = tenantRepository.findByEmail(newUser.getEmail());
+
+        if(!$validation.isEmpty())
+        {
+            return ResponseEntity.status(400).build();
+        }
+
         this.tenantService.criar(newUser);
         return ResponseEntity.status(201).build();
     }
@@ -175,16 +181,18 @@ public class TenantController {
         return ResponseEntity.status(204).build();
     }
 
-    @GetMapping("/gerar-csv-tenants")
+    @GetMapping("/generate-csv-tenants")
     public ResponseEntity<byte[]> generatorCsv() {
+
         List<Tenant> tenants = tenantRepository.findAll();
+
         if (!tenants.isEmpty()) {
             ListaObj<Tenant> tenantsReturn = new ListaObj<Tenant>(tenants.size());
             for (Tenant tenant : tenants) {
                 tenantsReturn.adiciona(tenant);
             }
-            CsvTenant.gravaArquivoCsvTenant(tenantsReturn, "Tenants");
-            return CsvTenant.buscarArquivo("Tenants");
+            CsvUser.writeUserFile(tenantsReturn, "Tenants");
+            return CsvUser.fetchFile("Tenants");
         }
         return ResponseEntity.status(404).build();
     }

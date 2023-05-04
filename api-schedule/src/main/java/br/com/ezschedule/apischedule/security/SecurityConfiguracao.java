@@ -50,7 +50,7 @@ public class SecurityConfiguracao {
                 .authorizeRequests()
                 .antMatchers(
 
-                        "/users/login","/users", "/h2-console/**", "/users/gerar-csv-tenants",
+                        "/users/login","/users", "/h2-console/**", "/users/generate-csv-tenants",
                         "/condominium","condominium/**","error/**", "error", "/usersAdmin/login", "/usersAdmin",
                         "/swagger-ui","/swagger-ui/**",
                         "/v2/**","/webjar/**","/swagger-resources/**"
