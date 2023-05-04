@@ -5,10 +5,10 @@ import br.com.ezschedule.apischedule.Csv.ListaObj;
 import br.com.ezschedule.apischedule.adapter.JsonResponseAdapter;
 import br.com.ezschedule.apischedule.email.SendMail;
 import br.com.ezschedule.apischedule.messages.EmailMessages;
-import br.com.ezschedule.apischedule.model.Administrator;
 import br.com.ezschedule.apischedule.model.DtoClasses.TenantResponse;
 import br.com.ezschedule.apischedule.model.Tenant;
 import br.com.ezschedule.apischedule.model.DtoClasses.UpdatePasswordForm;
+import br.com.ezschedule.apischedule.model.User;
 import br.com.ezschedule.apischedule.repository.TenantRepository;
 import br.com.ezschedule.apischedule.service.TenantService;
 import br.com.ezschedule.apischedule.service.autenticacao.dto.UsuarioLoginDto;
@@ -93,7 +93,7 @@ public class TenantController {
             "Logout realizado", content = @Content(schema = @Schema(hidden = true)))
     @PostMapping("/logout/{email}")
     public ResponseEntity<Void> logout(@PathVariable String email) {
-        Object user = this.tenantRepository.logoutUser(email);
+        Tenant user = this.tenantRepository.logoutUser(email);
         if (user.equals(1)) {
             return ResponseEntity.status(200).build();
         } else {
@@ -105,11 +105,11 @@ public class TenantController {
             "senhas iguais", content = @Content(schema = @Schema(hidden = true)))
     @ApiResponse(responseCode = "200", description = "senha atualizada")
     @PutMapping
-    public ResponseEntity<Object> updatePassword(@RequestBody UpdatePasswordForm updatePasswordForm) {
+    public ResponseEntity<Void> updatePassword(@RequestBody UpdatePasswordForm updatePasswordForm) {
         if (updatePasswordForm.getPassword().equals(updatePasswordForm.getNewPassword())){
             return ResponseEntity.status(404).build();
         }else {
-            Object user = this.tenantRepository.updatePasswordUser(updatePasswordForm.getEmail(), updatePasswordForm.getPassword(), updatePasswordForm.getNewPassword());
+            this.tenantRepository.updatePasswordUser(updatePasswordForm.getEmail(), updatePasswordForm.getNewPassword());
             return ResponseEntity.status(200).build();
         }
     }
