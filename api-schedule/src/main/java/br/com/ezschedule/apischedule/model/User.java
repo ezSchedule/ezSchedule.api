@@ -54,6 +54,19 @@ public abstract class User {
         this.isAuthenticated = true;
     }
 
+    public User(int id, String email, String cpf, String password, String name, String residentsBlock, Integer apartmentNumber, String phoneNumber, Integer isAdmin) {
+        this.idUser = id;
+        this.email = email;
+        this.cpf = cpf;
+        this.password = password;
+        this.name = name;
+        this.residentsBlock = residentsBlock;
+        this.apartmentNumber = apartmentNumber;
+        this.phoneNumber = phoneNumber;
+        this.isAuthenticated = true;
+        this.isAdmin = isAdmin;
+    }
+
     public User() {
     }
 

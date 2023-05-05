@@ -19,6 +19,13 @@ public class Tenant extends User {
     @ManyToOne
     private Condominium condominium;
 
+    public Tenant(int id, String email, String cpf, String password, String name, String residentsBlock, Integer apartmentNumber, String phoneNumber, Integer isAdmin, List<Report> reportList, List<Schedule> scheduleList, Condominium condominium) {
+        super(id, email, cpf, password, name, residentsBlock, apartmentNumber, phoneNumber, isAdmin);
+        this.reportList = reportList;
+        this.scheduleList = scheduleList;
+        this.condominium = condominium;
+    }
+
     public Tenant(String email, String cpf, String password, String name, String residentsBlock, Integer apartmentNumber, String phoneNumber, List<Report> reportList, List<Schedule> scheduleList, Condominium condominium) {
         super(email, cpf, password, name, residentsBlock, apartmentNumber, phoneNumber);
         this.reportList = reportList;
