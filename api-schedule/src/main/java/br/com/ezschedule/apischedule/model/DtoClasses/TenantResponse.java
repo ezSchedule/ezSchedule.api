@@ -1,5 +1,7 @@
 package br.com.ezschedule.apischedule.model.DtoClasses;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
@@ -7,13 +9,30 @@ import javax.validation.constraints.Size;
 public class TenantResponse {
 
     private int id;
+
+
+    @Schema(description = "email do usuário", example = "teste@gmail.com")
     private String email;
+
+    @Schema(description = "cpf do usuário", example = "50719658012")
     private String cpf;
+
+    @Schema(description = "nome completo do usuário", example = "Teste Testando da Silva")
     private String name;
+
+    @Schema(description = "bloco da residência", example = "bloco e")
     private String residentsBlock;
+
+    @Schema(description = "número do apartemento", example = "14")
     private Integer apartmentNumber;
+
+    @Schema(description = "número para contato", example = "11930733686")
     private String phoneNumber;
+
+    @Schema(description = "usuário está logado", example = "false")
     private boolean isAuthenticated;
+
+    @Schema(description = "usuário é um sindico", example = "1")
     private Integer isAdmin;
 
     public TenantResponse(int id,String email, String cpf, String name, String residentsBlock, Integer apartmentNumber, String phoneNumber, boolean isAuthenticated, Integer isAdmin) {
