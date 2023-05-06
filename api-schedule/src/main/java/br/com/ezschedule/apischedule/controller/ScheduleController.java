@@ -1,13 +1,15 @@
 package br.com.ezschedule.apischedule.controller;
 
 import br.com.ezschedule.apischedule.adapter.JsonResponseAdapter;
-import br.com.ezschedule.apischedule.model.DtoClasses.UpdateScheduleForm;
+import br.com.ezschedule.apischedule.model.DtoClasses.ScheduleDTO;
+import br.com.ezschedule.apischedule.model.DtoClasses.UpdateResponse.UpdateScheduleForm;
 import br.com.ezschedule.apischedule.model.Schedule;
 import br.com.ezschedule.apischedule.repository.ScheduleRepository;
 import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,38 +23,39 @@ import java.util.Optional;
 @RequestMapping("${uri.schedule}")
 public class ScheduleController {
 
+    @Autowired
     ScheduleRepository scheduleRepository;
 
     @ApiResponse(responseCode = "204", description =
             "Não há agendamentos cadastrados.", content = @Content(schema = @Schema(hidden = true)))
     @ApiResponse(responseCode = "200", description = "Agendamentos encontrados.")
     @GetMapping
-    public ResponseEntity<List<Schedule>> showAllSchedules(){
+    public ResponseEntity<List<ScheduleDTO>> showAllSchedules(){
         List<Schedule> allSchedules = scheduleRepository.findAll();
         if(allSchedules.isEmpty()){
             return ResponseEntity.status(204).build();
         }
-        return ResponseEntity.status(200).body(allSchedules);
+        return ResponseEntity.status(200).body(JsonResponseAdapter.listScheduleDTO(allSchedules));
     }
 
     @ApiResponse(responseCode = "404", description =
             "Não foi encontrado agendamento.", content = @Content(schema = @Schema(hidden = true)))
     @ApiResponse(responseCode = "200", description = "agendamento encontrado.")
     @GetMapping("/{id}")
-    public ResponseEntity<Schedule> showAScheduleById(@PathVariable int id){
+    public ResponseEntity<ScheduleDTO> showAScheduleById(@PathVariable int id){
         Optional<Schedule> schedule = scheduleRepository.findById(id);
         if(schedule.isEmpty()){
             return ResponseEntity.status(404).build();
         }
-        return ResponseEntity.status(200).body(schedule.get());
+        return ResponseEntity.status(200).body(JsonResponseAdapter.scheduleDTO(schedule.get()));
     }
 
     @ApiResponse(responseCode = "201", description =
             "Agendamento cadastrado", content = @Content(schema = @Schema(hidden = true)))
     @PostMapping
-    public ResponseEntity<Schedule> newSchedule(@RequestBody @Valid Schedule s){
+    public ResponseEntity<ScheduleDTO> newSchedule(@RequestBody @Valid Schedule s){
         scheduleRepository.save(s);
-        return ResponseEntity.status(200).body(s);
+        return ResponseEntity.status(200).body(JsonResponseAdapter.scheduleDTO(s));
     }
 
     @ApiResponse(responseCode = "404", description =
@@ -63,7 +66,7 @@ public class ScheduleController {
         Optional<Schedule> oldSchedule = scheduleRepository.findById(id);
 
         if(oldSchedule.isPresent()){
-            Schedule updatedSchedule = JsonResponseAdapter.scheduleDTO(
+            Schedule updatedSchedule = JsonResponseAdapter.updateScheduleDTO(
                     newSchedule,
                     id,
                     oldSchedule.get().getSaloon(),

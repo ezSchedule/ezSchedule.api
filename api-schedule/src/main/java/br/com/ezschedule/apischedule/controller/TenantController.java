@@ -1,16 +1,14 @@
 package br.com.ezschedule.apischedule.controller;
 
-import aj.org.objectweb.asm.Opcodes;
 import br.com.ezschedule.apischedule.Csv.CsvTenant;
 import br.com.ezschedule.apischedule.Csv.ListaObj;
 import br.com.ezschedule.apischedule.adapter.JsonResponseAdapter;
 import br.com.ezschedule.apischedule.email.SendMail;
 import br.com.ezschedule.apischedule.messages.EmailMessages;
-import br.com.ezschedule.apischedule.model.Administrator;
-import br.com.ezschedule.apischedule.model.DtoClasses.TenantResponse;
-import br.com.ezschedule.apischedule.model.DtoClasses.UpdateTenantDto;
+import br.com.ezschedule.apischedule.model.DtoClasses.TenantDTO;
+import br.com.ezschedule.apischedule.model.DtoClasses.UpdateResponse.UpdateTenantDto;
 import br.com.ezschedule.apischedule.model.Tenant;
-import br.com.ezschedule.apischedule.model.DtoClasses.UpdatePasswordForm;
+import br.com.ezschedule.apischedule.model.DtoClasses.UpdateResponse.UpdatePasswordForm;
 import br.com.ezschedule.apischedule.repository.TenantRepository;
 import br.com.ezschedule.apischedule.service.TenantService;
 import br.com.ezschedule.apischedule.service.autenticacao.dto.UsuarioLoginDto;
@@ -49,7 +47,7 @@ public class TenantController {
             "Não há usuários cadastrados.", content = @Content(schema = @Schema(hidden = true)))
     @ApiResponse(responseCode = "200", description = "usuários encontrados.")
     @GetMapping
-    public ResponseEntity<List<TenantResponse>> showAllUsers() {
+    public ResponseEntity<List<TenantDTO>> showAllUsers() {
         List<Tenant> users = this.tenantRepository.findAll();
         if (users.isEmpty()) {
             return ResponseEntity.status(204).build();
@@ -151,7 +149,7 @@ public class TenantController {
     }
 
     @PutMapping("/update-tenant")
-    public ResponseEntity<TenantResponse> updateTenantInformation(@RequestParam int id, @RequestBody UpdateTenantDto newTenant) {
+    public ResponseEntity<TenantDTO> updateTenantInformation(@RequestParam int id, @RequestBody UpdateTenantDto newTenant) {
         Optional<Tenant> oldTenant = tenantRepository.findById(id);
         if (oldTenant.isPresent()) {
             Tenant t = oldTenant.get();

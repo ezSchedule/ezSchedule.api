@@ -3,7 +3,7 @@ package br.com.ezschedule.apischedule.controller;
 import br.com.ezschedule.apischedule.adapter.JsonResponseAdapter;
 import br.com.ezschedule.apischedule.model.Administrator;
 import br.com.ezschedule.apischedule.model.DtoClasses.JsonResponse;
-import br.com.ezschedule.apischedule.model.DtoClasses.UpdatePasswordForm;
+import br.com.ezschedule.apischedule.model.DtoClasses.UpdateResponse.UpdatePasswordForm;
 import br.com.ezschedule.apischedule.repository.AdministratorRepository;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

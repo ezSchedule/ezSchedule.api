@@ -13,12 +13,12 @@ public class Saloon {
     private Double saloonPrice;
     private String saloonBlock;
 
-    @ManyToOne
-    private Schedule schedule;
+    @OneToMany(mappedBy = "saloon")
+    private List<Schedule> schedule;
     @ManyToOne
     private Condominium condominium;
 
-    public Saloon(String saloonName, Double saloonPrice, String saloonBlock, Schedule schedule, Condominium condominium) {
+    public Saloon(String saloonName, Double saloonPrice, String saloonBlock, List<Schedule> schedule, Condominium condominium) {
         this.saloonName = saloonName;
         this.saloonPrice = saloonPrice;
         this.saloonBlock = saloonBlock;
@@ -76,11 +76,11 @@ public class Saloon {
         this.saloonBlock = saloonBlock;
     }
 
-    public Schedule getSchedule() {
+    public List<Schedule> getSchedule() {
         return schedule;
     }
 
-    public void setSchedule(Schedule schedule) {
+    public void setSchedule(List<Schedule> schedule) {
         this.schedule = schedule;
     }
 

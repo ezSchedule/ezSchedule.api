@@ -2,7 +2,6 @@ package br.com.ezschedule.apischedule.controller;
 
 import br.com.ezschedule.apischedule.adapter.JsonResponseAdapter;
 import br.com.ezschedule.apischedule.model.DtoClasses.SaloonDTO;
-import br.com.ezschedule.apischedule.model.DtoClasses.UpdateSaloonForm;
 import br.com.ezschedule.apischedule.model.Saloon;
 import br.com.ezschedule.apischedule.repository.SaloonRepository;
 import io.swagger.annotations.Api;

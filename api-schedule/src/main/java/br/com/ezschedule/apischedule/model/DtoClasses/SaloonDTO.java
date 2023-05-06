@@ -2,6 +2,8 @@ package br.com.ezschedule.apischedule.model.DtoClasses;
 
 import br.com.ezschedule.apischedule.model.Schedule;
 
+import java.util.List;
+
 public class SaloonDTO {
 
 
@@ -10,11 +12,11 @@ public class SaloonDTO {
     private Double saloonPrice;
     private String saloonBlock;
 
-    private Schedule schedule;
+    private List<Schedule> schedule;
 
     private CondominiumDto condominium;
 
-    public SaloonDTO(int id, String saloonName, Double saloonPrice, String saloonBlock, Schedule schedule, CondominiumDto condominium) {
+    public SaloonDTO(int id, String saloonName, Double saloonPrice, String saloonBlock, List<Schedule> schedule, CondominiumDto condominium) {
         this.id = id;
         this.saloonName = saloonName;
         this.saloonPrice = saloonPrice;
@@ -55,11 +57,11 @@ public class SaloonDTO {
         this.saloonBlock = saloonBlock;
     }
 
-    public Schedule getSchedule() {
+    public List<Schedule> getSchedule() {
         return schedule;
     }
 
-    public void setSchedule(Schedule schedule) {
+    public void setSchedule(List<Schedule> schedule) {
         this.schedule = schedule;
     }
 

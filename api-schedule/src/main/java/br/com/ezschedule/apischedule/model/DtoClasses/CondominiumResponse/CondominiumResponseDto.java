@@ -1,7 +1,6 @@
 package br.com.ezschedule.apischedule.model.DtoClasses.CondominiumResponse;
 
-import br.com.ezschedule.apischedule.model.DtoClasses.CondominiumResponse.ForumCondoDTO;
-import br.com.ezschedule.apischedule.model.DtoClasses.TenantResponse;
+import br.com.ezschedule.apischedule.model.DtoClasses.TenantDTO;
 
 import java.util.List;
 
@@ -13,12 +12,12 @@ public class CondominiumResponseDto {
     private String state;
     private String postalCode;
     private String country;
-    private List<TenantResponse> tenantList;
+    private List<TenantDTO> tenantList;
     private List<SaloonCondoDTO> saloonList;
     private List<ForumCondoDTO> forumPostList;
     private List<ReportCondoDTO> reportList;
 
-    public CondominiumResponseDto(int id, String name, String street, String city, String state, String postalCode, String country, List<TenantResponse> tenantList, List<SaloonCondoDTO> saloonList, List<ForumCondoDTO> forumPostList, List<ReportCondoDTO> reportList) {
+    public CondominiumResponseDto(int id, String name, String street, String city, String state, String postalCode, String country, List<TenantDTO> tenantList, List<SaloonCondoDTO> saloonList, List<ForumCondoDTO> forumPostList, List<ReportCondoDTO> reportList) {
         this.id = id;
         this.name = name;
         this.street = street;
@@ -88,11 +87,11 @@ public class CondominiumResponseDto {
         this.country = country;
     }
 
-    public List<TenantResponse> getTenantList() {
+    public List<TenantDTO> getTenantList() {
         return tenantList;
     }
 
-    public void setTenantList(List<TenantResponse> tenantList) {
+    public void setTenantList(List<TenantDTO> tenantList) {
         this.tenantList = tenantList;
     }
 

@@ -1,9 +1,8 @@
 package br.com.ezschedule.apischedule.controller;
 
 import br.com.ezschedule.apischedule.adapter.JsonResponseAdapter;
-import br.com.ezschedule.apischedule.model.DtoClasses.CondominiumResponse.ForumCondoDTO;
 import br.com.ezschedule.apischedule.model.DtoClasses.ForumDTO;
-import br.com.ezschedule.apischedule.model.DtoClasses.UpdateForumPostForm;
+import br.com.ezschedule.apischedule.model.DtoClasses.UpdateResponse.UpdateForumPostForm;
 import br.com.ezschedule.apischedule.model.ForumPost;
 import br.com.ezschedule.apischedule.repository.ForumRepository;
 import io.swagger.annotations.Api;

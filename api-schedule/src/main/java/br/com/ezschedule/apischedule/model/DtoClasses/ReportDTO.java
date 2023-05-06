@@ -13,9 +13,9 @@ public class ReportDTO {
     private LocalDateTime paymentTime;
     private Schedule schedule;
     private CondominiumDto condominium;
-    private TenantResponse tenant;
+    private TenantDTO tenant;
 
-    public ReportDTO(int id, int invoiceNumber, String productName, String category, String paymentStatus, LocalDateTime paymentTime, Schedule schedule, CondominiumDto condominium, TenantResponse tenant) {
+    public ReportDTO(int id, int invoiceNumber, String productName, String category, String paymentStatus, LocalDateTime paymentTime, Schedule schedule, CondominiumDto condominium, TenantDTO tenant) {
         this.id = id;
         this.invoiceNumber = invoiceNumber;
         this.productName = productName;
@@ -94,11 +94,11 @@ public class ReportDTO {
         this.condominium = condominium;
     }
 
-    public TenantResponse getTenant() {
+    public TenantDTO getTenant() {
         return tenant;
     }
 
-    public void setTenant(TenantResponse tenant) {
+    public void setTenant(TenantDTO tenant) {
         this.tenant = tenant;
     }
 }

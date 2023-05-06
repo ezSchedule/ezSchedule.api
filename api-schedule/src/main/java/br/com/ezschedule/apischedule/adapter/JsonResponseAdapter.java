@@ -6,6 +6,8 @@ import br.com.ezschedule.apischedule.model.DtoClasses.CondominiumResponse.Condom
 import br.com.ezschedule.apischedule.model.DtoClasses.CondominiumResponse.ForumCondoDTO;
 import br.com.ezschedule.apischedule.model.DtoClasses.CondominiumResponse.ReportCondoDTO;
 import br.com.ezschedule.apischedule.model.DtoClasses.CondominiumResponse.SaloonCondoDTO;
+import br.com.ezschedule.apischedule.model.DtoClasses.UpdateResponse.UpdateForumPostForm;
+import br.com.ezschedule.apischedule.model.DtoClasses.UpdateResponse.UpdateScheduleForm;
 import br.com.ezschedule.apischedule.service.autenticacao.dto.UsuarioTokenDto;
 
 import java.time.LocalDateTime;
@@ -63,8 +65,8 @@ public interface JsonResponseAdapter {
         );
     }
 
-    public static TenantResponse tentantDTO(Tenant t){
-        return new TenantResponse(
+    public static TenantDTO tentantDTO(Tenant t){
+        return new TenantDTO(
                 t.getIdUser(),
                 t.getEmail(),
                 t.getCpf(),
@@ -75,7 +77,7 @@ public interface JsonResponseAdapter {
                 t.isAuthenticated(),
                 t.isAdmin());
     }
-    public static List<TenantResponse> listTenantDTO(List<Tenant> t){
+    public static List<TenantDTO> listTenantDTO(List<Tenant> t){
         return t.stream().map(JsonResponseAdapter::tentantDTO).toList();
     }
 
@@ -100,7 +102,7 @@ public interface JsonResponseAdapter {
         return serviceDTOList;
     }
 
-    public static ForumPost updateForumDTO(UpdateForumPostForm newPost,int id, ForumPost oldPost){
+    public static ForumPost updateForumDTO(UpdateForumPostForm newPost, int id, ForumPost oldPost){
         return new ForumPost(
                 id,
                 newPost.getTextContent(),
@@ -117,7 +119,7 @@ public interface JsonResponseAdapter {
                 f.getTypeMessage(),
                 f.getDateTimePost(),
                 f.isEdited(),
-                condominiumDTO(f.getCondominium())
+               f.getCondominium() != null ? condominiumDTO(f.getCondominium()) : null
         );
     }
 
@@ -155,22 +157,38 @@ public interface JsonResponseAdapter {
                 s.getSaloonPrice(),
                 s.getSaloonBlock(),
                 s.getSchedule(),
-                condominiumDTO(s.getCondominium())
+               s.getCondominium() != null ? condominiumDTO(s.getCondominium()) : null
         );
     }
-
     public static List<SaloonDTO> listSaloonDTO(List<Saloon> s){
         return s.stream().map(JsonResponseAdapter::saloonDTO).toList();
     }
 
-    public static Schedule scheduleDTO(UpdateScheduleForm u,int id,List<Saloon> saloonList,Tenant t){
+    public static ScheduleDTO scheduleDTO(Schedule s){
+        return new ScheduleDTO(
+                s.getId(),
+                s.getNameEvent(),
+                s.getTypeEvent(),
+                s.getDateEvent(),
+                s.getTotalNumberGuests(),
+                s.getSaloon() != null ? JsonResponseAdapter.saloonDTO(s.getSaloon()) : null,
+                s.getTenant() != null ? JsonResponseAdapter.tentantDTO(s.getTenant()) : null
+        );
+    }
+
+    public static List<ScheduleDTO> listScheduleDTO(List<Schedule> s){
+        return s.stream().map(JsonResponseAdapter::scheduleDTO).toList();
+    }
+
+
+    public static Schedule updateScheduleDTO(UpdateScheduleForm u, int id, Saloon saloon, Tenant t){
         return new Schedule(
                 id,
                 u.getNameEvent(),
                 u.getTypeEvent(),
                 u.getDateEvent(),
                 u.getTotalNumberGuests(),
-                saloonList,
+                saloon,
                 t
         );
     }
@@ -184,7 +202,7 @@ public interface JsonResponseAdapter {
                 r.getPaymentStatus(),
                 r.getPaymentTime(),
                 r.getSchedule(),
-                condominiumDTO(r.getCondominium()),
+                r.getCondominium() != null ? condominiumDTO(r.getCondominium()) : null ,
                 r.getTenant() != null ?tentantDTO(r.getTenant()) : null
         );
     }
@@ -199,7 +217,7 @@ public interface JsonResponseAdapter {
                 s.getSaloonName(),
                 s.getSaloonPrice(),
                 s.getSaloonBlock(),
-                s.getSchedule()
+                s.getSchedule() != null ? JsonResponseAdapter.listScheduleDTO(s.getSchedule()) : null
         );
     }
 

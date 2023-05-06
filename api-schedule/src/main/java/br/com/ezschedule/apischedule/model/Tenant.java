@@ -10,10 +10,10 @@ import java.util.List;
 @DiscriminatorValue("2")
 public class Tenant extends User {
 
-    @OneToMany
+    @OneToMany(mappedBy = "tenant")
     private List<Report> reportList;
 
-    @OneToMany
+    @OneToMany(mappedBy = "tenant")
     private List<Schedule> scheduleList;
 
     @ManyToOne
