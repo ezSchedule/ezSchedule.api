@@ -111,7 +111,7 @@ public class TenantController {
         if (updatePasswordForm.getPassword().equals(updatePasswordForm.getNewPassword())) {
             return ResponseEntity.status(404).build();
         } else {
-            Object user = this.tenantRepository.updatePasswordUser(updatePasswordForm.getEmail(), updatePasswordForm.getPassword(), updatePasswordForm.getNewPassword());
+            Object user = this.tenantRepository.updatePasswordUser(updatePasswordForm.getEmail(), updatePasswordForm.getNewPassword());
             return ResponseEntity.status(200).build();
         }
     }
@@ -119,22 +119,15 @@ public class TenantController {
     @GetMapping("/recovery-password/{email}")
     public ResponseEntity<Void> recoveryPassword(@PathVariable String email) {
 
-        boolean exists = tenantRepository.existsByEmail(email);
+        Optional<Tenant> tenant = tenantRepository.findByEmail(email);
 
-        if (exists) {
-            Tenant tenant = null;
-            for (int i = 0; i < listUsers.size(); i++) {
-                if (email.equals(listUsers.get(i).getEmail())) {
-                    tenant = listUsers.get(i);
-                }
-            }
+        if(tenant.isPresent()){
 
             this.token = UUID.randomUUID().toString().replace("-", "");
-            this.sendMail.send(email, EmailMessages.createTitle(tenant), EmailMessages.messageRecoveryPassword(tenant, this.token));
+            this.sendMail.send(email, EmailMessages.createTitle(tenant.get()), EmailMessages.messageRecoveryPassword(tenant.get(), this.token));
 
             return ResponseEntity.status(200).build();
         }
-
         return ResponseEntity.status(404).build();
     }
 

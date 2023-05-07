@@ -13,14 +13,6 @@ import java.util.List;
 
 public interface JsonResponseAdapter {
 
-    public static List<JsonResponse> convertJsonResponseList(List<Administrator> users) {
-        List<JsonResponse> usersNoPassword = new ArrayList<>();
-        for (int i = 0; i < users.size(); i++) {
-            usersNoPassword.add(JsonResponseAdapter.Dto(users.get(i)));
-        }
-        return usersNoPassword;
-    }
-
     public static JsonResponse Dto(Tenant c) {
         return new JsonResponse(
                 c.getEmail(),
@@ -32,18 +24,6 @@ public interface JsonResponseAdapter {
                 c.isAuthenticated(),
                 c.isAdmin());
 
-    }
-
-    public static JsonResponse Dto(Administrator a) {
-        return new JsonResponse(
-                a.getEmail(),
-                a.getCpf(),
-                a.getName(),
-                a.getResidentsBlock(),
-                a.getApartmentNumber(),
-                a.getPhoneNumber(),
-                a.isAuthenticated(),
-                a.isAdmin());
     }
 
     public static UsuarioTokenDto tenantWTokenDTO(Tenant t, String token) {
