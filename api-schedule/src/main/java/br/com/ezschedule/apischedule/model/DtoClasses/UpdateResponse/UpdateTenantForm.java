@@ -1,6 +1,6 @@
 package br.com.ezschedule.apischedule.model.DtoClasses.UpdateResponse;
 
-public class UpdateTenantDto {
+public class UpdateTenantForm {
     private String name;
     private String email;
     private String cpf;

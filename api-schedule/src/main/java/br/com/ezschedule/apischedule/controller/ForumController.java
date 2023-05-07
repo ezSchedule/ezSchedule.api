@@ -1,7 +1,7 @@
 package br.com.ezschedule.apischedule.controller;
 
 import br.com.ezschedule.apischedule.adapter.JsonResponseAdapter;
-import br.com.ezschedule.apischedule.model.DtoClasses.ForumDTO;
+import br.com.ezschedule.apischedule.model.DtoClasses.Response.ForumResponse;
 import br.com.ezschedule.apischedule.model.DtoClasses.UpdateResponse.UpdateForumPostForm;
 import br.com.ezschedule.apischedule.model.ForumPost;
 import br.com.ezschedule.apischedule.repository.ForumRepository;
@@ -30,21 +30,21 @@ public class ForumController {
             "Não há fóruns para exibir.", content = @Content(schema = @Schema(hidden = true)))
     @ApiResponse(responseCode = "200", description = "fóruns postados.")
     @GetMapping
-    public ResponseEntity<List<ForumDTO>> showAllPosts(){
+    public ResponseEntity<List<ForumResponse>> showAllPosts(){
        List<ForumPost> allPosts = forumRepository.findAll();
        if(allPosts.isEmpty()){
            return ResponseEntity.status(204).build();
        }
-       return ResponseEntity.status(200).body(JsonResponseAdapter.listForumDTO(allPosts));
+       return ResponseEntity.status(200).body(JsonResponseAdapter.listForumResponse(allPosts));
     }
 
     @ApiResponse(responseCode = "404", description =
             "Não foi encontrado nenhum fórum.", content = @Content(schema = @Schema(hidden = true)))
     @ApiResponse(responseCode = "200", description = "fórum encontrado.")
     @GetMapping("/{id}")
-    public ResponseEntity<ForumDTO> getPostById(@PathVariable int id){
+    public ResponseEntity<ForumResponse> getPostById(@PathVariable int id){
         if(forumRepository.findById(id).isPresent()){
-            return ResponseEntity.status(200).body(JsonResponseAdapter.forumDTO(forumRepository.findById(id).get()));
+            return ResponseEntity.status(200).body(JsonResponseAdapter.forumResponse(forumRepository.findById(id).get()));
         }
         return ResponseEntity.status(404).build();
     }
@@ -52,21 +52,21 @@ public class ForumController {
     @ApiResponse(responseCode = "201", description =
             "fórum cadastrado", content = @Content(schema = @Schema(hidden = true)))
     @PostMapping
-    public ResponseEntity<ForumDTO> newPost(@RequestBody @Valid ForumPost post){
+    public ResponseEntity<ForumResponse> newPost(@RequestBody @Valid ForumPost post){
         forumRepository.save(post);
-        return ResponseEntity.status(200).body(JsonResponseAdapter.forumDTO(post));
+        return ResponseEntity.status(200).body(JsonResponseAdapter.forumResponse(post));
     }
 
     @ApiResponse(responseCode = "404", description =
             "Nenhum fórum encontrado.", content = @Content(schema = @Schema(hidden = true)))
     @ApiResponse(responseCode = "200", description = "Fórum atualizado.")
     @PutMapping("/{id}")
-    public ResponseEntity<ForumDTO> updatePostById(@RequestBody @Valid UpdateForumPostForm updatePost, @PathVariable int id){
+    public ResponseEntity<ForumResponse> updatePostById(@RequestBody @Valid UpdateForumPostForm updatePost, @PathVariable int id){
         if(forumRepository.findById(id).isPresent()){
          Optional<ForumPost> oldPost = forumRepository.findById(id);
          ForumPost updatedPost = JsonResponseAdapter.updateForumDTO(updatePost,id,oldPost.get());
          forumRepository.save(updatedPost);
-         return ResponseEntity.status(200).body(JsonResponseAdapter.forumDTO(updatedPost));
+         return ResponseEntity.status(200).body(JsonResponseAdapter.forumResponse(updatedPost));
         }
         return ResponseEntity.status(404).build();
     }

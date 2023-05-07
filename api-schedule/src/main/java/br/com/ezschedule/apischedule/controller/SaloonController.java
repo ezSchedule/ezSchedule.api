@@ -1,7 +1,7 @@
 package br.com.ezschedule.apischedule.controller;
 
 import br.com.ezschedule.apischedule.adapter.JsonResponseAdapter;
-import br.com.ezschedule.apischedule.model.DtoClasses.SaloonDTO;
+import br.com.ezschedule.apischedule.model.DtoClasses.Response.SaloonResponse;
 import br.com.ezschedule.apischedule.model.Saloon;
 import br.com.ezschedule.apischedule.repository.SaloonRepository;
 import io.swagger.annotations.Api;
@@ -28,24 +28,24 @@ public class SaloonController {
             "Não há nenhum salão cadastrados.", content = @Content(schema = @Schema(hidden = true)))
     @ApiResponse(responseCode = "200", description = "salão encontrado.")
     @GetMapping
-    public ResponseEntity<List<SaloonDTO>> showAllSaloons(){
+    public ResponseEntity<List<SaloonResponse>> showAllSaloons(){
         List<Saloon> allSaloons = saloonRepository.findAll();
         if(allSaloons.isEmpty()){
             return ResponseEntity.status(204).build();
         }
-        return ResponseEntity.status(200).body(JsonResponseAdapter.listSaloonDTO(allSaloons));
+        return ResponseEntity.status(200).body(JsonResponseAdapter.listSaloonResponse(allSaloons));
     }
 
     @ApiResponse(responseCode = "404", description =
             "Salão não encontrado.", content = @Content(schema = @Schema(hidden = true)))
     @ApiResponse(responseCode = "200", description = "salão encontrado.")
     @GetMapping("/{id}")
-    public ResponseEntity<SaloonDTO> showASaloonById(@PathVariable  int id){
+    public ResponseEntity<SaloonResponse> showASaloonById(@PathVariable  int id){
         Optional<Saloon> saloon = saloonRepository.findById(id);
         if(saloon.isEmpty()){
             return ResponseEntity.status(404).build();
         }
-        return ResponseEntity.status(200).body(JsonResponseAdapter.saloonDTO(saloon.get()));
+        return ResponseEntity.status(200).body(JsonResponseAdapter.saloonResponse(saloon.get()));
     }
 
     @ApiResponse(responseCode = "201", description =
@@ -53,7 +53,7 @@ public class SaloonController {
     @PostMapping
     public ResponseEntity<Saloon> newSaloon(@RequestBody @Valid Saloon post){
         saloonRepository.save(post);
-        return ResponseEntity.status(200).body(post);
+        return ResponseEntity.status(201).build();
     }
 
 //    @PutMapping("/{id}")

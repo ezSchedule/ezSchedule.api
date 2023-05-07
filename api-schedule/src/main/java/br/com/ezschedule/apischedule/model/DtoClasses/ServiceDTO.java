@@ -5,10 +5,10 @@ import javax.validation.constraints.NotNull;
 
 public class ServiceDTO {
 
-    @NotBlank
+
     private String serviceName;
 
-    @NotNull
+
     private TenantDTO tenant;
 
     public ServiceDTO(String serviceName, TenantDTO tenant) {

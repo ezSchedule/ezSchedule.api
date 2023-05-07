@@ -1,21 +1,30 @@
-package br.com.ezschedule.apischedule.model.DtoClasses.CondominiumResponse;
+package br.com.ezschedule.apischedule.model.DtoClasses.Response;
+
+import br.com.ezschedule.apischedule.model.DtoClasses.CondominiumDto;
 
 import java.time.LocalDateTime;
 
-public class ForumCondoDTO {
+public class ForumResponse {
+
+
     private Integer id;
+
     private String textContent;
+
     private String typeMessage;
+
     private LocalDateTime dateTimePost;
     private boolean isEdited;
 
+    private CondominiumDto condominium;
 
-    public ForumCondoDTO(Integer id, String textContent, String typeMessage, LocalDateTime dateTimePost, boolean isEdited) {
+    public ForumResponse(Integer id, String textContent, String typeMessage, LocalDateTime dateTimePost, boolean isEdited, CondominiumDto condominium) {
         this.id = id;
         this.textContent = textContent;
         this.typeMessage = typeMessage;
         this.dateTimePost = dateTimePost;
         this.isEdited = isEdited;
+        this.condominium = condominium;
     }
 
     public Integer getId() {
@@ -58,4 +67,11 @@ public class ForumCondoDTO {
         isEdited = edited;
     }
 
+    public CondominiumDto getCondominium() {
+        return condominium;
+    }
+
+    public void setCondominium(CondominiumDto condominium) {
+        this.condominium = condominium;
+    }
 }

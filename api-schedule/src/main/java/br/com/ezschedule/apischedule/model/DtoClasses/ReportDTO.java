@@ -1,7 +1,5 @@
 package br.com.ezschedule.apischedule.model.DtoClasses;
 
-import br.com.ezschedule.apischedule.model.Schedule;
-
 import java.time.LocalDateTime;
 
 public class ReportDTO {
@@ -11,23 +9,14 @@ public class ReportDTO {
     private String category;
     private String paymentStatus;
     private LocalDateTime paymentTime;
-    private Schedule schedule;
-    private CondominiumDto condominium;
-    private TenantDTO tenant;
 
-    public ReportDTO(int id, int invoiceNumber, String productName, String category, String paymentStatus, LocalDateTime paymentTime, Schedule schedule, CondominiumDto condominium, TenantDTO tenant) {
+    public ReportDTO(int id, int invoiceNumber, String productName, String category, String paymentStatus, LocalDateTime paymentTime) {
         this.id = id;
         this.invoiceNumber = invoiceNumber;
         this.productName = productName;
         this.category = category;
         this.paymentStatus = paymentStatus;
         this.paymentTime = paymentTime;
-        this.schedule = schedule;
-        this.condominium = condominium;
-        this.tenant = tenant;
-    }
-
-    public ReportDTO() {
     }
 
     public int getId() {
@@ -76,29 +65,5 @@ public class ReportDTO {
 
     public void setPaymentTime(LocalDateTime paymentTime) {
         this.paymentTime = paymentTime;
-    }
-
-    public Schedule getSchedule() {
-        return schedule;
-    }
-
-    public void setSchedule(Schedule schedule) {
-        this.schedule = schedule;
-    }
-
-    public CondominiumDto getCondominium() {
-        return condominium;
-    }
-
-    public void setCondominium(CondominiumDto condominium) {
-        this.condominium = condominium;
-    }
-
-    public TenantDTO getTenant() {
-        return tenant;
-    }
-
-    public void setTenant(TenantDTO tenant) {
-        this.tenant = tenant;
     }
 }

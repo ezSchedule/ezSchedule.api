@@ -5,8 +5,9 @@ import br.com.ezschedule.apischedule.Csv.ListaObj;
 import br.com.ezschedule.apischedule.adapter.JsonResponseAdapter;
 import br.com.ezschedule.apischedule.email.SendMail;
 import br.com.ezschedule.apischedule.messages.EmailMessages;
+import br.com.ezschedule.apischedule.model.DtoClasses.Response.TenantResponse;
 import br.com.ezschedule.apischedule.model.DtoClasses.TenantDTO;
-import br.com.ezschedule.apischedule.model.DtoClasses.UpdateResponse.UpdateTenantDto;
+import br.com.ezschedule.apischedule.model.DtoClasses.UpdateResponse.UpdateTenantForm;
 import br.com.ezschedule.apischedule.model.Tenant;
 import br.com.ezschedule.apischedule.model.DtoClasses.UpdateResponse.UpdatePasswordForm;
 import br.com.ezschedule.apischedule.repository.TenantRepository;
@@ -47,12 +48,12 @@ public class TenantController {
             "Não há usuários cadastrados.", content = @Content(schema = @Schema(hidden = true)))
     @ApiResponse(responseCode = "200", description = "usuários encontrados.")
     @GetMapping
-    public ResponseEntity<List<TenantDTO>> showAllUsers() {
+    public ResponseEntity<List<TenantResponse>> showAllUsers() {
         List<Tenant> users = this.tenantRepository.findAll();
         if (users.isEmpty()) {
             return ResponseEntity.status(204).build();
         } else {
-            return ResponseEntity.status(200).body(JsonResponseAdapter.listTenantDTO(users));
+            return ResponseEntity.status(200).body(JsonResponseAdapter.listTenantResponse(users));
         }
 
     }
@@ -149,7 +150,7 @@ public class TenantController {
     }
 
     @PutMapping("/update-tenant")
-    public ResponseEntity<TenantDTO> updateTenantInformation(@RequestParam int id, @RequestBody UpdateTenantDto newTenant) {
+    public ResponseEntity<TenantResponse> updateTenantInformation(@RequestParam int id, @RequestBody UpdateTenantForm newTenant) {
         Optional<Tenant> oldTenant = tenantRepository.findById(id);
         if (oldTenant.isPresent()) {
             Tenant t = oldTenant.get();
@@ -168,7 +169,7 @@ public class TenantController {
                     t.getCondominium()
             );
             Tenant tenant = tenantRepository.save(updatedTenant);
-            return ResponseEntity.status(200).body(JsonResponseAdapter.tentantDTO(tenant));
+            return ResponseEntity.status(200).body(JsonResponseAdapter.tenantResponse(tenant));
         }
         return ResponseEntity.status(204).build();
     }

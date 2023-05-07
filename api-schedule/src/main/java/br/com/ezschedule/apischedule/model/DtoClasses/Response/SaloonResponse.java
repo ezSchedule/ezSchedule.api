@@ -1,23 +1,30 @@
-package br.com.ezschedule.apischedule.model.DtoClasses.CondominiumResponse;
+package br.com.ezschedule.apischedule.model.DtoClasses.Response;
 
+import br.com.ezschedule.apischedule.model.DtoClasses.CondominiumDto;
 import br.com.ezschedule.apischedule.model.DtoClasses.ScheduleDTO;
 import br.com.ezschedule.apischedule.model.Schedule;
 
 import java.util.List;
 
-public class SaloonCondoDTO {
+public class SaloonResponse {
+
+
     private int id;
     private String saloonName;
     private Double saloonPrice;
     private String saloonBlock;
+
     private List<ScheduleDTO> schedule;
 
-    public SaloonCondoDTO(int id, String saloonName, Double saloonPrice, String saloonBlock, List<ScheduleDTO> schedule) {
+    private CondominiumDto condominium;
+
+    public SaloonResponse(int id, String saloonName, Double saloonPrice, String saloonBlock, List<ScheduleDTO> schedule, CondominiumDto condominium) {
         this.id = id;
         this.saloonName = saloonName;
         this.saloonPrice = saloonPrice;
         this.saloonBlock = saloonBlock;
         this.schedule = schedule;
+        this.condominium = condominium;
     }
 
     public int getId() {
@@ -58,5 +65,13 @@ public class SaloonCondoDTO {
 
     public void setSchedule(List<ScheduleDTO> schedule) {
         this.schedule = schedule;
+    }
+
+    public CondominiumDto getCondominium() {
+        return condominium;
+    }
+
+    public void setCondominium(CondominiumDto condominium) {
+        this.condominium = condominium;
     }
 }
