@@ -46,4 +46,21 @@ public class CondominumController {
         return ResponseEntity.status(201).build();
     }
 
+    @GetMapping("/amount-tenant")
+    public ResponseEntity<Integer> amountTenant(@RequestParam Integer id) {
+        Integer amountTenants = condominumRepository.amountTenantsCondominium(id);
+        return ResponseEntity.status(200).body(amountTenants);
+    }
+
+    @GetMapping("/amount-apartment")
+    public ResponseEntity<Integer> amountApartment(@RequestParam Integer id) {
+        Integer amountApartments = condominumRepository.amountApartmentsCondominium(id);
+        return ResponseEntity.status(200).body(amountApartments);
+    }
+
+    @GetMapping("/amount-saloon")
+    public ResponseEntity<Integer> amountSaloon(@RequestParam Integer id) {
+        Integer amountSaloons = condominumRepository.amountSaloonsCondominium(id);
+        return ResponseEntity.status(200).body(amountSaloons);
+    }
 }
