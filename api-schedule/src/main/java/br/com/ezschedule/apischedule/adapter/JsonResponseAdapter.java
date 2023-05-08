@@ -38,7 +38,8 @@ public interface JsonResponseAdapter {
                 t.getPhoneNumber(),
                 t.isAuthenticated(),
                 t.isAdmin(),
-                token
+                token,
+                t.getCondominium().getId()
         );
     }
 
