@@ -40,6 +40,8 @@ public interface TenantRepository extends JpaRepository<Tenant, Integer> {
 
 
 //    Tenant findTop1Bysubscribed(boolean b);
+    @Query("Select distinct(t.condominium.id) from Tenant t ")
+    List<Integer> findAllCondominiumIdFromTenants();
 
     Optional<Tenant> findByEmail(String email);
 }

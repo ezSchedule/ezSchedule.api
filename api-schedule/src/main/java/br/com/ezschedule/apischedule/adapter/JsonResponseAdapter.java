@@ -187,6 +187,26 @@ public interface JsonResponseAdapter {
         );
     }
 
+    public static ScheduleResponse scheduleResponse(Schedule s) {
+        return new ScheduleResponse(
+                s.getId(),
+                s.getNameEvent(),
+                s.getTypeEvent(),
+                s.getDateEvent(),
+                s.getTotalNumberGuests(),
+                saloonDTO(s.getSaloon()),
+                tentantDTO(s.getTenant())
+        );
+    }
+
+    public static List<ScheduleResponse> listScheduleResponse(List<Schedule> s) {
+        if (s == null) {
+            return null;
+        }
+
+        return s.stream().map(JsonResponseAdapter::scheduleResponse).toList();
+    }
+
     public static List<ScheduleDTO> listScheduleDTO(List<Schedule> s) {
         if (s == null) {
             return null;
