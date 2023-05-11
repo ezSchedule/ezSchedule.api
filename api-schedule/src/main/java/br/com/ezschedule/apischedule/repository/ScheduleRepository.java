@@ -10,11 +10,12 @@ import java.time.Year;
 
 public interface ScheduleRepository extends JpaRepository<Schedule,Integer> {
 
-    Schedule findByDate(LocalDate date);
+    Schedule findByDateEvent(LocalDate date);
 
-    @Query("Select count(*) from Schedule where year = (?) group by month = (?)")
-   Integer countEventsByMonth(String month, String year);
 
-    @Query("Select count(total_number_guests where year = (?) group by month = (?)")
-    Integer totalGuestsByMonth(String month, String year);
+//    @Query(value = "SELECT COUNT(*) FROM Schedule WHERE year = :year GROUP BY year, month HAVING month = :month", nativeQuery = true)
+//    Integer countEventsByMonth(int year, int month);
+
+    @Query(value = "select sum(total_number_guests) from schedule where date_event between :dateOne and :dateTwo;",nativeQuery = true)
+    Integer totalGuestsByMonth(LocalDate dateOne, LocalDate dateTwo);
 }

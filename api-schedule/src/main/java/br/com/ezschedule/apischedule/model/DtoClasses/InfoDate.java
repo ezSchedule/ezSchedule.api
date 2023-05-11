@@ -5,7 +5,7 @@ public class InfoDate {
     private Integer totalGuests;
     private Integer totalEvents;
 
-    public InfoDate(String month, Integer totalGuests, Integer totalEvents) {
+    public InfoDate(String month, Integer totalGuests) {
         this.month = month;
         this.totalGuests = totalGuests;
         this.totalEvents = totalEvents;

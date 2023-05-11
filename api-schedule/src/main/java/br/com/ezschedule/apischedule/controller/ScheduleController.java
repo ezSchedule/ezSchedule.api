@@ -23,35 +23,34 @@ import java.util.Optional;
 @RequestMapping("${uri.schedule}")
 public class ScheduleController {
 
+    @Autowired
     ScheduleRepository scheduleRepository;
 
-    @Autowired
-    ScheduleDTO scheduleDTO;
 
-    @GetMapping
-    public ResponseEntity<Object> findScheduleByMonth(LocalDate date){
+
+    @GetMapping("/schedule/month/")
+    public ResponseEntity<Object> findScheduleByMonth(LocalDate dateOne, LocalDate dateTwo){
         List<Schedule> listSchedule = scheduleRepository.findAll();
         if(listSchedule.isEmpty()){
             return ResponseEntity.status(204).build();
         }
 
-        Month monthInt = date.getMonth();
-        Year yearInt = Year.of(date.getYear());
+        Month month = dateOne.getMonth();
+        Year year = Year.of(dateOne.getYear());
 
         //Transforma pra string
-        String month = monthInt.toString();
-        String year = yearInt.toString();
+//        String monthString = month.toString();
+//        String yearString = year.toString();
 
-        //Busca o mês correspondente com o número
+        //Busca o mês correspondente com o número - Para passa o mês
         Locale locale = Locale.forLanguageTag("pt-br");
-        String monthString = monthInt.getDisplayName(TextStyle.FULL, locale);
-
+        String monthStringExtended = month.getDisplayName(TextStyle.FULL, locale);
 
         //Pesquisar totais
-        Integer totalEventsByMonth = scheduleRepository.countEventsByMonth(month, year);
-        Integer totalGuestsByMonth = scheduleRepository.totalGuestsByMonth(month, year);
+        //-------------------------Integer totalEventsByMonth = scheduleRepository.countEventsByMonth(dataOne, dataTwo) totalEventsByMonth;
+        Integer totalGuestsByMonth = scheduleRepository.totalGuestsByMonth(dateOne, dateTwo);
 
-        InfoDate infoDate = new InfoDate(monthString, totalGuestsByMonth, totalEventsByMonth);
+        InfoDate infoDate = new InfoDate(monthStringExtended, totalGuestsByMonth);
 
         return ResponseEntity.status(200).body(infoDate);
     }
@@ -80,23 +79,23 @@ public class ScheduleController {
         return ResponseEntity.status(200).body(s);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Schedule> updateScheduleById(@RequestBody @Valid UpdateScheduleForm newSchedule, @PathVariable int id){
-        Optional<Schedule> oldSchedule = scheduleRepository.findById(id);
-
-        if(oldSchedule.isPresent()){
-            Schedule updatedSchedule = JsonResponseAdapter.scheduleDTO(
-                    newSchedule,
-                    id,
-                    oldSchedule.get().getSaloon(),
-                    oldSchedule.get().getTenant()
-            );
-
-            scheduleRepository.save(updatedSchedule);
-            return ResponseEntity.status(200).body(updatedSchedule);
-        }
-        return ResponseEntity.status(404).build();
-    }
+//    @PutMapping("/{id}")
+//    public ResponseEntity<Schedule> updateScheduleById(@RequestBody @Valid UpdateScheduleForm newSchedule, @PathVariable int id){
+//        Optional<Schedule> oldSchedule = scheduleRepository.findById(id);
+//
+//        if(oldSchedule.isPresent()){
+//            Schedule updatedSchedule = JsonResponseAdapter.scheduleDTO(
+//                    newSchedule,
+//                    id,
+//                    oldSchedule.get().getSaloon(),
+//                    oldSchedule.get().getTenant()
+//            );
+//
+//            scheduleRepository.save(updatedSchedule);
+//            return ResponseEntity.status(200).body(updatedSchedule);
+//        }
+//        return ResponseEntity.status(404).build();
+//    }
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> deleteScheduleById(@PathVariable int id){
