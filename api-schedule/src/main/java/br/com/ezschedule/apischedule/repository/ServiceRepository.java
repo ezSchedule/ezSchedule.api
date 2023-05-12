@@ -12,8 +12,7 @@ import java.util.List;
 
 public interface ServiceRepository extends JpaRepository<Service, Integer> {
 
-    @Query(value = "SELECT * FROM Tenant WHERE condominium_id = :id", nativeQuery = true)
-    Integer listByCondominum(int id);
+    List<Service> findAllByServiceName(String name);
 
     @Modifying
     @Transactional

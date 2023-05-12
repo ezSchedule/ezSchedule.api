@@ -30,6 +30,9 @@ public class ServiceController {
     @Autowired
     private ServiceRepository serviceRepository;
 
+    @Autowired
+    private TenantRepository tenantRepository;
+
     ObjectList<Service> servicevector = new ObjectList<Service>(100);
     ObjectList<Service> orderedVector = new ObjectList<>(100);
 
@@ -37,17 +40,13 @@ public class ServiceController {
             "Não há serviços cadastrados.", content = @Content(schema = @Schema(hidden = true)))
     @ApiResponse(responseCode = "200", description = "serviços encontrados.")
     @GetMapping
-    public ResponseEntity<List<ServiceDTO>> showList(@RequestParam int id) {
-        System.out.println(this.serviceRepository.listByCondominum(id));
-        if (servicevector.getSize() == 0) {
+    public ResponseEntity<List<TenantResponse>> showList(@RequestParam int id) {
+        List<Tenant> listTenants = this.tenantRepository.findAllTenantsCondominium(id);
+        if (listTenants.isEmpty()) {
             return ResponseEntity.status(204).build();
         }
 
-        return ResponseEntity.status(200).body(
-                JsonResponseAdapter.serviceArrayDTO(
-                        servicevector.getSize(),
-                        servicevector
-                        )
+        return ResponseEntity.status(200).body(JsonResponseAdapter.listTenantResponse(listTenants)
         );
     }
 
@@ -55,13 +54,23 @@ public class ServiceController {
             "Serviço cadastrado", content = @Content(schema = @Schema(hidden = true)))
     @PostMapping
     public ResponseEntity<Service> addService(@RequestBody @Valid Service s) {
-        return ResponseEntity.status(201).body(servicevector.addObject(s));
+        return ResponseEntity.status(201).body(this.serviceRepository.save(s));
     }
 
     @ApiResponse(responseCode = "200", description =
-            "Serviços encontrados.", content = @Content(schema = @Schema(hidden = true)))
-    @GetMapping("/nome")
-    public ResponseEntity<List<ServiceDTO>> showListOrderedByName() {
+            "Serviços encontrados por nome.", content = @Content(schema = @Schema(hidden = true)))
+    @GetMapping("/name")
+    public ResponseEntity<List<ServiceDTO>> showListOrderedByName(@RequestParam String name) {
+        List<Service> listService = this.serviceRepository.findAllByServiceName(name);
+        if (listService.isEmpty()) {
+            return ResponseEntity.status(204).build();
+        }
+
+        for (int i = 0; i < listService.size(); i++) {
+            Optional<Service> serviceName = this.serviceRepository.findById(listService.get(i).getId());
+            servicevector.addObject(serviceName.get());
+        }
+
       for(int i =0;i< servicevector.getSize();i++){
           orderedVector.addObject(servicevector.getByIndex(i));
       }
@@ -81,6 +90,7 @@ public class ServiceController {
         return ResponseEntity.status(200).body(JsonResponseAdapter.serviceArrayDTO(orderedVector.getSize(), orderedVector));
     }
 
+    //Método que precisa de conversa com os integrantes da Ezschedule!!!
     @ApiResponse(responseCode = "404", description =
             "Não há serviços cadastrados.", content = @Content(schema = @Schema(hidden = true)))
     @ApiResponse(responseCode = "200", description = "serviços encontrados.")
@@ -105,13 +115,6 @@ public class ServiceController {
         }while(inicio <= fim);
 
         return ResponseEntity.status(404).build();
-    }
-
-
-    @GetMapping("/teste")
-    public ResponseEntity<Integer> teste(@RequestParam int id) {
-        Integer tenants = this.serviceRepository.listByCondominum(id);
-        return ResponseEntity.status(200).body(tenants);
     }
 
     @ApiResponse(responseCode = "404", description =
