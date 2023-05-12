@@ -43,6 +43,8 @@ public abstract class User {
 
     private Integer isAdmin;
 
+    private String nameBlobImage;
+
     public User(String email, String cpf, String password, String name, String residentsBlock, Integer apartmentNumber, String phoneNumber) {
         this.email = email;
         this.cpf = cpf;
@@ -148,6 +150,14 @@ public abstract class User {
 
     public void setAdmin(Integer admin) {
         isAdmin = admin;
+    }
+
+    public String getNameBlobImage() {
+        return nameBlobImage;
+    }
+
+    public void setNameBlobImage(String nameBlobImage) {
+        this.nameBlobImage = nameBlobImage;
     }
 
     @Override
