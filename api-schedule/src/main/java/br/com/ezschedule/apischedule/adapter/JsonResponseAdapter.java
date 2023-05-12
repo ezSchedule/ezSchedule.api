@@ -82,7 +82,8 @@ public interface JsonResponseAdapter {
                 t.isAdmin(),
                 listReportDTO(t.getReportList()),
                 listScheduleDTO(t.getScheduleList()),
-               condominiumDTO(t.getCondominium())
+                condominiumDTO(t.getCondominium()),
+                listServiceDTO(t.getServices())
         );
     }
 
@@ -92,8 +93,8 @@ public interface JsonResponseAdapter {
 
     public static ServiceDTO serviceDTO(Service s) {
         return new ServiceDTO(
-                s.getServiceName(),
-                tentantDTO(s.getTenant())
+                s.getId(),
+                s.getServiceName()
         );
     }
 
@@ -103,6 +104,7 @@ public interface JsonResponseAdapter {
             Service currentService = serviceVector.getByIndex(i);
 
             serviceDTOList.add(new ServiceDTO(
+                            currentService.getId(),
                             currentService.getServiceName(),
                             tentantDTO(currentService.getTenant())
                     )
@@ -193,6 +195,14 @@ public interface JsonResponseAdapter {
         }
 
         return s.stream().map(JsonResponseAdapter::scheduleDTO).toList();
+    }
+
+    public static List<ServiceDTO> listServiceDTO(List<Service> s) {
+        if (s == null) {
+            return null;
+        }
+
+        return s.stream().map(JsonResponseAdapter::serviceDTO).toList();
     }
 
 

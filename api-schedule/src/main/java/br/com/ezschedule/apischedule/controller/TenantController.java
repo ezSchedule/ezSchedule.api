@@ -159,7 +159,8 @@ public class TenantController {
                     t.isAdmin(),
                     t.getReportList(),
                     t.getScheduleList(),
-                    t.getCondominium()
+                    t.getCondominium(),
+                    t.getServices()
             );
             Tenant tenant = tenantRepository.save(updatedTenant);
             return ResponseEntity.status(200).body(JsonResponseAdapter.tenantResponse(tenant));

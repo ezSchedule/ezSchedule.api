@@ -18,3 +18,6 @@ INSERT INTO Report (invoice_number,product_name,category,payment_status,payment_
 (102103, 'SALON 1', 'Saloon', 'Não Pago', '2019-03-08T06:47:22.756', 1, 1),
 (102103, 'SALON 1', 'Saloon', 'Não Pago', '2019-02-22T06:47:22.756', 1, 1),
 (102103, 'SALON 1', 'Saloon', 'Pago', '2023-01-20T06:47:22.756', 1, 1);
+
+INSERT INTO Service (service_name,tenant_id_user) VALUES
+('Encanador', '1');
