@@ -1,4 +1,4 @@
-package br.com.ezschedule.apischedule.model.DtoClasses;
+package br.com.ezschedule.apischedule.model.DtoClasses.UpdateResponse;
 
 public class UpdatePasswordForm {
     private String email;

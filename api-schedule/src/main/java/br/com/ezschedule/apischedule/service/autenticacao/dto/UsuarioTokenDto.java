@@ -13,8 +13,9 @@ public class UsuarioTokenDto {
   private boolean isAuthenticated;
   private Integer isAdmin;
   private String token;
+  private int idCondominium;
 
-  public UsuarioTokenDto(int id, String email, String cpf, String name, String password, String residentsBlock, Integer apartmentNumber, String phoneNumber, boolean isAuthenticated, Integer isAdmin, String token) {
+  public UsuarioTokenDto(int id, String email, String cpf, String name, String password, String residentsBlock, Integer apartmentNumber, String phoneNumber, boolean isAuthenticated, Integer isAdmin, String token, int idCondominium) {
     this.id = id;
     this.email = email;
     this.cpf = cpf;
@@ -26,6 +27,7 @@ public class UsuarioTokenDto {
     this.isAuthenticated = isAuthenticated;
     this.isAdmin = isAdmin;
     this.token = token;
+    this.idCondominium = idCondominium;
   }
 
   public int getId() {
@@ -114,5 +116,13 @@ public class UsuarioTokenDto {
 
   public void setToken(String token) {
     this.token = token;
+  }
+
+  public int getIdCondominium() {
+    return idCondominium;
+  }
+
+  public void setIdCondominium(int idCondominium) {
+    this.idCondominium = idCondominium;
   }
 }

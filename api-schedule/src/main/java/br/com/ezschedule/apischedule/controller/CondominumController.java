@@ -2,7 +2,8 @@ package br.com.ezschedule.apischedule.controller;
 
 import br.com.ezschedule.apischedule.adapter.JsonResponseAdapter;
 import br.com.ezschedule.apischedule.model.Condominium;
-import br.com.ezschedule.apischedule.model.DtoClasses.CondominiumResponse.CondominiumResponseDto;
+import br.com.ezschedule.apischedule.model.DtoClasses.CondominiumInformationDto;
+import br.com.ezschedule.apischedule.model.DtoClasses.Response.CondominiumResponse;
 import br.com.ezschedule.apischedule.repository.CondominumRepository;
 import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -28,7 +29,7 @@ public class CondominumController {
             "Não há condomínio cadastrados.", content = @Content(schema = @Schema(hidden = true)))
     @ApiResponse(responseCode = "200", description = "condomínios encontrados.")
     @GetMapping
-    public ResponseEntity<List<CondominiumResponseDto>> listar(){
+    public ResponseEntity<List<CondominiumResponse>> listar(){
         List<Condominium> condominiumList = condominumRepository.findAll();
 
         if(!condominiumList.isEmpty()){
@@ -43,7 +44,17 @@ public class CondominumController {
     public ResponseEntity<Condominium> addCondominum(@RequestBody @Valid Condominium c){
         condominumRepository.save(c);
 
-        return ResponseEntity.status(201).body(c);
+        return ResponseEntity.status(201).build();
     }
 
+    @GetMapping("/settings")
+    public ResponseEntity<CondominiumInformationDto> settingsCondominiumInformation(@RequestParam Integer id) {
+        Integer amountTenants = condominumRepository.amountTenantsCondominium(id);
+        Integer amountApartments = condominumRepository.amountApartmentsCondominium(id);
+        Integer amountSaloons = condominumRepository.amountSaloonsCondominium(id);
+
+        return ResponseEntity.status(200).body(new CondominiumInformationDto(
+                amountTenants, amountApartments, amountSaloons
+        ));
+    }
 }

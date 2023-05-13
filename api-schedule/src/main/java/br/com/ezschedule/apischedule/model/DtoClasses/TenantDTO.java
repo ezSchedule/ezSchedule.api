@@ -1,10 +1,6 @@
 package br.com.ezschedule.apischedule.model.DtoClasses;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
-
-public class TenantResponse {
+public class TenantDTO {
 
     private int id;
     private String email;
@@ -16,7 +12,7 @@ public class TenantResponse {
     private boolean isAuthenticated;
     private Integer isAdmin;
 
-    public TenantResponse(int id,String email, String cpf, String name, String residentsBlock, Integer apartmentNumber, String phoneNumber, boolean isAuthenticated, Integer isAdmin) {
+    public TenantDTO(int id, String email, String cpf, String name, String residentsBlock, Integer apartmentNumber, String phoneNumber, boolean isAuthenticated, Integer isAdmin) {
         this.id = id;
         this.email = email;
         this.cpf = cpf;
@@ -28,7 +24,7 @@ public class TenantResponse {
         this.isAdmin = isAdmin;
     }
 
-    public TenantResponse() {
+    public TenantDTO() {
     }
 
     public int getId() {

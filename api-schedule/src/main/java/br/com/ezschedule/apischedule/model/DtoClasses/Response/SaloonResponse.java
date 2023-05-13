@@ -1,20 +1,30 @@
-package br.com.ezschedule.apischedule.model.DtoClasses.CondominiumResponse;
+package br.com.ezschedule.apischedule.model.DtoClasses.Response;
 
+import br.com.ezschedule.apischedule.model.DtoClasses.CondominiumDto;
+import br.com.ezschedule.apischedule.model.DtoClasses.ScheduleDTO;
 import br.com.ezschedule.apischedule.model.Schedule;
 
-public class SaloonCondoDTO {
+import java.util.List;
+
+public class SaloonResponse {
+
+
     private int id;
     private String saloonName;
     private Double saloonPrice;
     private String saloonBlock;
-    private Schedule schedule;
 
-    public SaloonCondoDTO(int id, String saloonName, Double saloonPrice, String saloonBlock, Schedule schedule) {
+    private List<ScheduleDTO> schedule;
+
+    private CondominiumDto condominium;
+
+    public SaloonResponse(int id, String saloonName, Double saloonPrice, String saloonBlock, List<ScheduleDTO> schedule, CondominiumDto condominium) {
         this.id = id;
         this.saloonName = saloonName;
         this.saloonPrice = saloonPrice;
         this.saloonBlock = saloonBlock;
         this.schedule = schedule;
+        this.condominium = condominium;
     }
 
     public int getId() {
@@ -49,11 +59,19 @@ public class SaloonCondoDTO {
         this.saloonBlock = saloonBlock;
     }
 
-    public Schedule getSchedule() {
+    public List<ScheduleDTO> getSchedule() {
         return schedule;
     }
 
-    public void setSchedule(Schedule schedule) {
+    public void setSchedule(List<ScheduleDTO> schedule) {
         this.schedule = schedule;
+    }
+
+    public CondominiumDto getCondominium() {
+        return condominium;
+    }
+
+    public void setCondominium(CondominiumDto condominium) {
+        this.condominium = condominium;
     }
 }

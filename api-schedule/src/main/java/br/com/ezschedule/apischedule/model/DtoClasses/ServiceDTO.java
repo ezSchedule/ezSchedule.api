@@ -5,13 +5,13 @@ import javax.validation.constraints.NotNull;
 
 public class ServiceDTO {
 
-    @NotBlank
+
     private String serviceName;
 
-    @NotNull
-    private TenantResponse tenant;
 
-    public ServiceDTO(String serviceName, TenantResponse tenant) {
+    private TenantDTO tenant;
+
+    public ServiceDTO(String serviceName, TenantDTO tenant) {
         this.serviceName = serviceName;
         this.tenant = tenant;
     }
@@ -27,11 +27,11 @@ public class ServiceDTO {
         this.serviceName = serviceName;
     }
 
-    public TenantResponse getTenant() {
+    public TenantDTO getTenant() {
         return tenant;
     }
 
-    public void setTenant(TenantResponse tenant) {
+    public void setTenant(TenantDTO tenant) {
         this.tenant = tenant;
     }
 }

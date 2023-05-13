@@ -10,14 +10,21 @@ import java.util.List;
 @DiscriminatorValue("2")
 public class Tenant extends User {
 
-    @OneToMany
+    @OneToMany(mappedBy = "tenant")
     private List<Report> reportList;
 
-    @OneToMany
+    @OneToMany(mappedBy = "tenant")
     private List<Schedule> scheduleList;
 
     @ManyToOne
     private Condominium condominium;
+
+    public Tenant(int id, String email, String cpf, String password, String name, String residentsBlock, Integer apartmentNumber, String phoneNumber, Integer isAdmin, List<Report> reportList, List<Schedule> scheduleList, Condominium condominium) {
+        super(id, email, cpf, password, name, residentsBlock, apartmentNumber, phoneNumber, isAdmin);
+        this.reportList = reportList;
+        this.scheduleList = scheduleList;
+        this.condominium = condominium;
+    }
 
     public Tenant(String email, String cpf, String password, String name, String residentsBlock, Integer apartmentNumber, String phoneNumber, List<Report> reportList, List<Schedule> scheduleList, Condominium condominium) {
         super(email, cpf, password, name, residentsBlock, apartmentNumber, phoneNumber);

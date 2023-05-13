@@ -1,27 +1,26 @@
-package br.com.ezschedule.apischedule.model;
+package br.com.ezschedule.apischedule.model.DtoClasses;
 
-import javax.persistence.*;
+import br.com.ezschedule.apischedule.model.DtoClasses.Response.TenantResponse;
+
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Entity
-public class Schedule {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class ScheduleDTO {
     private int id;
     private String nameEvent;
     private String typeEvent;
     private LocalDateTime dateEvent;
     private int totalNumberGuests;
 
-    @ManyToOne
-    private Saloon saloon;
 
-    @ManyToOne
-    private Tenant tenant;
+    private List<SaloonDTO> saloon;
+    private TenantResponse tenant;
 
+    public ScheduleDTO(int id, String nameEvent, String typeEvent, LocalDateTime dateEvent, int totalNumberGuests) {
 
-    public Schedule(String nameEvent, String typeEvent, LocalDateTime dateEvent, int totalNumberGuests, Saloon saloon, Tenant tenant) {
+    }
+
+    public ScheduleDTO(String nameEvent, String typeEvent, LocalDateTime dateEvent, int totalNumberGuests, List<SaloonDTO> saloon, TenantResponse tenant) {
         this.nameEvent = nameEvent;
         this.typeEvent = typeEvent;
         this.dateEvent = dateEvent;
@@ -30,18 +29,17 @@ public class Schedule {
         this.tenant = tenant;
     }
 
-
-    public Schedule(int id,String nameEvent, String typeEvent, LocalDateTime dateEvent, int totalNumberGuests, Saloon saloon, Tenant tenant) {
+    public ScheduleDTO(int id,String nameEvent, String typeEvent, LocalDateTime dateEvent, int totalNumberGuests, List<SaloonDTO> saloon, TenantResponse tenant) {
         this.id = id;
         this.nameEvent = nameEvent;
         this.typeEvent = typeEvent;
         this.dateEvent = dateEvent;
         this.totalNumberGuests = totalNumberGuests;
-        this.saloon = saloon;
-        this.tenant = tenant;
     }
 
-    public Schedule() {
+    public ScheduleDTO() {
+        this.saloon = saloon;
+        this.tenant = tenant;
     }
 
     public int getId() {
@@ -84,19 +82,19 @@ public class Schedule {
         this.totalNumberGuests = totalNumberGuests;
     }
 
-    public Saloon getSaloon() {
+    public List<SaloonDTO> getSaloon() {
         return saloon;
     }
 
-    public void setSaloon(Saloon saloon) {
+    public void setSaloon(List<SaloonDTO> saloon) {
         this.saloon = saloon;
     }
 
-    public Tenant getTenant() {
+    public TenantResponse getTenant() {
         return tenant;
     }
 
-    public void setTenant(Tenant tenant) {
+    public void setTenant(TenantResponse tenant) {
         this.tenant = tenant;
     }
 

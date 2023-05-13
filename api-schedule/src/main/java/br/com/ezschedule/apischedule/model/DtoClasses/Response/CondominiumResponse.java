@@ -1,11 +1,13 @@
-package br.com.ezschedule.apischedule.model.DtoClasses.CondominiumResponse;
+package br.com.ezschedule.apischedule.model.DtoClasses.Response;
 
-import br.com.ezschedule.apischedule.model.DtoClasses.CondominiumResponse.ForumCondoDTO;
-import br.com.ezschedule.apischedule.model.DtoClasses.TenantResponse;
+import br.com.ezschedule.apischedule.model.DtoClasses.ForumDTO;
+import br.com.ezschedule.apischedule.model.DtoClasses.ReportDTO;
+import br.com.ezschedule.apischedule.model.DtoClasses.SaloonDTO;
+import br.com.ezschedule.apischedule.model.DtoClasses.TenantDTO;
 
 import java.util.List;
 
-public class CondominiumResponseDto {
+public class CondominiumResponse {
     private int id;
     private String name;
     private String street;
@@ -13,12 +15,12 @@ public class CondominiumResponseDto {
     private String state;
     private String postalCode;
     private String country;
-    private List<TenantResponse> tenantList;
-    private List<SaloonCondoDTO> saloonList;
-    private List<ForumCondoDTO> forumPostList;
-    private List<ReportCondoDTO> reportList;
+    private List<TenantDTO> tenantList;
+    private List<SaloonDTO> saloonList;
+    private List<ForumDTO> forumPostList;
+    private List<ReportDTO> reportList;
 
-    public CondominiumResponseDto(int id, String name, String street, String city, String state, String postalCode, String country, List<TenantResponse> tenantList, List<SaloonCondoDTO> saloonList, List<ForumCondoDTO> forumPostList, List<ReportCondoDTO> reportList) {
+    public CondominiumResponse(int id, String name, String street, String city, String state, String postalCode, String country, List<TenantDTO> tenantList, List<SaloonDTO> saloonList, List<ForumDTO> forumPostList, List<ReportDTO> reportList) {
         this.id = id;
         this.name = name;
         this.street = street;
@@ -88,35 +90,35 @@ public class CondominiumResponseDto {
         this.country = country;
     }
 
-    public List<TenantResponse> getTenantList() {
+    public List<TenantDTO> getTenantList() {
         return tenantList;
     }
 
-    public void setTenantList(List<TenantResponse> tenantList) {
+    public void setTenantList(List<TenantDTO> tenantList) {
         this.tenantList = tenantList;
     }
 
-    public List<SaloonCondoDTO> getSaloonCondoDTOList() {
+    public List<SaloonDTO> getSaloonList() {
         return saloonList;
     }
 
-    public void setSaloonCondoDTOList(List<SaloonCondoDTO> saloonList) {
+    public void setSaloonList(List<SaloonDTO> saloonList) {
         this.saloonList = saloonList;
     }
 
-    public List<ForumCondoDTO> getForumDTOList() {
+    public List<ForumDTO> getForumList() {
         return forumPostList;
     }
 
-    public void setForumDTOList(List<ForumCondoDTO> forumPostList) {
+    public void setForumList(List<ForumDTO> forumPostList) {
         this.forumPostList = forumPostList;
     }
 
-    public List<ReportCondoDTO> getReportCondoDTOList() {
+    public List<ReportDTO> getReportList() {
         return reportList;
     }
 
-    public void setReportCondoDTOList(List<ReportCondoDTO> reportList) {
+    public void setReportList(List<ReportDTO> reportList) {
         this.reportList = reportList;
     }
 }

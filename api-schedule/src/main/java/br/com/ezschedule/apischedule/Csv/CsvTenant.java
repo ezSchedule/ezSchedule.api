@@ -1,6 +1,5 @@
 package br.com.ezschedule.apischedule.Csv;
 
-import br.com.ezschedule.apischedule.model.Administrator;
 import br.com.ezschedule.apischedule.model.Tenant;
 import org.springframework.http.ResponseEntity;
 
@@ -8,8 +7,6 @@ import java.io.*;
 import java.nio.file.Path;
 import java.util.Formatter;
 import java.util.FormatterClosedException;
-import java.util.NoSuchElementException;
-import java.util.Scanner;
 
 public class CsvTenant {
     public static void gravaArquivoCsvTenant(ListaObj<Tenant> lista, String nomeArquivo)

@@ -1,7 +1,8 @@
 package br.com.ezschedule.apischedule.controller;
 
 import br.com.ezschedule.apischedule.adapter.JsonResponseAdapter;
-import br.com.ezschedule.apischedule.model.DtoClasses.ReportDTO;
+import br.com.ezschedule.apischedule.model.DtoClasses.ReportPaymentsDto;
+import br.com.ezschedule.apischedule.model.DtoClasses.Response.ReportResponse;
 import br.com.ezschedule.apischedule.model.Report;
 import br.com.ezschedule.apischedule.repository.ReportRepository;
 import io.swagger.annotations.Api;
@@ -15,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Optional;
 
 @Api(value = "Relatórios", produces = MediaType.APPLICATION_JSON_VALUE, tags = {"relatorios"}, description = "requisições relacionadas a relatórios")
 @RestController
@@ -29,21 +29,31 @@ public class ReportController {
             "Não há relatórios cadastrados.", content = @Content(schema = @Schema(hidden = true)))
     @ApiResponse(responseCode = "200", description = "relatórios encontrados.")
     @GetMapping
-    public ResponseEntity<List<ReportDTO>> showAllReports(){
+    public ResponseEntity<List<ReportResponse>> showAllReports(){
         List<Report> allPosts = reportRepository.findAll();
         if(allPosts.isEmpty()){
             return ResponseEntity.status(204).build();
         }
-        return ResponseEntity.status(200).body(JsonResponseAdapter.listReportDTO(allPosts));
+        return ResponseEntity.status(200).body(JsonResponseAdapter.listReportResponse(allPosts));
+    }
+
+    @ApiResponse(responseCode = "204", description =
+            "Não há relatórios cadastrados.", content = @Content(schema = @Schema(hidden = true)))
+    @ApiResponse(responseCode = "200", description = "relatórios encontrados.")
+    @GetMapping("/condominium")
+    public ResponseEntity<List<ReportPaymentsDto>> showReportsCondominium(@RequestParam int id){
+        List<ReportPaymentsDto> allPosts = reportRepository.findAllReportsCondominium(id);
+        if(allPosts.isEmpty()){
+            return ResponseEntity.status(204).build();
+        }
+        return ResponseEntity.status(200).body(allPosts);
     }
 
     @ApiResponse(responseCode = "201", description =
             "Relatório cadastrado", content = @Content(schema = @Schema(hidden = true)))
     @PostMapping
-    public ResponseEntity<ReportDTO> newReport(@RequestBody @Valid Report report){
+    public ResponseEntity<ReportResponse> newReport(@RequestBody @Valid Report report){
         reportRepository.save(report);
-        return ResponseEntity.status(200).body(JsonResponseAdapter.reportDTO(report));
+        return ResponseEntity.status(200).body(JsonResponseAdapter.reportResponse(report));
     }
-
-
 }
