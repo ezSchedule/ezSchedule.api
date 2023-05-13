@@ -2,6 +2,7 @@ package br.com.ezschedule.apischedule.controller;
 
 
 import br.com.ezschedule.apischedule.adapter.JsonResponseAdapter;
+import br.com.ezschedule.apischedule.model.DtoClasses.Response.ServiceResponse;
 import br.com.ezschedule.apischedule.model.DtoClasses.Response.TenantResponse;
 import br.com.ezschedule.apischedule.model.DtoClasses.ServiceDTO;
 import br.com.ezschedule.apischedule.model.ObjectList;
@@ -39,8 +40,8 @@ public class ServiceController {
     @ApiResponse(responseCode = "204", description =
             "Não há serviços cadastrados.", content = @Content(schema = @Schema(hidden = true)))
     @ApiResponse(responseCode = "200", description = "serviços encontrados.")
-    @GetMapping
-    public ResponseEntity<List<TenantResponse>> showList(@RequestParam int id) {
+    @GetMapping("/tenant")
+    public ResponseEntity<List<TenantResponse>> tenantsList(@RequestParam int id) {
         List<Tenant> listTenants = this.tenantRepository.findAllTenantsCondominium(id);
         if (listTenants.isEmpty()) {
             return ResponseEntity.status(204).build();
@@ -50,11 +51,20 @@ public class ServiceController {
         );
     }
 
+    @GetMapping
+    public ResponseEntity<List<ServiceResponse>> listService(@RequestParam int id) {
+        List<Service> services = this.serviceRepository.listService(id);
+        if (!services.isEmpty())
+            return ResponseEntity.status(200).body(JsonResponseAdapter.listServiceResponse(services));
+        return ResponseEntity.status(204).build();
+    }
+
     @ApiResponse(responseCode = "201", description =
             "Serviço cadastrado", content = @Content(schema = @Schema(hidden = true)))
     @PostMapping
     public ResponseEntity<Service> addService(@RequestBody @Valid Service s) {
-        return ResponseEntity.status(201).body(this.serviceRepository.save(s));
+        this.serviceRepository.save(s);
+        return ResponseEntity.status(201).build();
     }
 
     @ApiResponse(responseCode = "200", description =
@@ -71,19 +81,19 @@ public class ServiceController {
             servicevector.addObject(serviceName.get());
         }
 
-      for(int i =0;i< servicevector.getSize();i++){
-          orderedVector.addObject(servicevector.getByIndex(i));
-      }
+        for (int i = 0; i < servicevector.getSize(); i++) {
+            orderedVector.addObject(servicevector.getByIndex(i));
+        }
 
-        for(int i =0;i < orderedVector.getSize() -1;i++){
-            for(int j =orderedVector.getSize()-1;j > i;j--) {
+        for (int i = 0; i < orderedVector.getSize() - 1; i++) {
+            for (int j = orderedVector.getSize() - 1; j > i; j--) {
                 Service iObject = orderedVector.getByIndex(i);
                 Service jObject = orderedVector.getByIndex(j);
 
                 if (iObject.getServiceName().compareTo(jObject.getServiceName()) > 0) {
                     Service aux = iObject;
-                    orderedVector.substituteByIndex(i,jObject);
-                    orderedVector.substituteByIndex(j,aux);
+                    orderedVector.substituteByIndex(i, jObject);
+                    orderedVector.substituteByIndex(j, aux);
                 }
             }
         }
@@ -95,24 +105,22 @@ public class ServiceController {
             "Não há serviços cadastrados.", content = @Content(schema = @Schema(hidden = true)))
     @ApiResponse(responseCode = "200", description = "serviços encontrados.")
     @GetMapping("/binarySearch")
-    public ResponseEntity<ServiceDTO> binarySearch(@RequestBody @Valid Service serviceOfChoice){
+    public ResponseEntity<ServiceDTO> binarySearch(@RequestBody @Valid Service serviceOfChoice) {
         int meio;
         int inicio = 0;
         int fim = orderedVector.getSize();
 
-        do{
-            meio = (inicio + fim) /2;
+        do {
+            meio = (inicio + fim) / 2;
             Service currentService = orderedVector.getByIndex(meio);
-            if(serviceOfChoice.getServiceName().equals(currentService.getServiceName())){
+            if (serviceOfChoice.getServiceName().equals(currentService.getServiceName())) {
                 return ResponseEntity.status(200).body(JsonResponseAdapter.serviceDTO(orderedVector.getByIndex(meio)));
+            } else if (serviceOfChoice.getServiceName().compareTo(orderedVector.getByIndex(meio).getServiceName()) < 0) {
+                fim = meio - 1;
+            } else {
+                inicio = meio + 1;
             }
-            else if(serviceOfChoice.getServiceName().compareTo(orderedVector.getByIndex(meio).getServiceName()) < 0) {
-                fim =meio -1;
-            }
-            else{
-                inicio = meio +1;
-            }
-        }while(inicio <= fim);
+        } while (inicio <= fim);
 
         return ResponseEntity.status(404).build();
     }
@@ -121,9 +129,9 @@ public class ServiceController {
             "Não há serviços cadastrados.", content = @Content(schema = @Schema(hidden = true)))
     @ApiResponse(responseCode = "200", description = "serviços atualizado.")
     @PutMapping
-    public ResponseEntity<ServiceDTO> updateService(@RequestParam int id, @RequestParam String serviceName){
+    public ResponseEntity<ServiceDTO> updateService(@RequestParam int id, @RequestParam String serviceName) {
         Optional<Service> serviceOpt = this.serviceRepository.findById(id);
-        if (serviceOpt.isPresent()){
+        if (serviceOpt.isPresent()) {
             this.serviceRepository.updateService(id, serviceName);
             return ResponseEntity.status(200).build();
         }
@@ -134,9 +142,9 @@ public class ServiceController {
             "Não há serviços cadastrados.", content = @Content(schema = @Schema(hidden = true)))
     @ApiResponse(responseCode = "200", description = "serviços deletado.")
     @DeleteMapping
-    public ResponseEntity<ServiceDTO> deleteService(@RequestParam int id){
+    public ResponseEntity<ServiceDTO> deleteService(@RequestParam int id) {
         Optional<Service> serviceOpt = this.serviceRepository.findById(id);
-        if (serviceOpt.isPresent()){
+        if (serviceOpt.isPresent()) {
             this.serviceRepository.deleteById(id);
             return ResponseEntity.status(200).build();
         }

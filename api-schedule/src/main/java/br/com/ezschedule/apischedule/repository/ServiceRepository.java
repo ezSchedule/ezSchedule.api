@@ -19,4 +19,8 @@ public interface ServiceRepository extends JpaRepository<Service, Integer> {
     @Query(value = "UPDATE service SET service_name = :serviceName where id = :id", nativeQuery = true)
     void updateService(int id, String serviceName);
 
+
+    @Query("SELECT s FROM Service s WHERE s.tenant.condominium.id = :id")
+    List<Service> listService(int id);
+
 }

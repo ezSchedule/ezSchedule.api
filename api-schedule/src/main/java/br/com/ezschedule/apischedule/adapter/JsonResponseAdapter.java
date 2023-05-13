@@ -98,6 +98,18 @@ public interface JsonResponseAdapter {
         );
     }
 
+    static ServiceResponse serviceResponse(Service s) {
+        return s != null ? new ServiceResponse(
+                s.getId(),
+                s.getServiceName(),
+                tentantDTO(s.getTenant())
+        ) : null;
+    }
+
+    static List<ServiceResponse> listServiceResponse(List<Service> services) {
+        return services.stream().map(JsonResponseAdapter::serviceResponse).toList();
+    }
+
     public static List<ServiceDTO> serviceArrayDTO(int size, ObjectList<Service> serviceVector) {
         List<ServiceDTO> serviceDTOList = new ArrayList<>();
         for (int i = 0; i < size; i++) {
@@ -105,8 +117,7 @@ public interface JsonResponseAdapter {
 
             serviceDTOList.add(new ServiceDTO(
                             currentService.getId(),
-                            currentService.getServiceName(),
-                            tentantDTO(currentService.getTenant())
+                            currentService.getServiceName()
                     )
             );
         }

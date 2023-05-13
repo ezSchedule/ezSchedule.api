@@ -12,7 +12,7 @@ import java.util.List;
 public interface ReportRepository extends JpaRepository<Report, Integer> {
     @Query(
             "SELECT new br.com.ezschedule.apischedule.model.DtoClasses.ReportPaymentsDto" +
-            "(r.id, r.productName, r.category, r.paymentStatus, s.tenant.name, s.tenant.residentsBlock, s.tenant.apartmentNumber, " +
+            "(r.id, r.productName, r.category, r.paymentStatus, r.paymentTime, s.tenant.name, s.tenant.residentsBlock, s.tenant.apartmentNumber, " +
             "s.tenant.phoneNumber, s.dateEvent, sa.saloonName, sa.saloonPrice, sa.saloonBlock) " +
             "FROM Report r " +
             "JOIN r.schedule s " +

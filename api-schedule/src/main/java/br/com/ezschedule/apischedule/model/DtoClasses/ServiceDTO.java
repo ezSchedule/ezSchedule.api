@@ -8,18 +8,12 @@ public class ServiceDTO {
 
     private String serviceName;
 
-
-    private TenantDTO tenant;
-
-    public ServiceDTO(Integer id, String serviceName, TenantDTO tenant) {
-        this.id = id;
-        this.serviceName = serviceName;
-        this.tenant = tenant;
-    }
-
     public ServiceDTO(Integer id, String serviceName) {
         this.id = id;
         this.serviceName = serviceName;
+    }
+
+    public ServiceDTO() {
     }
 
     public Integer getId() {
@@ -36,13 +30,5 @@ public class ServiceDTO {
 
     public void setServiceName(String serviceName) {
         this.serviceName = serviceName;
-    }
-
-    public TenantDTO getTenant() {
-        return tenant;
-    }
-
-    public void setTenant(TenantDTO tenant) {
-        this.tenant = tenant;
     }
 }

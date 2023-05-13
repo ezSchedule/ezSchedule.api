@@ -1,6 +1,5 @@
 package br.com.ezschedule.apischedule.model.DtoClasses;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class ReportPaymentsDto {
@@ -8,6 +7,7 @@ public class ReportPaymentsDto {
     private String productName;
     private String category;
     private String paymentStatus;
+    private LocalDateTime paymentTime;
     private String tenantName;
     private String tenantBlock;
     private Integer tenantNumber;
@@ -17,11 +17,12 @@ public class ReportPaymentsDto {
     private Double saloonPrice;
     private String saloonBlock;
 
-    public ReportPaymentsDto(int id, String productName, String category, String paymentStatus, String tenantName, String tenantBlock, Integer tenantNumber, String tenantPhone, LocalDateTime dateEvent, String saloonName, Double saloonPrice, String saloonBlock) {
+    public ReportPaymentsDto(int id, String productName, String category, String paymentStatus, LocalDateTime paymentTime, String tenantName, String tenantBlock, Integer tenantNumber, String tenantPhone, LocalDateTime dateEvent, String saloonName, Double saloonPrice, String saloonBlock) {
         this.id = id;
         this.productName = productName;
         this.category = category;
         this.paymentStatus = paymentStatus;
+        this.paymentTime = paymentTime;
         this.tenantName = tenantName;
         this.tenantBlock = tenantBlock;
         this.tenantNumber = tenantNumber;
@@ -62,6 +63,14 @@ public class ReportPaymentsDto {
 
     public void setPaymentStatus(String paymentStatus) {
         this.paymentStatus = paymentStatus;
+    }
+
+    public LocalDateTime getPaymentTime() {
+        return paymentTime;
+    }
+
+    public void setPaymentTime(LocalDateTime paymentTime) {
+        this.paymentTime = paymentTime;
     }
 
     public String getTenantName() {
