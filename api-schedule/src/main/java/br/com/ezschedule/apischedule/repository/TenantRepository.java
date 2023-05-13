@@ -1,12 +1,14 @@
 package br.com.ezschedule.apischedule.repository;
 
 import br.com.ezschedule.apischedule.model.Tenant;
+import br.com.ezschedule.apischedule.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,24 +20,28 @@ public interface TenantRepository extends JpaRepository<Tenant, Integer> {
 
     @Transactional
     @Modifying
-    @Query(value = "UPDATE Tenant SET is_authenticated = 1 WHERE email = ?1 AND password = ?2 ", nativeQuery = true)
-    Object userAuthenticated(String email, String password);
+    @Query(value = "UPDATE Tenant SET is_authenticated = 1 WHERE email = ?1", nativeQuery = true)
+    void userAuthenticated(String email);
 
     @Transactional
     @Modifying
     @Query(value = "UPDATE Tenant SET is_authenticated = 0 WHERE email = ?1 ", nativeQuery = true)
-    Object logoutUser(String email);
+    Tenant logoutUser(String email);
 
     @Transactional
     @Modifying
-    @Query(value = "UPDATE Tenant SET password = ?3 WHERE email = ?1 AND password = ?2 ", nativeQuery = true)
-    Object updatePasswordUser(String email, String password, String newPassword);
+    @Query(value = "UPDATE Tenant SET password = :newPassword WHERE email = :email")
+    Object updatePasswordUser(String email, String newPassword);
 
 
 
     //Existe pelo email
     Boolean existsByEmail(String email);
 
+
+//    Tenant findTop1Bysubscribed(boolean b);
+    @Query("Select distinct(t.condominium.id) from Tenant t ")
+    List<Integer> findAllCondominiumIdFromTenants();
 
     Optional<Tenant> findByEmail(String email);
 }

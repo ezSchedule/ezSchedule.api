@@ -1,14 +1,12 @@
-package br.com.ezschedule.apischedule.model.DtoClasses.CondominiumResponse;
+package br.com.ezschedule.apischedule.model.DtoClasses.Response;
 
-import br.com.ezschedule.apischedule.model.Condominium;
+import br.com.ezschedule.apischedule.model.DtoClasses.CondominiumDto;
+import br.com.ezschedule.apischedule.model.DtoClasses.TenantDTO;
 import br.com.ezschedule.apischedule.model.Schedule;
-import br.com.ezschedule.apischedule.model.Tenant;
 
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import java.time.LocalDateTime;
 
-public class ReportCondoDTO {
+public class ReportResponse {
     private int id;
     private int invoiceNumber;
     private String productName;
@@ -16,9 +14,10 @@ public class ReportCondoDTO {
     private String paymentStatus;
     private LocalDateTime paymentTime;
     private Schedule schedule;
-    private Tenant tenant;
+    private CondominiumDto condominium;
+    private TenantDTO tenant;
 
-    public ReportCondoDTO(int id, int invoiceNumber, String productName, String category, String paymentStatus, LocalDateTime paymentTime, Schedule schedule, Tenant tenant) {
+    public ReportResponse(int id, int invoiceNumber, String productName, String category, String paymentStatus, LocalDateTime paymentTime, Schedule schedule, CondominiumDto condominium, TenantDTO tenant) {
         this.id = id;
         this.invoiceNumber = invoiceNumber;
         this.productName = productName;
@@ -26,7 +25,11 @@ public class ReportCondoDTO {
         this.paymentStatus = paymentStatus;
         this.paymentTime = paymentTime;
         this.schedule = schedule;
+        this.condominium = condominium;
         this.tenant = tenant;
+    }
+
+    public ReportResponse() {
     }
 
     public int getId() {
@@ -85,11 +88,19 @@ public class ReportCondoDTO {
         this.schedule = schedule;
     }
 
-    public Tenant getTenant() {
+    public CondominiumDto getCondominium() {
+        return condominium;
+    }
+
+    public void setCondominium(CondominiumDto condominium) {
+        this.condominium = condominium;
+    }
+
+    public TenantDTO getTenant() {
         return tenant;
     }
 
-    public void setTenant(Tenant tenant) {
+    public void setTenant(TenantDTO tenant) {
         this.tenant = tenant;
     }
 }

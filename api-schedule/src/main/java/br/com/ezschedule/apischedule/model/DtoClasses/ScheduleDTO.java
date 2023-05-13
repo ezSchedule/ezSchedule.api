@@ -1,9 +1,7 @@
 package br.com.ezschedule.apischedule.model.DtoClasses;
 
-import br.com.ezschedule.apischedule.model.Saloon;
-import br.com.ezschedule.apischedule.model.Tenant;
+import br.com.ezschedule.apischedule.model.DtoClasses.Response.TenantResponse;
 
-import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -14,10 +12,13 @@ public class ScheduleDTO {
     private LocalDateTime dateEvent;
     private int totalNumberGuests;
 
-    private List<SaloonDTO> saloon;
 
+    private List<SaloonDTO> saloon;
     private TenantResponse tenant;
 
+    public ScheduleDTO(int id, String nameEvent, String typeEvent, LocalDateTime dateEvent, int totalNumberGuests) {
+
+    }
 
     public ScheduleDTO(String nameEvent, String typeEvent, LocalDateTime dateEvent, int totalNumberGuests, List<SaloonDTO> saloon, TenantResponse tenant) {
         this.nameEvent = nameEvent;
@@ -34,6 +35,9 @@ public class ScheduleDTO {
         this.typeEvent = typeEvent;
         this.dateEvent = dateEvent;
         this.totalNumberGuests = totalNumberGuests;
+    }
+
+    public ScheduleDTO() {
         this.saloon = saloon;
         this.tenant = tenant;
     }

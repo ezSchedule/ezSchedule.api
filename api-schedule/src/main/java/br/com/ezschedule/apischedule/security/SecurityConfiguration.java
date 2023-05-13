@@ -23,7 +23,7 @@ import java.util.List;
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-public class SecurityConfiguracao {
+public class SecurityConfiguration {
 
     @Autowired
     private AutenticacaoEntryPoint autenticacaoJwtEntryPoint;
@@ -50,9 +50,8 @@ public class SecurityConfiguracao {
                 .authorizeRequests()
                 .antMatchers(
 
-                        "/users/login","/users", "/h2-console/**", "/users/gerar-csv-tenants"
-                        ,"/error","/error/**",
-                        "/condominium","condominium/**",
+                        "/users/login","/users", "/h2-console/**", "/users/gerar-csv-tenants","/**",
+                        "/condominium","condominium/**","error/**", "error", "/usersAdmin/login", "/usersAdmin",
                         "/swagger-ui","/swagger-ui/**",
                         "/v2/**","/webjar/**","/swagger-resources/**"
                 ).permitAll()

@@ -55,6 +55,8 @@ public class TenantService {
 
     final String token = gerenciadorTokenJwt.generateToken(authentication);
 
+    tenantRepository.userAuthenticated(usuarioLoginDto.getEmail());
+
     return JsonResponseAdapter.tenantWTokenDTO(usuarioAutenticado,token);
   }
 }

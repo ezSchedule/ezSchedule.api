@@ -1,4 +1,4 @@
-package br.com.ezschedule.apischedule.model.DtoClasses;
+package br.com.ezschedule.apischedule.model.DtoClasses.UpdateResponse;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;

@@ -14,14 +14,25 @@ public class Schedule {
     private LocalDateTime dateEvent;
     private int totalNumberGuests;
 
-    @OneToMany
-    private List<Saloon> saloon;
+    @ManyToOne
+    private Saloon saloon;
 
     @ManyToOne
     private Tenant tenant;
 
 
-    public Schedule(String nameEvent, String typeEvent, LocalDateTime dateEvent, int totalNumberGuests, List<Saloon> saloon, Tenant tenant) {
+    public Schedule(String nameEvent, String typeEvent, LocalDateTime dateEvent, int totalNumberGuests, Saloon saloon, Tenant tenant) {
+        this.nameEvent = nameEvent;
+        this.typeEvent = typeEvent;
+        this.dateEvent = dateEvent;
+        this.totalNumberGuests = totalNumberGuests;
+        this.saloon = saloon;
+        this.tenant = tenant;
+    }
+
+
+    public Schedule(int id,String nameEvent, String typeEvent, LocalDateTime dateEvent, int totalNumberGuests, Saloon saloon, Tenant tenant) {
+        this.id = id;
         this.nameEvent = nameEvent;
         this.typeEvent = typeEvent;
         this.dateEvent = dateEvent;
@@ -31,16 +42,6 @@ public class Schedule {
     }
 
     public Schedule() {
-    }
-
-    public Schedule(int id, String nameEvent, String typeEvent, LocalDateTime dateEvent, int totalNumberGuests, List<Saloon> saloon, Tenant tenant) {
-        this.id = id;
-        this.nameEvent = nameEvent;
-        this.typeEvent = typeEvent;
-        this.dateEvent = dateEvent;
-        this.totalNumberGuests = totalNumberGuests;
-        this.saloon = saloon;
-        this.tenant = tenant;
     }
 
     public int getId() {
@@ -83,11 +84,11 @@ public class Schedule {
         this.totalNumberGuests = totalNumberGuests;
     }
 
-    public List<Saloon> getSaloon() {
+    public Saloon getSaloon() {
         return saloon;
     }
 
-    public void setSaloon(List<Saloon> saloon) {
+    public void setSaloon(Saloon saloon) {
         this.saloon = saloon;
     }
 

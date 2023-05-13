@@ -1,21 +1,33 @@
 package br.com.ezschedule.apischedule.model.DtoClasses;
 
+import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
+
 public class JsonResponse {
 
+    @ApiModelProperty()
+    @Schema(description = "email do usuário", example = "teste@gmail.com")
     private String email;
 
+    @Schema(description = "cpf do usuário", example = "50719658012")
     private String cpf;
 
+    @Schema(description = "nome completo do usuário", example = "Teste Testando da Silva")
     private String name;
 
+    @Schema(description = "bloco da residência", example = "bloco e")
     private String residentsBlock;
 
+    @Schema(description = "número do apartemento", example = "14")
     private Integer apartmentNumber;
 
+    @Schema(description = "número para contato", example = "11930733686")
     private String phoneNumber;
 
+    @Schema(description = "usuário está logado", example = "true")
     private boolean isAuthenticated;
 
+    @Schema(description = "usuário é um sindico", example = "1")
     private Integer isAdmin;
 
     public JsonResponse(String email, String cpf, String name, String residentsBlock, Integer apartmentNumber, String phoneNumber, boolean isAuthenticated, Integer isAdmin) {
