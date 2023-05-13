@@ -4,8 +4,10 @@ import br.com.ezschedule.apischedule.model.Condominium;
 import br.com.ezschedule.apischedule.model.DtoClasses.CondominiumDto;
 import br.com.ezschedule.apischedule.model.DtoClasses.ReportDTO;
 import br.com.ezschedule.apischedule.model.DtoClasses.ScheduleDTO;
+import br.com.ezschedule.apischedule.model.DtoClasses.ServiceDTO;
 import br.com.ezschedule.apischedule.model.Report;
 import br.com.ezschedule.apischedule.model.Schedule;
+import br.com.ezschedule.apischedule.model.Service;
 
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -24,8 +26,9 @@ public class TenantResponse {
     private List<ReportDTO> reportList;
     private List<ScheduleDTO> scheduleList;
     private CondominiumDto condominium;
+    private List<ServiceDTO> services;
 
-    public TenantResponse(int id, String email, String cpf, String name, String residentsBlock, Integer apartmentNumber, String phoneNumber, boolean isAuthenticated, Integer isAdmin, List<ReportDTO> reportList, List<ScheduleDTO> scheduleList, CondominiumDto condominium) {
+    public TenantResponse(int id, String email, String cpf, String name, String residentsBlock, Integer apartmentNumber, String phoneNumber, boolean isAuthenticated, Integer isAdmin, List<ReportDTO> reportList, List<ScheduleDTO> scheduleList, CondominiumDto condominium, List<ServiceDTO> services) {
         this.id = id;
         this.email = email;
         this.cpf = cpf;
@@ -38,6 +41,7 @@ public class TenantResponse {
         this.reportList = reportList;
         this.scheduleList = scheduleList;
         this.condominium = condominium;
+        this.services = services;
     }
 
     public TenantResponse() {
@@ -137,5 +141,13 @@ public class TenantResponse {
 
     public void setCondominium(CondominiumDto condominium) {
         this.condominium = condominium;
+    }
+
+    public List<ServiceDTO> getServices() {
+        return services;
+    }
+
+    public void setServices(List<ServiceDTO> services) {
+        this.services = services;
     }
 }
