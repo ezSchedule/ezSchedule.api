@@ -13,12 +13,12 @@ public class ForumResponse {
 
     private String typeMessage;
 
-    private LocalDateTime dateTimePost;
+    private String dateTimePost;
     private boolean isEdited;
 
     private CondominiumDto condominium;
 
-    public ForumResponse(Integer id, String textContent, String typeMessage, LocalDateTime dateTimePost, boolean isEdited, CondominiumDto condominium) {
+    public ForumResponse(Integer id, String textContent, String typeMessage, String dateTimePost, boolean isEdited, CondominiumDto condominium) {
         this.id = id;
         this.textContent = textContent;
         this.typeMessage = typeMessage;
@@ -51,11 +51,11 @@ public class ForumResponse {
         this.typeMessage = typeMessage;
     }
 
-    public LocalDateTime getDateTimePost() {
+    public String getDateTimePost() {
         return dateTimePost;
     }
 
-    public void setDateTimePost(LocalDateTime dateTimePost) {
+    public void setDateTimePost(String dateTimePost) {
         this.dateTimePost = dateTimePost;
     }
 

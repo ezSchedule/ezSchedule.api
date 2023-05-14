@@ -37,13 +37,16 @@ public interface TenantRepository extends JpaRepository<Tenant, Integer> {
     @Query(value = "UPDATE Tenant SET password = :newPassword WHERE email = :email")
     Object updatePasswordUser(String email, String newPassword);
 
+    @Query("Select t from Tenant t where subscribed = 1")
+    List<Tenant> findSubscribedTenants();
+
+    @Query("Update Tenant set subscribed = :isSubscribed where idUser = :id")
+    void subscribeOrUnsubTenant(Integer isSubscribed,int id);
 
 
     //Existe pelo email
     Boolean existsByEmail(String email);
 
-
-//    Tenant findTop1Bysubscribed(boolean b);
     @Query("Select distinct(t.condominium.id) from Tenant t ")
     List<Integer> findAllCondominiumIdFromTenants();
 

@@ -10,6 +10,8 @@ import java.util.List;
 @DiscriminatorValue("2")
 public class Tenant extends User {
 
+    private Integer subscribed = 0;
+
     @OneToMany(mappedBy = "tenant")
     private List<Report> reportList;
 
@@ -30,8 +32,9 @@ public class Tenant extends User {
         this.services = services;
     }
 
-    public Tenant(String email, String cpf, String password, String name, String residentsBlock, Integer apartmentNumber, String phoneNumber, List<Report> reportList, List<Schedule> scheduleList, Condominium condominium, List<Service> services) {
+    public Tenant(String email, String cpf, String password, String name, String residentsBlock, Integer apartmentNumber, String phoneNumber,Integer subscribed, List<Report> reportList, List<Schedule> scheduleList, Condominium condominium, List<Service> services) {
         super(email, cpf, password, name, residentsBlock, apartmentNumber, phoneNumber);
+        this.subscribed = subscribed;
         this.reportList = reportList;
         this.scheduleList = scheduleList;
         this.condominium = condominium;
@@ -39,6 +42,14 @@ public class Tenant extends User {
     }
 
     public Tenant() {
+    }
+
+    public Integer getSubscribed() {
+        return subscribed;
+    }
+
+    public void setSubscribed(Integer subscribed) {
+        this.subscribed = subscribed;
     }
 
     public List<Report> getReportList() {
