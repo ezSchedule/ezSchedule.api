@@ -8,12 +8,12 @@ public class ScheduleResponse {
     private int id;
     private String nameEvent;
     private String typeEvent;
-    private LocalDateTime dateEvent;
+    private String dateEvent;
     private int totalNumberGuests;
     private SaloonDTO saloon;
     private TenantDTO tenant;
 
-    public ScheduleResponse(int id, String nameEvent, String typeEvent, LocalDateTime dateEvent, int totalNumberGuests, SaloonDTO saloon, TenantDTO tenant) {
+    public ScheduleResponse(int id, String nameEvent, String typeEvent, String dateEvent, int totalNumberGuests, SaloonDTO saloon, TenantDTO tenant) {
         this.id = id;
         this.nameEvent = nameEvent;
         this.typeEvent = typeEvent;
@@ -47,11 +47,11 @@ public class ScheduleResponse {
         this.typeEvent = typeEvent;
     }
 
-    public LocalDateTime getDateEvent() {
+    public String getDateEvent() {
         return dateEvent;
     }
 
-    public void setDateEvent(LocalDateTime dateEvent) {
+    public void setDateEvent(String dateEvent) {
         this.dateEvent = dateEvent;
     }
 

@@ -6,10 +6,10 @@ public class ScheduleDTO {
     private int id;
     private String nameEvent;
     private String typeEvent;
-    private LocalDateTime dateEvent;
+    private String dateEvent;
     private int totalNumberGuests;
 
-    public ScheduleDTO(int id, String nameEvent, String typeEvent, LocalDateTime dateEvent, int totalNumberGuests) {
+    public ScheduleDTO(int id, String nameEvent, String typeEvent, String dateEvent, int totalNumberGuests) {
         this.id = id;
         this.nameEvent = nameEvent;
         this.typeEvent = typeEvent;
@@ -44,11 +44,11 @@ public class ScheduleDTO {
         this.typeEvent = typeEvent;
     }
 
-    public LocalDateTime getDateEvent() {
+    public String getDateEvent() {
         return dateEvent;
     }
 
-    public void setDateEvent(LocalDateTime dateEvent) {
+    public void setDateEvent(String dateEvent) {
         this.dateEvent = dateEvent;
     }
 

@@ -7,7 +7,9 @@ import br.com.ezschedule.apischedule.model.DtoClasses.UpdateResponse.UpdateForum
 import br.com.ezschedule.apischedule.model.DtoClasses.UpdateResponse.UpdateScheduleForm;
 import br.com.ezschedule.apischedule.service.autenticacao.dto.UsuarioTokenDto;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -139,7 +141,7 @@ public interface JsonResponseAdapter {
                 f.getId(),
                 f.getTextContent(),
                 f.getTypeMessage(),
-                f.getDateTimePost(),
+                f.getDateTimePost().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")),
                 f.isEdited(),
                 condominiumDTO(f.getCondominium())
         );
@@ -163,7 +165,7 @@ public interface JsonResponseAdapter {
                 f.getId(),
                 f.getTextContent(),
                 f.getTypeMessage(),
-                f.getDateTimePost(),
+                f.getDateTimePost().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")),
                 f.isEdited()
         );
     }
@@ -195,7 +197,7 @@ public interface JsonResponseAdapter {
                 s.getId(),
                 s.getNameEvent(),
                 s.getTypeEvent(),
-                s.getDateEvent(),
+                s.getDateEvent().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")),
                 s.getTotalNumberGuests()
         );
     }
@@ -205,7 +207,7 @@ public interface JsonResponseAdapter {
                 s.getId(),
                 s.getNameEvent(),
                 s.getTypeEvent(),
-                s.getDateEvent(),
+                s.getDateEvent().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")),
                 s.getTotalNumberGuests(),
                 saloonDTO(s.getSaloon()),
                 tentantDTO(s.getTenant())
@@ -256,8 +258,8 @@ public interface JsonResponseAdapter {
                 r.getProductName(),
                 r.getCategory(),
                 r.getPaymentStatus(),
-                r.getPaymentTime(),
-                r.getSchedule(),
+                r.getPaymentTime().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")),
+                scheduleDTO(r.getSchedule()),
                 condominiumDTO(r.getCondominium()),
                 tentantDTO(r.getTenant())
         );
@@ -290,7 +292,7 @@ public interface JsonResponseAdapter {
                 r.getProductName(),
                 r.getCategory(),
                 r.getPaymentStatus(),
-                r.getPaymentTime()
+                r.getPaymentTime().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"))
         );
     }
 
