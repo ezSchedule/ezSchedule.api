@@ -27,6 +27,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -34,6 +35,11 @@ import java.io.*;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.*;
+import javax.crypto.KeyGenerator;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @Api(value = "Condômino", produces = MediaType.APPLICATION_JSON_VALUE, tags = {"condomino"}, description = "requisições relacionadas a condônimo")
 @RestController
@@ -49,6 +55,9 @@ public class TenantController {
     private SendMail sendMail;
     List<Tenant> listUsers = new ArrayList<>();
     private String token = "";
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     //Show all user's
     @ApiResponse(responseCode = "204", description =
@@ -166,7 +175,8 @@ public class TenantController {
                     t.isAdmin(),
                     t.getReportList(),
                     t.getScheduleList(),
-                    t.getCondominium()
+                    t.getCondominium(),
+                    t.getServices()
             );
             Tenant tenant = tenantRepository.save(updatedTenant);
             return ResponseEntity.status(200).body(JsonResponseAdapter.tenantResponse(tenant));
@@ -262,4 +272,27 @@ public class TenantController {
 
     }
 
+    @GetMapping("/generate-token/{id}")
+    public ResponseEntity<String> generateEncryptedToken(@PathVariable int id) {
+
+        if(tenantRepository.existsById(id)){
+
+            String idCondominium = String.valueOf(tenantRepository.findById(id).get().getCondominium().getId());
+
+          String encodedId = passwordEncoder.encode(idCondominium);
+          return ResponseEntity.status(200).body(encodedId);
+        }
+        return ResponseEntity.status(404).build();
+    }
+
+    public Boolean DecryptToken(String encodedId) {
+        List<Integer> idList = tenantRepository.findAllCondominiumIdFromTenants();
+
+        for(int i =0;i < idList.size();i++){
+            if(passwordEncoder.matches(String.valueOf(idList.get(i)),encodedId)){
+                return true;
+            }
+        }
+        return false;
+    }
 }

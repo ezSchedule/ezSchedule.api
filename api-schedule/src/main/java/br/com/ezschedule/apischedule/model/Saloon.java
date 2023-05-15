@@ -12,11 +12,10 @@ public class Saloon {
     private String saloonName;
     private Double saloonPrice;
     private String saloonBlock;
-
-    @OneToMany(mappedBy = "saloon")
-    private List<Schedule> schedule;
     @ManyToOne
     private Condominium condominium;
+    @OneToMany(mappedBy = "saloon")
+    private List<Schedule> schedule;
 
     public Saloon(String saloonName, Double saloonPrice, String saloonBlock, List<Schedule> schedule, Condominium condominium) {
         this.saloonName = saloonName;

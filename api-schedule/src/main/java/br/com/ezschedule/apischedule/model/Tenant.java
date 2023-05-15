@@ -10,6 +10,8 @@ import java.util.List;
 @DiscriminatorValue("2")
 public class Tenant extends User {
 
+    private Integer subscribed = 0;
+
     @OneToMany(mappedBy = "tenant")
     private List<Report> reportList;
 
@@ -19,21 +21,35 @@ public class Tenant extends User {
     @ManyToOne
     private Condominium condominium;
 
-    public Tenant(int id, String email, String cpf, String password, String name, String residentsBlock, Integer apartmentNumber, String phoneNumber, Integer isAdmin, List<Report> reportList, List<Schedule> scheduleList, Condominium condominium) {
+    @OneToMany(mappedBy = "tenant")
+    private List<Service> services;
+
+    public Tenant(int id, String email, String cpf, String password, String name, String residentsBlock, Integer apartmentNumber, String phoneNumber, Integer isAdmin, List<Report> reportList, List<Schedule> scheduleList, Condominium condominium, List<Service> services) {
         super(id, email, cpf, password, name, residentsBlock, apartmentNumber, phoneNumber, isAdmin);
         this.reportList = reportList;
         this.scheduleList = scheduleList;
         this.condominium = condominium;
+        this.services = services;
     }
 
-    public Tenant(String email, String cpf, String password, String name, String residentsBlock, Integer apartmentNumber, String phoneNumber, List<Report> reportList, List<Schedule> scheduleList, Condominium condominium) {
+    public Tenant(String email, String cpf, String password, String name, String residentsBlock, Integer apartmentNumber, String phoneNumber,Integer subscribed, List<Report> reportList, List<Schedule> scheduleList, Condominium condominium, List<Service> services) {
         super(email, cpf, password, name, residentsBlock, apartmentNumber, phoneNumber);
+        this.subscribed = subscribed;
         this.reportList = reportList;
         this.scheduleList = scheduleList;
         this.condominium = condominium;
+        this.services = services;
     }
 
     public Tenant() {
+    }
+
+    public Integer getSubscribed() {
+        return subscribed;
+    }
+
+    public void setSubscribed(Integer subscribed) {
+        this.subscribed = subscribed;
     }
 
     public List<Report> getReportList() {
@@ -58,6 +74,14 @@ public class Tenant extends User {
 
     public void setCondominium(Condominium condominium) {
         this.condominium = condominium;
+    }
+
+    public List<Service> getServices() {
+        return services;
+    }
+
+    public void setServices(List<Service> services) {
+        this.services = services;
     }
 
     @Override

@@ -1,6 +1,7 @@
 package br.com.ezschedule.apischedule.controller;
 
 import br.com.ezschedule.apischedule.adapter.JsonResponseAdapter;
+import br.com.ezschedule.apischedule.model.DtoClasses.Response.ScheduleResponse;
 import br.com.ezschedule.apischedule.model.DtoClasses.ScheduleDTO;
 import br.com.ezschedule.apischedule.model.DtoClasses.UpdateResponse.UpdateScheduleForm;
 import br.com.ezschedule.apischedule.model.Schedule;
@@ -30,32 +31,32 @@ public class ScheduleController {
             "Não há agendamentos cadastrados.", content = @Content(schema = @Schema(hidden = true)))
     @ApiResponse(responseCode = "200", description = "Agendamentos encontrados.")
     @GetMapping
-    public ResponseEntity<List<ScheduleDTO>> showAllSchedules(){
+    public ResponseEntity<List<ScheduleResponse>> showAllSchedules(){
         List<Schedule> allSchedules = scheduleRepository.findAll();
         if(allSchedules.isEmpty()){
             return ResponseEntity.status(204).build();
         }
-        return ResponseEntity.status(200).body(JsonResponseAdapter.listScheduleDTO(allSchedules));
+        return ResponseEntity.status(200).body(JsonResponseAdapter.listScheduleResponse(allSchedules));
     }
 
     @ApiResponse(responseCode = "404", description =
             "Não foi encontrado agendamento.", content = @Content(schema = @Schema(hidden = true)))
     @ApiResponse(responseCode = "200", description = "agendamento encontrado.")
     @GetMapping("/{id}")
-    public ResponseEntity<ScheduleDTO> showAScheduleById(@PathVariable int id){
+    public ResponseEntity<ScheduleResponse> showAScheduleById(@PathVariable int id){
         Optional<Schedule> schedule = scheduleRepository.findById(id);
         if(schedule.isEmpty()){
             return ResponseEntity.status(404).build();
         }
-        return ResponseEntity.status(200).body(JsonResponseAdapter.scheduleDTO(schedule.get()));
+        return ResponseEntity.status(200).body(JsonResponseAdapter.scheduleResponse(schedule.get()));
     }
 
     @ApiResponse(responseCode = "201", description =
             "Agendamento cadastrado", content = @Content(schema = @Schema(hidden = true)))
     @PostMapping
-    public ResponseEntity<ScheduleDTO> newSchedule(@RequestBody @Valid Schedule s){
+    public ResponseEntity<ScheduleResponse> newSchedule(@RequestBody @Valid Schedule s){
         scheduleRepository.save(s);
-        return ResponseEntity.status(200).body(JsonResponseAdapter.scheduleDTO(s));
+        return ResponseEntity.status(200).body(JsonResponseAdapter.scheduleResponse(s));
     }
 
     @ApiResponse(responseCode = "404", description =

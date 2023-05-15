@@ -2,6 +2,7 @@ package br.com.ezschedule.apischedule.controller;
 
 import br.com.ezschedule.apischedule.adapter.JsonResponseAdapter;
 import br.com.ezschedule.apischedule.model.Condominium;
+import br.com.ezschedule.apischedule.model.DtoClasses.CondominiumInformationDto;
 import br.com.ezschedule.apischedule.model.DtoClasses.Response.CondominiumResponse;
 import br.com.ezschedule.apischedule.repository.CondominumRepository;
 import io.swagger.annotations.Api;
@@ -46,21 +47,14 @@ public class CondominumController {
         return ResponseEntity.status(201).build();
     }
 
-    @GetMapping("/amount-tenant")
-    public ResponseEntity<Integer> amountTenant(@RequestParam Integer id) {
+    @GetMapping("/settings")
+    public ResponseEntity<CondominiumInformationDto> settingsCondominiumInformation(@RequestParam Integer id) {
         Integer amountTenants = condominumRepository.amountTenantsCondominium(id);
-        return ResponseEntity.status(200).body(amountTenants);
-    }
-
-    @GetMapping("/amount-apartment")
-    public ResponseEntity<Integer> amountApartment(@RequestParam Integer id) {
         Integer amountApartments = condominumRepository.amountApartmentsCondominium(id);
-        return ResponseEntity.status(200).body(amountApartments);
-    }
-
-    @GetMapping("/amount-saloon")
-    public ResponseEntity<Integer> amountSaloon(@RequestParam Integer id) {
         Integer amountSaloons = condominumRepository.amountSaloonsCondominium(id);
-        return ResponseEntity.status(200).body(amountSaloons);
+
+        return ResponseEntity.status(200).body(new CondominiumInformationDto(
+                amountTenants, amountApartments, amountSaloons
+        ));
     }
 }

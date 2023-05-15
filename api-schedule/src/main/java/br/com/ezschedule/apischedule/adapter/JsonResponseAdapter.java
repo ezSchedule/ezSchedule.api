@@ -7,7 +7,9 @@ import br.com.ezschedule.apischedule.model.DtoClasses.UpdateResponse.UpdateForum
 import br.com.ezschedule.apischedule.model.DtoClasses.UpdateResponse.UpdateScheduleForm;
 import br.com.ezschedule.apischedule.service.autenticacao.dto.UsuarioTokenDto;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,7 +40,8 @@ public interface JsonResponseAdapter {
                 t.getPhoneNumber(),
                 t.isAuthenticated(),
                 t.isAdmin(),
-                token
+                token,
+                t.getCondominium().getId()
         );
     }
 
@@ -81,7 +84,8 @@ public interface JsonResponseAdapter {
                 t.isAdmin(),
                 listReportDTO(t.getReportList()),
                 listScheduleDTO(t.getScheduleList()),
-               condominiumDTO(t.getCondominium())
+                condominiumDTO(t.getCondominium()),
+                listServiceDTO(t.getServices())
         );
     }
 
@@ -91,9 +95,21 @@ public interface JsonResponseAdapter {
 
     public static ServiceDTO serviceDTO(Service s) {
         return new ServiceDTO(
+                s.getId(),
+                s.getServiceName()
+        );
+    }
+
+    static ServiceResponse serviceResponse(Service s) {
+        return s != null ? new ServiceResponse(
+                s.getId(),
                 s.getServiceName(),
                 tentantDTO(s.getTenant())
-        );
+        ) : null;
+    }
+
+    static List<ServiceResponse> listServiceResponse(List<Service> services) {
+        return services.stream().map(JsonResponseAdapter::serviceResponse).toList();
     }
 
     public static List<ServiceDTO> serviceArrayDTO(int size, ObjectList<Service> serviceVector) {
@@ -102,8 +118,8 @@ public interface JsonResponseAdapter {
             Service currentService = serviceVector.getByIndex(i);
 
             serviceDTOList.add(new ServiceDTO(
-                            currentService.getServiceName(),
-                            tentantDTO(currentService.getTenant())
+                            currentService.getId(),
+                            currentService.getServiceName()
                     )
             );
         }
@@ -125,7 +141,7 @@ public interface JsonResponseAdapter {
                 f.getId(),
                 f.getTextContent(),
                 f.getTypeMessage(),
-                f.getDateTimePost(),
+                f.getDateTimePost().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")),
                 f.isEdited(),
                 condominiumDTO(f.getCondominium())
         );
@@ -149,7 +165,7 @@ public interface JsonResponseAdapter {
                 f.getId(),
                 f.getTextContent(),
                 f.getTypeMessage(),
-                f.getDateTimePost(),
+                f.getDateTimePost().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")),
                 f.isEdited()
         );
     }
@@ -181,9 +197,29 @@ public interface JsonResponseAdapter {
                 s.getId(),
                 s.getNameEvent(),
                 s.getTypeEvent(),
-                s.getDateEvent(),
+                s.getDateEvent().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")),
                 s.getTotalNumberGuests()
         );
+    }
+
+    public static ScheduleResponse scheduleResponse(Schedule s) {
+        return new ScheduleResponse(
+                s.getId(),
+                s.getNameEvent(),
+                s.getTypeEvent(),
+                s.getDateEvent().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")),
+                s.getTotalNumberGuests(),
+                saloonDTO(s.getSaloon()),
+                tentantDTO(s.getTenant())
+        );
+    }
+
+    public static List<ScheduleResponse> listScheduleResponse(List<Schedule> s) {
+        if (s == null) {
+            return null;
+        }
+
+        return s.stream().map(JsonResponseAdapter::scheduleResponse).toList();
     }
 
     public static List<ScheduleDTO> listScheduleDTO(List<Schedule> s) {
@@ -192,6 +228,14 @@ public interface JsonResponseAdapter {
         }
 
         return s.stream().map(JsonResponseAdapter::scheduleDTO).toList();
+    }
+
+    public static List<ServiceDTO> listServiceDTO(List<Service> s) {
+        if (s == null) {
+            return null;
+        }
+
+        return s.stream().map(JsonResponseAdapter::serviceDTO).toList();
     }
 
 
@@ -214,8 +258,8 @@ public interface JsonResponseAdapter {
                 r.getProductName(),
                 r.getCategory(),
                 r.getPaymentStatus(),
-                r.getPaymentTime(),
-                r.getSchedule(),
+                r.getPaymentTime().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")),
+                scheduleDTO(r.getSchedule()),
                 condominiumDTO(r.getCondominium()),
                 tentantDTO(r.getTenant())
         );
@@ -248,7 +292,7 @@ public interface JsonResponseAdapter {
                 r.getProductName(),
                 r.getCategory(),
                 r.getPaymentStatus(),
-                r.getPaymentTime()
+                r.getPaymentTime().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"))
         );
     }
 

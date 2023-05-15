@@ -8,9 +8,9 @@ public class ReportDTO {
     private String productName;
     private String category;
     private String paymentStatus;
-    private LocalDateTime paymentTime;
+    private String paymentTime;
 
-    public ReportDTO(int id, int invoiceNumber, String productName, String category, String paymentStatus, LocalDateTime paymentTime) {
+    public ReportDTO(int id, int invoiceNumber, String productName, String category, String paymentStatus, String paymentTime) {
         this.id = id;
         this.invoiceNumber = invoiceNumber;
         this.productName = productName;
@@ -59,11 +59,11 @@ public class ReportDTO {
         this.paymentStatus = paymentStatus;
     }
 
-    public LocalDateTime getPaymentTime() {
+    public String getPaymentTime() {
         return paymentTime;
     }
 
-    public void setPaymentTime(LocalDateTime paymentTime) {
+    public void setPaymentTime(String paymentTime) {
         this.paymentTime = paymentTime;
     }
 }

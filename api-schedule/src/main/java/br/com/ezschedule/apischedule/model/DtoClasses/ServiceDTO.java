@@ -1,22 +1,27 @@
 package br.com.ezschedule.apischedule.model.DtoClasses;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+import br.com.ezschedule.apischedule.model.Tenant;
 
 public class ServiceDTO {
 
+    private Integer id;
 
     private String serviceName;
 
-
-    private TenantDTO tenant;
-
-    public ServiceDTO(String serviceName, TenantDTO tenant) {
+    public ServiceDTO(Integer id, String serviceName) {
+        this.id = id;
         this.serviceName = serviceName;
-        this.tenant = tenant;
     }
 
     public ServiceDTO() {
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getServiceName() {
@@ -25,13 +30,5 @@ public class ServiceDTO {
 
     public void setServiceName(String serviceName) {
         this.serviceName = serviceName;
-    }
-
-    public TenantDTO getTenant() {
-        return tenant;
-    }
-
-    public void setTenant(TenantDTO tenant) {
-        this.tenant = tenant;
     }
 }

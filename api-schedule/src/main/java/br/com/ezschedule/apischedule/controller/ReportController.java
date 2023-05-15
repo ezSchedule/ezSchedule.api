@@ -1,6 +1,7 @@
 package br.com.ezschedule.apischedule.controller;
 
 import br.com.ezschedule.apischedule.adapter.JsonResponseAdapter;
+import br.com.ezschedule.apischedule.model.DtoClasses.ReportPaymentsDto;
 import br.com.ezschedule.apischedule.model.DtoClasses.Response.ReportResponse;
 import br.com.ezschedule.apischedule.model.Report;
 import br.com.ezschedule.apischedule.repository.ReportRepository;
@@ -36,6 +37,18 @@ public class ReportController {
         return ResponseEntity.status(200).body(JsonResponseAdapter.listReportResponse(allPosts));
     }
 
+    @ApiResponse(responseCode = "204", description =
+            "Não há relatórios cadastrados.", content = @Content(schema = @Schema(hidden = true)))
+    @ApiResponse(responseCode = "200", description = "relatórios encontrados.")
+    @GetMapping("/condominium")
+    public ResponseEntity<List<ReportPaymentsDto>> showReportsCondominium(@RequestParam int id){
+        List<ReportPaymentsDto> allPosts = reportRepository.findAllReportsCondominium(id);
+        if(allPosts.isEmpty()){
+            return ResponseEntity.status(204).build();
+        }
+        return ResponseEntity.status(200).body(allPosts);
+    }
+
     @ApiResponse(responseCode = "201", description =
             "Relatório cadastrado", content = @Content(schema = @Schema(hidden = true)))
     @PostMapping
@@ -43,6 +56,4 @@ public class ReportController {
         reportRepository.save(report);
         return ResponseEntity.status(200).body(JsonResponseAdapter.reportResponse(report));
     }
-
-
 }

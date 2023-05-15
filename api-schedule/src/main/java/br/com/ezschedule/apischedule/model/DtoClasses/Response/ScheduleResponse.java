@@ -1,23 +1,26 @@
-package br.com.ezschedule.apischedule.model.DtoClasses;
+package br.com.ezschedule.apischedule.model.DtoClasses.Response;
 
+import br.com.ezschedule.apischedule.model.DtoClasses.SaloonDTO;
+import br.com.ezschedule.apischedule.model.DtoClasses.TenantDTO;
 import java.time.LocalDateTime;
 
-public class ScheduleDTO {
+public class ScheduleResponse {
     private int id;
     private String nameEvent;
     private String typeEvent;
     private String dateEvent;
     private int totalNumberGuests;
+    private SaloonDTO saloon;
+    private TenantDTO tenant;
 
-    public ScheduleDTO(int id, String nameEvent, String typeEvent, String dateEvent, int totalNumberGuests) {
+    public ScheduleResponse(int id, String nameEvent, String typeEvent, String dateEvent, int totalNumberGuests, SaloonDTO saloon, TenantDTO tenant) {
         this.id = id;
         this.nameEvent = nameEvent;
         this.typeEvent = typeEvent;
         this.dateEvent = dateEvent;
         this.totalNumberGuests = totalNumberGuests;
-    }
-
-    public ScheduleDTO() {
+        this.saloon = saloon;
+        this.tenant = tenant;
     }
 
     public int getId() {
@@ -58,5 +61,21 @@ public class ScheduleDTO {
 
     public void setTotalNumberGuests(int totalNumberGuests) {
         this.totalNumberGuests = totalNumberGuests;
+    }
+
+    public SaloonDTO getSaloon() {
+        return saloon;
+    }
+
+    public void setSaloon(SaloonDTO saloon) {
+        this.saloon = saloon;
+    }
+
+    public TenantDTO getTenant() {
+        return tenant;
+    }
+
+    public void setTenant(TenantDTO tenant) {
+        this.tenant = tenant;
     }
 }
