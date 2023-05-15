@@ -1,18 +1,19 @@
 package br.com.ezschedule.apischedule.model.DtoClasses;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class ReportPaymentsDto {
     private int id;
     private String productName;
     private String category;
     private String paymentStatus;
-    private LocalDateTime paymentTime;
+    private String paymentTime;
     private String tenantName;
     private String tenantBlock;
     private Integer tenantNumber;
     private String tenantPhone;
-    private LocalDateTime dateEvent;
+    private String dateEvent;
     private String saloonName;
     private Double saloonPrice;
     private String saloonBlock;
@@ -22,12 +23,12 @@ public class ReportPaymentsDto {
         this.productName = productName;
         this.category = category;
         this.paymentStatus = paymentStatus;
-        this.paymentTime = paymentTime;
+        this.paymentTime = paymentTime.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
         this.tenantName = tenantName;
         this.tenantBlock = tenantBlock;
         this.tenantNumber = tenantNumber;
         this.tenantPhone = tenantPhone;
-        this.dateEvent = dateEvent;
+        this.dateEvent = dateEvent.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
         this.saloonName = saloonName;
         this.saloonPrice = saloonPrice;
         this.saloonBlock = saloonBlock;
@@ -65,11 +66,11 @@ public class ReportPaymentsDto {
         this.paymentStatus = paymentStatus;
     }
 
-    public LocalDateTime getPaymentTime() {
+    public String getPaymentTime() {
         return paymentTime;
     }
 
-    public void setPaymentTime(LocalDateTime paymentTime) {
+    public void setPaymentTime(String paymentTime) {
         this.paymentTime = paymentTime;
     }
 
@@ -105,11 +106,11 @@ public class ReportPaymentsDto {
         this.tenantPhone = tenantPhone;
     }
 
-    public LocalDateTime getDateEvent() {
+    public String getDateEvent() {
         return dateEvent;
     }
 
-    public void setDateEvent(LocalDateTime dateEvent) {
+    public void setDateEvent(String dateEvent) {
         this.dateEvent = dateEvent;
     }
 
