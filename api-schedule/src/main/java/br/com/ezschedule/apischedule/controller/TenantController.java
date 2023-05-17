@@ -5,6 +5,8 @@ import br.com.ezschedule.apischedule.csv.ListaObj;
 import br.com.ezschedule.apischedule.adapter.JsonResponseAdapter;
 import br.com.ezschedule.apischedule.email.SendMail;
 import br.com.ezschedule.apischedule.messages.EmailMessages;
+import br.com.ezschedule.apischedule.model.Condominium;
+import br.com.ezschedule.apischedule.model.DtoClasses.CreateTenant.CreateTenant;
 import br.com.ezschedule.apischedule.model.DtoClasses.Response.TenantResponse;
 import br.com.ezschedule.apischedule.model.DtoClasses.UpdateResponse.UpdateTenantForm;
 import br.com.ezschedule.apischedule.model.Tenant;
@@ -76,9 +78,34 @@ public class TenantController {
     @ApiResponse(responseCode = "201", description =
             "Usuário cadastrado", content = @Content(schema = @Schema(hidden = true)))
     @PostMapping
-    public ResponseEntity<Void> register(@RequestBody Tenant newUser) {
-        this.tenantService.criar(newUser);
-        return ResponseEntity.status(201).build();
+    public ResponseEntity<Tenant> register(@ModelAttribute CreateTenant newUser) throws IOException {
+
+
+       Tenant t = new Tenant(
+                newUser.getEmail(),
+                newUser.getCpf(),
+                newUser.getPassword(),
+                newUser.getName(),
+                newUser.getResidentsBlock(),
+                newUser.getApartmentNumber(),
+                newUser.getPhoneNumber(),
+                newUser.getIsAdmin(),
+                newUser.getReportList(),
+                newUser.getScheduleList(),
+                new Condominium(DecryptToken(newUser.getCondominium())),
+                newUser.getServices());
+
+
+
+        this.tenantService.criar(t);
+
+        if(newUser.getNameBlobImage() != null) {
+            uploadImage(t.getIdUser(), newUser.getNameBlobImage());
+            t.setNameBlobImage(getImage(t.getIdUser()).toString());
+        }
+
+
+        return ResponseEntity.status(201).body(t);
     }
 
     //login for user
@@ -282,15 +309,15 @@ public class TenantController {
         return ResponseEntity.status(404).build();
     }
 
-    public Boolean DecryptToken(String encodedId) {
+    public Integer DecryptToken(String encodedId) {
         List<Integer> idList = tenantRepository.findAllCondominiumIdFromTenants();
 
         for(int i =0;i < idList.size();i++){
             if(passwordEncoder.matches(String.valueOf(idList.get(i)),encodedId)){
-                return true;
+                return idList.get(i);
             }
         }
-        return false;
+        return null;
     }
 
     @GetMapping("/get-image/{idUser}")

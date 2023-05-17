@@ -52,6 +52,9 @@ public class Condominium {
     }
 
 
+    public Condominium(int id) {
+        this.id = id;
+    }
 
     public Condominium() {
     }

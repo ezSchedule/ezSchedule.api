@@ -73,6 +73,18 @@ public abstract class User {
     public User() {
     }
 
+    public User(String email, String cpf, String password, String name, String residentsBlock, Integer apartmentNumber, String phoneNumber) {
+        this.email = email;
+        this.cpf = cpf;
+        this.password = password;
+        this.name = name;
+        this.residentsBlock = residentsBlock;
+        this.apartmentNumber = apartmentNumber;
+        this.phoneNumber = phoneNumber;
+        this.isAuthenticated = true;
+        this.isAdmin = isAdmin;
+    }
+
     public Integer getIdUser() {
         return idUser;
     }

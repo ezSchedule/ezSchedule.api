@@ -4,8 +4,8 @@ INSERT INTO Condominium(name,country,city,state,street,postal_code) values
 INSERT INTO Saloon (saloon_name,saloon_price,saloon_block, condominium_id) VALUES
 ('SALON 1', 60.00, '1A', 1);
 
-INSERT INTO Tenant(type,email,cpf,password,name,residents_block,apartment_number,phone_number,is_authenticated,is_admin,condominium_id) VALUES
-(2,'andrew@gmail.com', '432.123.543-87', '$2a$10$/vLMyzvEZhbcaJdMooNHK.1s.zSC/WM0EKer4DrlOKPz3KQ/0/lW.', 'Andrew Ferrari', '1A', 14, '(11)96457-9878', 0, 1, 1);
+INSERT INTO Tenant(type,email,cpf,password,name,residents_block,apartment_number,phone_number,is_authenticated,is_admin,condominium_id,subscribed) VALUES
+(2,'andrew@gmail.com', '432.123.543-87', '$2a$10$/vLMyzvEZhbcaJdMooNHK.1s.zSC/WM0EKer4DrlOKPz3KQ/0/lW.', 'Andrew Ferrari', '1A', 14, '(11)96457-9878', 0, 1, 1,0);
 
 INSERT INTO Schedule (name_event, type_event, date_event, total_number_guests, saloon_id, tenant_id_user) VALUES
 ('Aniversário do Zé', 'Aniversário', '2019-01-21T06:47:22.756', 126, 1, 1),

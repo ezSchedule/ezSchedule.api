@@ -32,6 +32,15 @@ public class Tenant extends User {
         this.services = services;
     }
 
+
+    public Tenant(String email, String cpf, String password, String name, String residentsBlock, Integer apartmentNumber, String phoneNumber,Integer subscribed, List<Report> reportList, List<Schedule> scheduleList, Condominium condominium, List<Service> services) {
+        super(email, cpf, password, name, residentsBlock, apartmentNumber, phoneNumber);
+        this.subscribed = subscribed;
+        this.reportList = reportList;
+        this.scheduleList = scheduleList;
+        this.condominium = condominium;
+        this.services = services;
+    }
     public Tenant(String email, String cpf, String password, String name, String residentsBlock, Integer apartmentNumber, String phoneNumber,Integer subscribed, List<Report> reportList, List<Schedule> scheduleList, Condominium condominium, List<Service> services, String nameBlobImages) {
         super(email, cpf, password, name, residentsBlock, apartmentNumber, phoneNumber, nameBlobImages);
         this.subscribed = subscribed;
