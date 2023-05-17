@@ -58,7 +58,8 @@ public interface JsonResponseAdapter {
                 t.getApartmentNumber(),
                 t.getPhoneNumber(),
                 t.isAuthenticated(),
-                t.isAdmin());
+                t.isAdmin(),
+                t.getNameBlobImage());
     }
 
     public static List<TenantDTO> listTenantDTO(List<Tenant> t) {
@@ -85,7 +86,8 @@ public interface JsonResponseAdapter {
                 listReportDTO(t.getReportList()),
                 listScheduleDTO(t.getScheduleList()),
                 condominiumDTO(t.getCondominium()),
-                listServiceDTO(t.getServices())
+                listServiceDTO(t.getServices()),
+                t.getNameBlobImage()
         );
     }
 

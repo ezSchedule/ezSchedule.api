@@ -45,7 +45,7 @@ public abstract class User {
 
     private String nameBlobImage;
 
-    public User(String email, String cpf, String password, String name, String residentsBlock, Integer apartmentNumber, String phoneNumber) {
+    public User(String email, String cpf, String password, String name, String residentsBlock, Integer apartmentNumber, String phoneNumber, String nameBlobImage) {
         this.email = email;
         this.cpf = cpf;
         this.password = password;
@@ -54,6 +54,7 @@ public abstract class User {
         this.apartmentNumber = apartmentNumber;
         this.phoneNumber = phoneNumber;
         this.isAuthenticated = true;
+        this.nameBlobImage = nameBlobImage;
     }
 
     public User(int id, String email, String cpf, String password, String name, String residentsBlock, Integer apartmentNumber, String phoneNumber, Integer isAdmin) {

@@ -12,7 +12,9 @@ public class TenantDTO {
     private boolean isAuthenticated;
     private Integer isAdmin;
 
-    public TenantDTO(int id, String email, String cpf, String name, String residentsBlock, Integer apartmentNumber, String phoneNumber, boolean isAuthenticated, Integer isAdmin) {
+    private String nameBlobImage;
+
+    public TenantDTO(int id, String email, String cpf, String name, String residentsBlock, Integer apartmentNumber, String phoneNumber, boolean isAuthenticated, Integer isAdmin, String nameBlobImage) {
         this.id = id;
         this.email = email;
         this.cpf = cpf;
@@ -22,6 +24,7 @@ public class TenantDTO {
         this.phoneNumber = phoneNumber;
         this.isAuthenticated = isAuthenticated;
         this.isAdmin = isAdmin;
+        this.nameBlobImage = nameBlobImage;
     }
 
     public TenantDTO() {
@@ -97,5 +100,13 @@ public class TenantDTO {
 
     public void setIsAdmin(Integer isAdmin) {
         this.isAdmin = isAdmin;
+    }
+
+    public String getNameBlobImage() {
+        return nameBlobImage;
+    }
+
+    public void setNameBlobImage(String nameBlobImage) {
+        this.nameBlobImage = nameBlobImage;
     }
 }

@@ -28,7 +28,9 @@ public class TenantResponse {
     private CondominiumDto condominium;
     private List<ServiceDTO> services;
 
-    public TenantResponse(int id, String email, String cpf, String name, String residentsBlock, Integer apartmentNumber, String phoneNumber, boolean isAuthenticated, Integer isAdmin, List<ReportDTO> reportList, List<ScheduleDTO> scheduleList, CondominiumDto condominium, List<ServiceDTO> services) {
+    private String nameBlobImage;
+
+    public TenantResponse(int id, String email, String cpf, String name, String residentsBlock, Integer apartmentNumber, String phoneNumber, boolean isAuthenticated, Integer isAdmin, List<ReportDTO> reportList, List<ScheduleDTO> scheduleList, CondominiumDto condominium, List<ServiceDTO> services, String nameBlobImage) {
         this.id = id;
         this.email = email;
         this.cpf = cpf;
@@ -42,6 +44,7 @@ public class TenantResponse {
         this.scheduleList = scheduleList;
         this.condominium = condominium;
         this.services = services;
+        this.nameBlobImage = nameBlobImage;
     }
 
     public TenantResponse() {
@@ -149,5 +152,13 @@ public class TenantResponse {
 
     public void setServices(List<ServiceDTO> services) {
         this.services = services;
+    }
+
+    public String getNameBlobImage() {
+        return nameBlobImage;
+    }
+
+    public void setNameBlobImage(String nameBlobImage) {
+        this.nameBlobImage = nameBlobImage;
     }
 }

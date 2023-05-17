@@ -1,7 +1,7 @@
 package br.com.ezschedule.apischedule.controller;
 
-import br.com.ezschedule.apischedule.Csv.CsvTenant;
-import br.com.ezschedule.apischedule.Csv.ListaObj;
+import br.com.ezschedule.apischedule.csv.CsvTenant;
+import br.com.ezschedule.apischedule.csv.ListaObj;
 import br.com.ezschedule.apischedule.adapter.JsonResponseAdapter;
 import br.com.ezschedule.apischedule.email.SendMail;
 import br.com.ezschedule.apischedule.messages.EmailMessages;
@@ -34,8 +34,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.*;
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.util.*;
-import javax.crypto.KeyGenerator;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -184,7 +182,7 @@ public class TenantController {
         return ResponseEntity.status(204).build();
     }
 
-    @GetMapping("/gerar-csv-tenants")
+    @GetMapping("/generate-csv")
     public ResponseEntity<byte[]> generatorCsv() {
         List<Tenant> tenants = tenantRepository.findAll();
         if (!tenants.isEmpty()) {
@@ -192,15 +190,15 @@ public class TenantController {
             for (Tenant tenant : tenants) {
                 tenantsReturn.adiciona(tenant);
             }
-            CsvTenant.gravaArquivoCsvTenant(tenantsReturn, "Tenants");
-            return CsvTenant.buscarArquivo("Tenants");
+            CsvTenant.saveArchiveCsv(tenantsReturn, "Tenants");
+            return CsvTenant.searchArchive("Tenants");
         }
         return ResponseEntity.status(404).build();
     }
 
     @CrossOrigin("*")
     @PostMapping("/save-image/{idUser}")
-    public String uploadImage(@PathVariable int idUser, @RequestParam MultipartFile image) throws IOException {
+    public ResponseEntity<Boolean> uploadImage(@PathVariable int idUser, @RequestParam MultipartFile image) throws IOException {
 
         byte[] bytes = image.getBytes();
         if (bytes.length == 0) {
@@ -213,6 +211,8 @@ public class TenantController {
             throw new RuntimeException("User not content, id: " + idUser);
         }
 
+        String fileName = LocalDateTime.now() + image.getOriginalFilename();
+
         String constr = "DefaultEndpointsProtocol=https;" +
                 "AccountName=ezscheduleusersimages;" +
                 "AccountKey=eRxvjOGc3dgv3c/RmOON9btEOLFBq3VxsFcNuwKHoZD9wpzjPhPza4M28jSA+yHls1qvcYVETS5b+AStDiQKtQ==;" +
@@ -222,8 +222,6 @@ public class TenantController {
                 .connectionString(constr)
                 .containerName("ezschedules")
                 .buildClient();
-
-        String fileName = LocalDateTime.now() + image.getOriginalFilename();
 
         BlobClient blob = container.getBlobClient(fileName);
 
@@ -241,11 +239,11 @@ public class TenantController {
 
         tenantRepository.save(tenant.get());
 
-        return "ok";
+        return ResponseEntity.status(200).body(true);
     }
 
-    @GetMapping("/get-image/{idUser}")
-    public ResponseEntity<byte[]> getImage(@PathVariable int idUser) throws IOException {
+    @GetMapping("/get-image-blob/{idUser}")
+    public ResponseEntity<byte[]> getImageBlob(@PathVariable int idUser) throws IOException {
 
         Optional<Tenant> tenant = tenantRepository.findById(idUser);
 
@@ -261,7 +259,6 @@ public class TenantController {
                 .containerName("ezschedules")
                 .buildClient();
 
-        //aa
 
         BlobClient blob = container.getBlobClient(blobName);
 
@@ -294,5 +291,43 @@ public class TenantController {
             }
         }
         return false;
+    }
+
+    @GetMapping("/get-image/{idUser}")
+    public ResponseEntity<String> getImage(@PathVariable int idUser) {
+
+        String pathBase = "https://ezscheduleusersimages.blob.core.windows.net/ezschedules/";
+
+        Optional<Tenant> tenant = tenantRepository.findById(idUser);
+
+        if(!tenant.isPresent()){
+            return ResponseEntity.status (404).body("User not found");
+        }
+
+        if(tenant.get().getNameBlobImage() == null || tenant.get().getNameBlobImage() == ""){
+            return ResponseEntity.status (404).body("User not content image");
+        }
+
+        String blobName = tenant.get().getNameBlobImage();
+
+        String constr = "DefaultEndpointsProtocol=https;" +
+                "AccountName=ezscheduleusersimages;" +
+                "AccountKey=eRxvjOGc3dgv3c/RmOON9btEOLFBq3VxsFcNuwKHoZD9wpzjPhPza4M28jSA+yHls1qvcYVETS5b+AStDiQKtQ==;" +
+                "EndpointSuffix=core.windows.net";
+
+        BlobContainerClient container = new BlobContainerClientBuilder()
+                .connectionString(constr)
+                .containerName("ezschedules")
+                .buildClient();
+
+        Optional<BlobClient> blob = Optional.of(container.getBlobClient(blobName));
+
+        if(!blob.get().exists()){
+            return ResponseEntity.status(204).build();
+        }
+
+        String pathImage = pathBase + tenant.get().getNameBlobImage();
+
+        return ResponseEntity.status(200).body(pathImage);
     }
 }
