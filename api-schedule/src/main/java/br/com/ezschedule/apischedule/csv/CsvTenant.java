@@ -1,4 +1,4 @@
-package br.com.ezschedule.apischedule.Csv;
+package br.com.ezschedule.apischedule.csv;
 
 import br.com.ezschedule.apischedule.model.Tenant;
 import org.springframework.http.ResponseEntity;
@@ -9,7 +9,7 @@ import java.util.Formatter;
 import java.util.FormatterClosedException;
 
 public class CsvTenant {
-    public static void gravaArquivoCsvTenant(ListaObj<Tenant> lista, String nomeArquivo)
+    public static void saveArchiveCsv(ListaObj<Tenant> lista, String nomeArquivo)
     {
         FileWriter arq = null;
         Formatter saida = null;
@@ -33,20 +33,29 @@ public class CsvTenant {
             saida = new Formatter(arq);
 
         }catch (IOException e){
-            System.out.println("Erro ao abrir o arquivo!");
+            System.out.println("Error to open archive!");
             System.exit(1);
         }
 
         try {
 
+            saida.format("%S;%S;%S;%S;%S;%S;%B\n", "ID", "NAME", "EMAIL", "N°-APTO", "BLOCO", "N°-PHONE", "IS ADMIN?");
+
             for (int i = 0; i < lista.getTamanho(); i++)
             {
                 Tenant tenant = lista.getElemento(i);
-                saida.format("%d;%s;%s;%d;%s\n", tenant.getIdUser(), tenant.getName(), tenant.getEmail(), tenant.getApartmentNumber(), tenant.getResidentsBlock());
+                saida.format("%d;%s;%s;%d;%s;%s;%b\n",
+                                                 tenant.getIdUser(),
+                                                 tenant.getName(),
+                                                 tenant.getEmail(),
+                                                 tenant.getApartmentNumber(),
+                                                 tenant.getResidentsBlock(),
+                                                 tenant.getPhoneNumber(),
+                                                 tenant.isAdmin());
             }
 
         }catch (FormatterClosedException e){
-            System.out.println("Erro ao gravar o arquivo");
+            System.out.println("Error writing file");
             deuRuim = true;
         }
         finally {
@@ -55,7 +64,7 @@ public class CsvTenant {
                 arq.close();
             } catch (IOException  e)
             {
-                System.out.println("Erro ao fechar o arquivo!");
+                System.out.println("Error closing file");
                 deuRuim = true;
             }
 
@@ -66,7 +75,7 @@ public class CsvTenant {
         }
     }
 
-    public static ResponseEntity<byte[]> buscarArquivo(String nomeArquivo){
+    public static ResponseEntity<byte[]> searchArchive(String nomeArquivo){
 
         nomeArquivo +=".csv";
 
