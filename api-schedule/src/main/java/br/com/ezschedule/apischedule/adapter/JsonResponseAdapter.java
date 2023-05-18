@@ -2,12 +2,11 @@ package br.com.ezschedule.apischedule.adapter;
 
 import br.com.ezschedule.apischedule.model.*;
 import br.com.ezschedule.apischedule.model.DtoClasses.*;
+import br.com.ezschedule.apischedule.model.DtoClasses.CreateTenant.CreateTenant;
 import br.com.ezschedule.apischedule.model.DtoClasses.Response.*;
 import br.com.ezschedule.apischedule.model.DtoClasses.UpdateResponse.UpdateForumPostForm;
 import br.com.ezschedule.apischedule.model.DtoClasses.UpdateResponse.UpdateScheduleForm;
 import br.com.ezschedule.apischedule.service.autenticacao.dto.UsuarioTokenDto;
-
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -15,17 +14,20 @@ import java.util.List;
 
 public interface JsonResponseAdapter {
 
-    public static JsonResponse Dto(Tenant c) {
-        return new JsonResponse(
-                c.getEmail(),
-                c.getCpf(),
-                c.getName(),
-                c.getResidentsBlock(),
-                c.getApartmentNumber(),
-                c.getPhoneNumber(),
-                c.isAuthenticated(),
-                c.isAdmin());
-
+    public static Tenant tenantWImg(CreateTenant newUser, Condominium c) {
+        return new Tenant(
+                newUser.getEmail(),
+                newUser.getCpf(),
+                newUser.getPassword(),
+                newUser.getName(),
+                newUser.getResidentsBlock(),
+                newUser.getApartmentNumber(),
+                newUser.getPhoneNumber(),
+                newUser.getIsAdmin(),
+                newUser.getReportList(),
+                newUser.getScheduleList(),
+                c,
+                newUser.getServices());
     }
 
     public static UsuarioTokenDto tenantWTokenDTO(Tenant t, String token) {
@@ -46,7 +48,7 @@ public interface JsonResponseAdapter {
     }
 
     public static TenantDTO tentantDTO(Tenant t) {
-        if(t == null){
+        if (t == null) {
             return null;
         }
         return new TenantDTO(
@@ -69,8 +71,8 @@ public interface JsonResponseAdapter {
         return t.stream().map(JsonResponseAdapter::tentantDTO).toList();
     }
 
-    public static TenantResponse tenantResponse(Tenant t){
-        if(t == null){
+    public static TenantResponse tenantResponse(Tenant t) {
+        if (t == null) {
             return null;
         }
         return new TenantResponse(
@@ -91,8 +93,8 @@ public interface JsonResponseAdapter {
         );
     }
 
-    public static List<TenantResponse> listTenantResponse(List<Tenant> t){
-       return t.stream().map(JsonResponseAdapter::tenantResponse).toList();
+    public static List<TenantResponse> listTenantResponse(List<Tenant> t) {
+        return t.stream().map(JsonResponseAdapter::tenantResponse).toList();
     }
 
     public static ServiceDTO serviceDTO(Service s) {

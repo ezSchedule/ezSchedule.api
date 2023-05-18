@@ -34,6 +34,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
+import java.lang.reflect.Type;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -78,34 +79,22 @@ public class TenantController {
     @ApiResponse(responseCode = "201", description =
             "Usuário cadastrado", content = @Content(schema = @Schema(hidden = true)))
     @PostMapping
-    public ResponseEntity<Tenant> register(@ModelAttribute CreateTenant newUser) throws IOException {
+    public ResponseEntity<Object> register(@ModelAttribute CreateTenant newUser) throws IOException {
 
+        Integer idCondominium = DecryptToken(newUser.getCondominium());
 
-       Tenant t = new Tenant(
-                newUser.getEmail(),
-                newUser.getCpf(),
-                newUser.getPassword(),
-                newUser.getName(),
-                newUser.getResidentsBlock(),
-                newUser.getApartmentNumber(),
-                newUser.getPhoneNumber(),
-                newUser.getIsAdmin(),
-                newUser.getReportList(),
-                newUser.getScheduleList(),
-                new Condominium(DecryptToken(newUser.getCondominium())),
-                newUser.getServices());
+        if(idCondominium != null) {
+            Tenant t = JsonResponseAdapter.tenantWImg(newUser,new Condominium(idCondominium));
 
+            this.tenantService.criar(t);
 
-
-        this.tenantService.criar(t);
-
-        if(newUser.getNameBlobImage() != null) {
-            uploadImage(t.getIdUser(), newUser.getNameBlobImage());
-            t.setNameBlobImage(getImage(t.getIdUser()).toString());
+            if (newUser.getNameBlobImage() != null) {
+                uploadImage(t.getIdUser(), newUser.getNameBlobImage());
+                t.setNameBlobImage(getImage(t.getIdUser()).toString());
+            }
+            return ResponseEntity.status(201).body(t);
         }
-
-
-        return ResponseEntity.status(201).body(t);
+        return ResponseEntity.status(404).body(new IllegalArgumentException("Id inválido").getMessage());
     }
 
     //login for user
