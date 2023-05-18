@@ -18,7 +18,9 @@ import com.azure.core.util.BinaryData;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobContainerClientBuilder;
+import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlockBlobItem;
+import com.azure.storage.blob.models.DeleteSnapshotsOptionType;
 import com.azure.storage.blob.options.BlobParallelUploadOptions;
 import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -329,5 +331,111 @@ public class TenantController {
         String pathImage = pathBase + tenant.get().getNameBlobImage();
 
         return ResponseEntity.status(200).body(pathImage);
+    }
+
+    @PutMapping("/update-image/{idUser}")
+    public ResponseEntity<String> updateImage(@PathVariable int idUser, @RequestParam MultipartFile image) throws IOException {
+
+        Optional<Tenant> tenant = tenantRepository.findById(idUser);
+
+        if(!tenant.isPresent()){
+            return ResponseEntity.status (404).body("User not found");
+        }
+
+        if(tenant.get().getNameBlobImage() == null || tenant.get().getNameBlobImage() == ""){
+            return ResponseEntity.status (404).body("User not content image");
+        }
+
+        if(image.isEmpty()){
+            return ResponseEntity.status(404).build();
+        }
+
+        String nameBlobOriginal = tenant.get().getNameBlobImage();
+
+        String constr = "DefaultEndpointsProtocol=https;" +
+                "AccountName=ezscheduleusersimages;" +
+                "AccountKey=eRxvjOGc3dgv3c/RmOON9btEOLFBq3VxsFcNuwKHoZD9wpzjPhPza4M28jSA+yHls1qvcYVETS5b+AStDiQKtQ==;" +
+                "EndpointSuffix=core.windows.net";
+
+        BlobContainerClient container = new BlobContainerClientBuilder()
+                .connectionString(constr)
+                .containerName("ezschedules")
+                .buildClient();
+
+        Optional<BlobClient> blob = Optional.of(container.getBlobClient(nameBlobOriginal));
+
+        boolean delete = blob.get().deleteIfExists();
+
+        if(delete){
+
+            String nameUpdate = LocalDateTime.now() + image.getOriginalFilename();
+
+            byte[] imageNewBytes = image.getBytes();
+
+            Optional<BlobClient> blobUpdate = Optional.of(container.getBlobClient(nameUpdate));
+
+            Response<BlockBlobItem> response =
+                    blobUpdate.get().uploadWithResponse(
+                            new BlobParallelUploadOptions(new ByteArrayInputStream(imageNewBytes), imageNewBytes.length),
+                            Duration.ofHours(5),
+                            null);
+
+            if (response.getStatusCode() != 201) {
+                throw new IOException("Update failed");
+            }
+
+            tenant.get().setNameBlobImage(nameUpdate);
+
+            tenantRepository.save(tenant.get());
+
+            return ResponseEntity.status(200).body("Update success!");
+
+        }
+
+        return ResponseEntity.status(400).body("Update failed");
+
+    }
+
+    @DeleteMapping("/delete-image/{idUser}")
+    public ResponseEntity<String> deleteImage(@PathVariable int idUser){
+
+        Optional<Tenant> tenant = tenantRepository.findById(idUser);
+
+        if(!tenant.isPresent()){
+            return ResponseEntity.status (404).body("User not found");
+        }
+
+        if(tenant.get().getNameBlobImage() == null || tenant.get().getNameBlobImage() == ""){
+            return ResponseEntity.status (404).body("User not content image");
+        }
+
+        String nameBlobOriginal = tenant.get().getNameBlobImage();
+
+        String constr = "DefaultEndpointsProtocol=https;" +
+                "AccountName=ezscheduleusersimages;" +
+                "AccountKey=eRxvjOGc3dgv3c/RmOON9btEOLFBq3VxsFcNuwKHoZD9wpzjPhPza4M28jSA+yHls1qvcYVETS5b+AStDiQKtQ==;" +
+                "EndpointSuffix=core.windows.net";
+
+        BlobContainerClient container = new BlobContainerClientBuilder()
+                .connectionString(constr)
+                .containerName("ezschedules")
+                .buildClient();
+
+        Optional<BlobClient> blob = Optional.of(container.getBlobClient(nameBlobOriginal));
+
+        boolean delete = blob.get().deleteIfExists();
+
+        if(delete){
+
+            tenant.get().setNameBlobImage(null);
+
+            tenantRepository.save(tenant.get());
+
+            return ResponseEntity.status(200).body("Remove success");
+
+        }
+
+        return ResponseEntity.status(400).body("Remove falied");
+
     }
 }
