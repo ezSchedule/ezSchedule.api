@@ -23,8 +23,8 @@ public class CreateTenant {
     private String phoneNumber;
     private boolean isAuthenticated;
     private Integer isAdmin;
-    private MultipartFile nameBlobImage;
     private Integer subscribed = 0;
+    private MultipartFile nameBlobImage;
     private List<Report> reportList;
     private List<Schedule> scheduleList;
     private String condominium;

@@ -7,6 +7,7 @@ import br.com.ezschedule.apischedule.model.DtoClasses.UpdateResponse.UpdateForum
 import br.com.ezschedule.apischedule.model.ForumPost;
 import br.com.ezschedule.apischedule.model.Tenant;
 import br.com.ezschedule.apischedule.observer.EmailNotifier;
+import br.com.ezschedule.apischedule.observer.FilaObj;
 import br.com.ezschedule.apischedule.observer.SubscribedTenants;
 import br.com.ezschedule.apischedule.repository.ForumRepository;
 import br.com.ezschedule.apischedule.repository.TenantRepository;
@@ -17,6 +18,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -40,8 +42,10 @@ public class ForumController {
     @Autowired
     private SendMail sendMail;
 
-
     private SubscribedTenants observer = new SubscribedTenants();
+
+    private FilaObj<Tenant> forumPostFila = new FilaObj<>(100);
+
 
     @ApiResponse(responseCode = "204", description =
             "Não há fóruns para exibir.", content = @Content(schema = @Schema(hidden = true)))
@@ -52,7 +56,7 @@ public class ForumController {
         if (allPosts.isEmpty()) {
             return ResponseEntity.status(204).build();
         }
-        return ResponseEntity.status(200).body(JsonResponseAdapter.listForumResponse(allPosts));
+        return ResponseEntity.status(201).build();
     }
 
     @ApiResponse(responseCode = "404", description =
@@ -73,7 +77,16 @@ public class ForumController {
         forumRepository.save(post);
 
         //descomente se deseje enviar emails para todos usuários inscritos
-//          subscribedTenants.notifySubscribers(forumRepository.findSubscribedTenants(),post);
+
+        List<Tenant> tenantList = forumRepository.findSubscribedTenants();
+
+//        for(Tenant t :tenantList){
+//            forumPostFila.insert(t);
+//        }
+//
+//        for(int i = 0;forumPostFila.getTamanho() > 0 ;i++){
+//            sendEmailsOnADelayBasis(forumPostFila.poll(),post);
+//        }
 
         return ResponseEntity.status(200).body(JsonResponseAdapter.forumResponse(post));
     }
@@ -102,6 +115,12 @@ public class ForumController {
             return ResponseEntity.status(204).build();
         }
         return ResponseEntity.status(404).build();
+    }
+
+
+    @Scheduled(fixedRate = 5000)
+    public void sendEmailsOnADelayBasis(Tenant t, ForumPost f){
+        subscribedTenants.notifySubscribers(t,f);
     }
 
 }

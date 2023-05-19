@@ -29,10 +29,9 @@ public class SubscribedTenants {
         tenantRepository.subscribeOrUnsubTenant(0,t.getIdUser());
     }
 
-    public void notifySubscribers(List<Tenant> tenantList,ForumPost f) {
-        for(Tenant t: tenantList){
+    public void notifySubscribers(Tenant t,ForumPost f) {
             emailNotifier.update(f,t);
-        }
+
     }
 
 

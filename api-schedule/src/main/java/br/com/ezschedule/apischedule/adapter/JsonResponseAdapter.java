@@ -24,10 +24,13 @@ public interface JsonResponseAdapter {
                 newUser.getApartmentNumber(),
                 newUser.getPhoneNumber(),
                 newUser.getIsAdmin(),
+                newUser.getSubscribed(),
                 newUser.getReportList(),
                 newUser.getScheduleList(),
                 c,
-                newUser.getServices());
+                newUser.getServices()
+
+        );
     }
 
     public static UsuarioTokenDto tenantWTokenDTO(Tenant t, String token) {
@@ -89,7 +92,8 @@ public interface JsonResponseAdapter {
                 listScheduleDTO(t.getScheduleList()),
                 condominiumDTO(t.getCondominium()),
                 listServiceDTO(t.getServices()),
-                t.getNameBlobImage()
+                t.getNameBlobImage(),
+                t.getSubscribed()
         );
     }
 

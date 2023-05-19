@@ -81,7 +81,7 @@ public class TenantController {
     @ApiResponse(responseCode = "201", description =
             "Usuário cadastrado", content = @Content(schema = @Schema(hidden = true)))
     @PostMapping
-    public ResponseEntity<Object> register(@ModelAttribute CreateTenant newUser) throws IOException {
+    public ResponseEntity<Void> register(@ModelAttribute CreateTenant newUser) throws IOException {
 
         Integer idCondominium = DecryptToken(newUser.getCondominium());
 
@@ -94,9 +94,9 @@ public class TenantController {
                 uploadImage(t.getIdUser(), newUser.getNameBlobImage());
                 t.setNameBlobImage(getImage(t.getIdUser()).toString());
             }
-            return ResponseEntity.status(201).body(t);
+            return ResponseEntity.status(201).build();
         }
-        return ResponseEntity.status(404).body(new IllegalArgumentException("Id inválido").getMessage());
+        return ResponseEntity.status(404).build();
     }
 
     //login for user

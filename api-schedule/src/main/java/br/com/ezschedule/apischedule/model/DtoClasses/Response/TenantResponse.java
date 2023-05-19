@@ -22,6 +22,8 @@ public class TenantResponse {
     private Integer apartmentNumber;
     private String phoneNumber;
     private boolean isAuthenticated;
+
+    private Integer subscribed;
     private Integer isAdmin;
     private List<ReportDTO> reportList;
     private List<ScheduleDTO> scheduleList;
@@ -30,7 +32,7 @@ public class TenantResponse {
 
     private String nameBlobImage;
 
-    public TenantResponse(int id, String email, String cpf, String name, String residentsBlock, Integer apartmentNumber, String phoneNumber, boolean isAuthenticated, Integer isAdmin, List<ReportDTO> reportList, List<ScheduleDTO> scheduleList, CondominiumDto condominium, List<ServiceDTO> services, String nameBlobImage) {
+    public TenantResponse(int id, String email, String cpf, String name, String residentsBlock, Integer apartmentNumber, String phoneNumber, boolean isAuthenticated, Integer isAdmin, List<ReportDTO> reportList, List<ScheduleDTO> scheduleList, CondominiumDto condominium, List<ServiceDTO> services, String nameBlobImage,Integer subscribed) {
         this.id = id;
         this.email = email;
         this.cpf = cpf;
@@ -40,6 +42,7 @@ public class TenantResponse {
         this.phoneNumber = phoneNumber;
         this.isAuthenticated = isAuthenticated;
         this.isAdmin = isAdmin;
+        this.subscribed = subscribed;
         this.reportList = reportList;
         this.scheduleList = scheduleList;
         this.condominium = condominium;
@@ -120,6 +123,14 @@ public class TenantResponse {
 
     public void setIsAdmin(Integer isAdmin) {
         this.isAdmin = isAdmin;
+    }
+
+    public Integer getSubscribed() {
+        return subscribed;
+    }
+
+    public void setSubscribed(Integer subscribed) {
+        this.subscribed = subscribed;
     }
 
     public List<ReportDTO> getReportList() {
