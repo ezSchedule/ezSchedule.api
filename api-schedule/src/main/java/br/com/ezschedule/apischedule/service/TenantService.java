@@ -38,6 +38,10 @@ public class TenantService {
     this.tenantRepository.save(t);
   }
 
+  public String encryptPassword(String password) {
+    return passwordEncoder.encode(password);
+  }
+
   public UsuarioTokenDto autenticar(UsuarioLoginDto usuarioLoginDto) {
 
     final UsernamePasswordAuthenticationToken credentials = new UsernamePasswordAuthenticationToken(

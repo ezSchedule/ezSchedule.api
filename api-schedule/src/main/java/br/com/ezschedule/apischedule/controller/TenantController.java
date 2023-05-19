@@ -135,6 +135,17 @@ public class TenantController {
         }
     }
 
+    @PutMapping("/forgot-password")
+    public ResponseEntity<Object> forgotPassword(@RequestBody UpdatePasswordForm updatePasswordForm) {
+        Optional<Tenant> tenant = this.tenantRepository.findByEmail(updatePasswordForm.getEmail());
+        if (tenant.isPresent()) {
+            tenant.get().setPassword(this.tenantService.encryptPassword(updatePasswordForm.getPassword()));
+            this.tenantRepository.save(tenant.get());
+            return ResponseEntity.status(200).build();
+        }
+        return ResponseEntity.status(404).build();
+    }
+
     @ApiResponse(responseCode = "404", description =
             "senhas iguais", content = @Content(schema = @Schema(hidden = true)))
     @ApiResponse(responseCode = "200", description = "senha atualizada")
