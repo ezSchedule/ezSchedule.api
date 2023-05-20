@@ -5,6 +5,7 @@ import br.com.ezschedule.apischedule.model.Condominium;
 import br.com.ezschedule.apischedule.model.DtoClasses.CondominiumInformationDto;
 import br.com.ezschedule.apischedule.model.DtoClasses.Response.CondominiumResponse;
 import br.com.ezschedule.apischedule.repository.CondominumRepository;
+import br.com.ezschedule.apischedule.service.CondominumService;
 import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -23,14 +24,17 @@ import java.util.List;
 public class CondominumController {
 
     @Autowired
-    CondominumRepository condominumRepository;
+    private CondominumRepository condominumRepository;
+
+    @Autowired
+    private CondominumService service;
 
     @ApiResponse(responseCode = "204", description =
             "Não há condomínio cadastrados.", content = @Content(schema = @Schema(hidden = true)))
     @ApiResponse(responseCode = "200", description = "condomínios encontrados.")
     @GetMapping
     public ResponseEntity<List<CondominiumResponse>> listar(){
-        List<Condominium> condominiumList = condominumRepository.findAll();
+        List<Condominium> condominiumList = service.listAll();
 
         if(!condominiumList.isEmpty()){
             return ResponseEntity.status(200).body(JsonResponseAdapter.listCondominumDTO(condominiumList));

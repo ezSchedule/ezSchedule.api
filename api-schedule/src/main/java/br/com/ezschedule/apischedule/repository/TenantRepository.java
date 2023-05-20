@@ -26,12 +26,12 @@ public interface TenantRepository extends JpaRepository<Tenant, Integer> {
     @Transactional
     @Modifying
     @Query(value = "UPDATE Tenant SET is_authenticated = 0 WHERE email = ?1 ", nativeQuery = true)
-    Tenant logoutUser(String email);
+    Integer logoutUser(String email);
 
     @Transactional
     @Modifying
     @Query(value = "UPDATE Tenant SET password = :newPassword WHERE email = :email")
-    Object updatePasswordUser(String email, String newPassword);
+    Integer updatePasswordUser(String email, String newPassword);
 
 
 

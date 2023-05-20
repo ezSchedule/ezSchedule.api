@@ -33,6 +33,10 @@ public class Tenant extends User {
         this.condominium = condominium;
     }
 
+    public Tenant(int id, String email, String cpf, String password, String name, String residentsBlock, Integer apartmentNumber, String phoneNumber, Integer isAdmin) {
+        super(id, email, cpf, password, name, residentsBlock, apartmentNumber, phoneNumber, isAdmin);
+    }
+
     public Tenant() {
     }
 

@@ -15,6 +15,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.List;
+
 @Service
 public class TenantService {
 
@@ -58,5 +60,17 @@ public class TenantService {
     tenantRepository.userAuthenticated(usuarioLoginDto.getEmail());
 
     return JsonResponseAdapter.tenantWTokenDTO(usuarioAutenticado,token);
+  }
+
+  public List<Tenant> listAllTenant() {
+    return tenantRepository.findAll();
+  }
+
+  public Integer logoutTenant(String email) {
+    return this.tenantRepository.logoutUser(email);
+  }
+
+  public Integer updatePasswordTenant(String email, String password) {
+    return this.tenantRepository.updatePasswordUser(email, password);
   }
 }

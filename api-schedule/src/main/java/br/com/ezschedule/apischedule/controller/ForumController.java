@@ -5,6 +5,7 @@ import br.com.ezschedule.apischedule.model.DtoClasses.Response.ForumResponse;
 import br.com.ezschedule.apischedule.model.DtoClasses.UpdateResponse.UpdateForumPostForm;
 import br.com.ezschedule.apischedule.model.ForumPost;
 import br.com.ezschedule.apischedule.repository.ForumRepository;
+import br.com.ezschedule.apischedule.service.ForumService;
 import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -26,16 +27,19 @@ public class ForumController {
     @Autowired
     private ForumRepository forumRepository;
 
+    @Autowired
+    private ForumService forumService;
+
     @ApiResponse(responseCode = "204", description =
             "Não há fóruns para exibir.", content = @Content(schema = @Schema(hidden = true)))
     @ApiResponse(responseCode = "200", description = "fóruns postados.")
     @GetMapping
     public ResponseEntity<List<ForumResponse>> showAllPosts(){
-       List<ForumPost> allPosts = forumRepository.findAll();
-       if(allPosts.isEmpty()){
+        List<ForumResponse> allPosts = forumService.listForuns();
+        if(allPosts.isEmpty()){
            return ResponseEntity.status(204).build();
        }
-       return ResponseEntity.status(200).body(JsonResponseAdapter.listForumResponse(allPosts));
+       return ResponseEntity.status(200).body(allPosts);
     }
 
     @ApiResponse(responseCode = "404", description =

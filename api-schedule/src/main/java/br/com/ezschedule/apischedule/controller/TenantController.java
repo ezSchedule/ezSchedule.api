@@ -54,7 +54,7 @@ public class TenantController {
     @ApiResponse(responseCode = "200", description = "usuários encontrados.")
     @GetMapping
     public ResponseEntity<List<TenantResponse>> showAllUsers() {
-        List<Tenant> users = this.tenantRepository.findAll();
+        List<Tenant> users = this.tenantService.listAllTenant();
         if (users.isEmpty()) {
             return ResponseEntity.status(204).build();
         } else {
@@ -99,10 +99,10 @@ public class TenantController {
     @ApiResponse(responseCode = "200", description =
             "Logout realizado", content = @Content(schema = @Schema(hidden = true)))
     @PostMapping("/logout/{email}")
-    public ResponseEntity<Void> logout(@PathVariable String email) {
-        Object user = this.tenantRepository.logoutUser(email);
-        if (user.equals(1)) {
-            return ResponseEntity.status(200).build();
+    public ResponseEntity<Integer> logout(@PathVariable String email) {
+        Integer result = this.tenantService.logoutTenant(email);
+        if (result.equals(1)) {
+            return ResponseEntity.status(200).body(result);
         } else {
             return ResponseEntity.status(401).build();
         }
@@ -116,8 +116,7 @@ public class TenantController {
         if (updatePasswordForm.getPassword().equals(updatePasswordForm.getNewPassword())) {
             return ResponseEntity.status(404).build();
         } else {
-            Object user = this.tenantRepository.updatePasswordUser(updatePasswordForm.getEmail(), updatePasswordForm.getNewPassword());
-            return ResponseEntity.status(200).build();
+            return ResponseEntity.status(200).body(this.tenantService.updatePasswordTenant(updatePasswordForm.getEmail(), updatePasswordForm.getNewPassword()));
         }
     }
 
