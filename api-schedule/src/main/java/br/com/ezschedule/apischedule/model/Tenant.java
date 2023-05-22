@@ -1,5 +1,7 @@
 package br.com.ezschedule.apischedule.model;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
@@ -24,8 +26,8 @@ public class Tenant extends User {
     @OneToMany(mappedBy = "tenant")
     private List<Service> services;
 
-    public Tenant(int id, String email, String cpf, String password, String name, String residentsBlock, Integer apartmentNumber, String phoneNumber, Integer isAdmin, List<Report> reportList, List<Schedule> scheduleList, Condominium condominium, List<Service> services) {
-        super(id, email, cpf, password, name, residentsBlock, apartmentNumber, phoneNumber, isAdmin);
+    public Tenant(int id, String email, String cpf, String password, String name, String residentsBlock, Integer apartmentNumber, String phoneNumber,String nameBlobImage, Integer isAdmin, List<Report> reportList, List<Schedule> scheduleList, Condominium condominium, List<Service> services) {
+        super(id, email, cpf, password, name, residentsBlock, apartmentNumber, phoneNumber, isAdmin,nameBlobImage);
         this.reportList = reportList;
         this.scheduleList = scheduleList;
         this.condominium = condominium;

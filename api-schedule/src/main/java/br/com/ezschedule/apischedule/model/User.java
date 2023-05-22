@@ -58,7 +58,7 @@ public abstract class User {
         this.nameBlobImage = nameBlobImage;
     }
 
-    public User(int id, String email, String cpf, String password, String name, String residentsBlock, Integer apartmentNumber, String phoneNumber, Integer isAdmin) {
+    public User(int id, String email, String cpf, String password, String name, String residentsBlock, Integer apartmentNumber, String phoneNumber, Integer isAdmin,String nameBlobImage) {
         this.idUser = id;
         this.email = email;
         this.cpf = cpf;
@@ -69,6 +69,7 @@ public abstract class User {
         this.phoneNumber = phoneNumber;
         this.isAuthenticated = true;
         this.isAdmin = isAdmin;
+        this.nameBlobImage = nameBlobImage;
     }
 
     public User(String email, String cpf, String password, String name, String residentsBlock, Integer apartmentNumber,String phoneNumber,Integer isAdmin){

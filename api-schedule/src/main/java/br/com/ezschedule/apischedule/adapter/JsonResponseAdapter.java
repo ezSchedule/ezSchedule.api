@@ -5,8 +5,11 @@ import br.com.ezschedule.apischedule.model.DtoClasses.*;
 import br.com.ezschedule.apischedule.model.DtoClasses.CreateTenant.CreateTenant;
 import br.com.ezschedule.apischedule.model.DtoClasses.Response.*;
 import br.com.ezschedule.apischedule.model.DtoClasses.UpdateResponse.UpdateForumPostForm;
+import br.com.ezschedule.apischedule.model.DtoClasses.UpdateResponse.UpdateSaloonForm;
 import br.com.ezschedule.apischedule.model.DtoClasses.UpdateResponse.UpdateScheduleForm;
+import br.com.ezschedule.apischedule.model.DtoClasses.UpdateResponse.UpdateTenantForm;
 import br.com.ezschedule.apischedule.service.autenticacao.dto.UsuarioTokenDto;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -14,7 +17,7 @@ import java.util.List;
 
 public interface JsonResponseAdapter {
 
-    public static Tenant tenantWImg(CreateTenant newUser, Condominium c) {
+    static Tenant tenantWImg(CreateTenant newUser, Condominium c) {
         return new Tenant(
                 newUser.getEmail(),
                 newUser.getCpf(),
@@ -33,7 +36,7 @@ public interface JsonResponseAdapter {
         );
     }
 
-    public static UsuarioTokenDto tenantWTokenDTO(Tenant t, String token) {
+    static UsuarioTokenDto tenantWTokenDTO(Tenant t, String token) {
         return new UsuarioTokenDto(
                 t.getIdUser(),
                 t.getEmail(),
@@ -46,11 +49,12 @@ public interface JsonResponseAdapter {
                 t.isAuthenticated(),
                 t.isAdmin(),
                 token,
-                t.getCondominium().getId()
+                t.getCondominium().getId(),
+                t.getNameBlobImage()
         );
     }
 
-    public static TenantDTO tentantDTO(Tenant t) {
+    static TenantDTO tentantDTO(Tenant t) {
         if (t == null) {
             return null;
         }
@@ -67,14 +71,14 @@ public interface JsonResponseAdapter {
                 t.getNameBlobImage());
     }
 
-    public static List<TenantDTO> listTenantDTO(List<Tenant> t) {
+    static List<TenantDTO> listTenantDTO(List<Tenant> t) {
         if (t == null) {
             return null;
         }
         return t.stream().map(JsonResponseAdapter::tentantDTO).toList();
     }
 
-    public static TenantResponse tenantResponse(Tenant t) {
+    static TenantResponse tenantResponse(Tenant t) {
         if (t == null) {
             return null;
         }
@@ -97,11 +101,30 @@ public interface JsonResponseAdapter {
         );
     }
 
-    public static List<TenantResponse> listTenantResponse(List<Tenant> t) {
+    static List<TenantResponse> listTenantResponse(List<Tenant> t) {
         return t.stream().map(JsonResponseAdapter::tenantResponse).toList();
     }
 
-    public static ServiceDTO serviceDTO(Service s) {
+    static Tenant updateTenant(Tenant t, UpdateTenantForm u) {
+        return new Tenant(
+                t.getIdUser(),
+                u.getEmail(),
+                u.getCpf(),
+                t.getPassword(),
+                u.getName(),
+                u.getResidentsBlock(),
+                u.getApartmentNumber(),
+                u.getPhoneNumber(),
+                t.getNameBlobImage(),
+                t.isAdmin(),
+                t.getReportList(),
+                t.getScheduleList(),
+                t.getCondominium(),
+                t.getServices()
+        );
+    }
+
+    static ServiceDTO serviceDTO(Service s) {
         return new ServiceDTO(
                 s.getId(),
                 s.getServiceName()
@@ -120,7 +143,7 @@ public interface JsonResponseAdapter {
         return services.stream().map(JsonResponseAdapter::serviceResponse).toList();
     }
 
-    public static List<ServiceDTO> serviceArrayDTO(int size, ObjectList<Service> serviceVector) {
+    static List<ServiceDTO> serviceArrayDTO(int size, ObjectList<Service> serviceVector) {
         List<ServiceDTO> serviceDTOList = new ArrayList<>();
         for (int i = 0; i < size; i++) {
             Service currentService = serviceVector.getByIndex(i);
@@ -134,7 +157,7 @@ public interface JsonResponseAdapter {
         return serviceDTOList;
     }
 
-    public static ForumPost updateForumDTO(UpdateForumPostForm newPost, int id, ForumPost oldPost) {
+    static ForumPost updateForumDTO(UpdateForumPostForm newPost, int id, ForumPost oldPost) {
         return new ForumPost(
                 id,
                 newPost.getTextContent(),
@@ -144,7 +167,7 @@ public interface JsonResponseAdapter {
         );
     }
 
-    public static ForumResponse forumResponse(ForumPost f) {
+    static ForumResponse forumResponse(ForumPost f) {
         return new ForumResponse(
                 f.getId(),
                 f.getTextContent(),
@@ -155,20 +178,11 @@ public interface JsonResponseAdapter {
         );
     }
 
-    public static List<ForumResponse> listForumResponse(List<ForumPost> f) {
+    static List<ForumResponse> listForumResponse(List<ForumPost> f) {
         return f.stream().map(JsonResponseAdapter::forumResponse).toList();
     }
 
-    public static ForumPost updateForumDTO(UpdateForumPostForm f, int id, LocalDateTime time) {
-        return new ForumPost(
-                id,
-                f.getTextContent(),
-                f.getTypeMessage(),
-                time,
-                true);
-    }
-
-    public static ForumDTO forumDto(ForumPost f) {
+    static ForumDTO forumDto(ForumPost f) {
         return new ForumDTO(
                 f.getId(),
                 f.getTextContent(),
@@ -178,14 +192,14 @@ public interface JsonResponseAdapter {
         );
     }
 
-    public static List<ForumDTO> listForumDTO(List<ForumPost> f) {
+    static List<ForumDTO> listForumDTO(List<ForumPost> f) {
         if (f == null) {
             return null;
         }
         return f.stream().map(JsonResponseAdapter::forumDto).toList();
     }
 
-    public static SaloonResponse saloonResponse(Saloon s) {
+    static SaloonResponse saloonResponse(Saloon s) {
         return new SaloonResponse(
                 s.getId(),
                 s.getSaloonName(),
@@ -196,11 +210,12 @@ public interface JsonResponseAdapter {
         );
     }
 
-    public static List<SaloonResponse> listSaloonResponse(List<Saloon> s) {
+    static List<SaloonResponse> listSaloonResponse(List<Saloon> s) {
         return s.stream().map(JsonResponseAdapter::saloonResponse).toList();
     }
 
-    public static ScheduleDTO scheduleDTO(Schedule s) {
+    static ScheduleDTO scheduleDTO(Schedule s) {
+        if(s == null) return null;
         return new ScheduleDTO(
                 s.getId(),
                 s.getNameEvent(),
@@ -210,7 +225,7 @@ public interface JsonResponseAdapter {
         );
     }
 
-    public static ScheduleResponse scheduleResponse(Schedule s) {
+    static ScheduleResponse scheduleResponse(Schedule s) {
         return new ScheduleResponse(
                 s.getId(),
                 s.getNameEvent(),
@@ -222,7 +237,7 @@ public interface JsonResponseAdapter {
         );
     }
 
-    public static List<ScheduleResponse> listScheduleResponse(List<Schedule> s) {
+    static List<ScheduleResponse> listScheduleResponse(List<Schedule> s) {
         if (s == null) {
             return null;
         }
@@ -230,7 +245,7 @@ public interface JsonResponseAdapter {
         return s.stream().map(JsonResponseAdapter::scheduleResponse).toList();
     }
 
-    public static List<ScheduleDTO> listScheduleDTO(List<Schedule> s) {
+    static List<ScheduleDTO> listScheduleDTO(List<Schedule> s) {
         if (s == null) {
             return null;
         }
@@ -238,7 +253,7 @@ public interface JsonResponseAdapter {
         return s.stream().map(JsonResponseAdapter::scheduleDTO).toList();
     }
 
-    public static List<ServiceDTO> listServiceDTO(List<Service> s) {
+    static List<ServiceDTO> listServiceDTO(List<Service> s) {
         if (s == null) {
             return null;
         }
@@ -247,7 +262,7 @@ public interface JsonResponseAdapter {
     }
 
 
-    public static Schedule updateScheduleDTO(UpdateScheduleForm u, int id, Saloon saloon, Tenant t) {
+    static Schedule updateScheduleDTO(UpdateScheduleForm u, int id, Saloon saloon, Tenant t) {
         return new Schedule(
                 id,
                 u.getNameEvent(),
@@ -259,7 +274,7 @@ public interface JsonResponseAdapter {
         );
     }
 
-    public static ReportResponse reportResponse(Report r) {
+    static ReportResponse reportResponse(Report r) {
         return new ReportResponse(
                 r.getId(),
                 r.getInvoiceNumber(),
@@ -273,11 +288,11 @@ public interface JsonResponseAdapter {
         );
     }
 
-    public static List<ReportResponse> listReportResponse(List<Report> r) {
+    static List<ReportResponse> listReportResponse(List<Report> r) {
         return r.stream().map(JsonResponseAdapter::reportResponse).toList();
     }
 
-    public static SaloonDTO saloonDTO(Saloon s) {
+    static SaloonDTO saloonDTO(Saloon s) {
         return new SaloonDTO(
                 s.getId(),
                 s.getSaloonName(),
@@ -286,14 +301,25 @@ public interface JsonResponseAdapter {
         );
     }
 
-    public static List<SaloonDTO> listSaloonDTO(List<Saloon> s) {
+    static Saloon UpdateSaloon(UpdateSaloonForm u ,Saloon s){
+        return new Saloon(
+                s.getId(),
+                u.getSaloonName(),
+                u.getSaloonPrice(),
+                u.getSaloonBlock(),
+                s.getCondominium(),
+                s.getSchedule()
+        );
+    }
+
+    static List<SaloonDTO> listSaloonDTO(List<Saloon> s) {
         if (s == null) {
             return null;
         }
         return s.stream().map(JsonResponseAdapter::saloonDTO).toList();
     }
 
-    public static ReportDTO reportDTO(Report r) {
+    static ReportDTO reportDTO(Report r) {
         return new ReportDTO(
                 r.getId(),
                 r.getInvoiceNumber(),
@@ -304,14 +330,14 @@ public interface JsonResponseAdapter {
         );
     }
 
-    public static List<ReportDTO> listReportDTO(List<Report> r) {
+    static List<ReportDTO> listReportDTO(List<Report> r) {
         if (r == null) {
             return null;
         }
         return r.stream().map(JsonResponseAdapter::reportDTO).toList();
     }
 
-    public static CondominiumDto condominiumDTO(Condominium c) {
+    static CondominiumDto condominiumDTO(Condominium c) {
         if (c == null) {
             return null;
         }
@@ -326,7 +352,7 @@ public interface JsonResponseAdapter {
         );
     }
 
-    public static CondominiumResponse condominumResponseDTO(Condominium c) {
+    static CondominiumResponse condominumResponseDTO(Condominium c) {
         return new CondominiumResponse(
                 c.getId(),
                 c.getName(),
@@ -342,7 +368,7 @@ public interface JsonResponseAdapter {
         );
     }
 
-    public static List<CondominiumResponse> listCondominumDTO(List<Condominium> c) {
+    static List<CondominiumResponse> listCondominumDTO(List<Condominium> c) {
         return c.stream().map(JsonResponseAdapter::condominumResponseDTO).toList();
     }
 

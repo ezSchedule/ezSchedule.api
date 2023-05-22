@@ -1,5 +1,7 @@
 package br.com.ezschedule.apischedule.model.DtoClasses.UpdateResponse;
 
+import org.springframework.web.multipart.MultipartFile;
+
 public class UpdateTenantForm {
     private String name;
     private String email;
@@ -7,6 +9,8 @@ public class UpdateTenantForm {
     private String residentsBlock;
     private String phoneNumber;
     private Integer apartmentNumber;
+
+    private MultipartFile image;
 
     public String getName() {
         return name;
@@ -54,5 +58,13 @@ public class UpdateTenantForm {
 
     public void setApartmentNumber(Integer apartmentNumber) {
         this.apartmentNumber = apartmentNumber;
+    }
+
+    public MultipartFile getImage() {
+        return image;
+    }
+
+    public void setImage(MultipartFile image) {
+        this.image = image;
     }
 }

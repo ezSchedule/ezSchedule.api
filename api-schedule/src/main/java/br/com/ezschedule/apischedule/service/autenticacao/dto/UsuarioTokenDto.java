@@ -15,7 +15,9 @@ public class UsuarioTokenDto {
   private String token;
   private int idCondominium;
 
-  public UsuarioTokenDto(int id, String email, String cpf, String name, String password, String residentsBlock, Integer apartmentNumber, String phoneNumber, boolean isAuthenticated, Integer isAdmin, String token, int idCondominium) {
+  private String image;
+
+  public UsuarioTokenDto(int id, String email, String cpf, String name, String password, String residentsBlock, Integer apartmentNumber, String phoneNumber, boolean isAuthenticated, Integer isAdmin, String token, int idCondominium,String image) {
     this.id = id;
     this.email = email;
     this.cpf = cpf;
@@ -28,6 +30,7 @@ public class UsuarioTokenDto {
     this.isAdmin = isAdmin;
     this.token = token;
     this.idCondominium = idCondominium;
+    this.image = image;
   }
 
   public int getId() {
@@ -124,5 +127,13 @@ public class UsuarioTokenDto {
 
   public void setIdCondominium(int idCondominium) {
     this.idCondominium = idCondominium;
+  }
+
+  public String getImage() {
+    return image;
+  }
+
+  public void setImage(String image) {
+    this.image = image;
   }
 }

@@ -56,7 +56,7 @@ public class ScheduleController {
     @PostMapping
     public ResponseEntity<ScheduleResponse> newSchedule(@RequestBody @Valid Schedule s){
         scheduleRepository.save(s);
-        return ResponseEntity.status(200).body(JsonResponseAdapter.scheduleResponse(s));
+        return ResponseEntity.status(201).build();
     }
 
     @ApiResponse(responseCode = "404", description =

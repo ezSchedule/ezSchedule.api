@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
-public class    Report {
+public class Report {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -21,21 +21,6 @@ public class    Report {
 
     @ManyToOne
     private Tenant tenant;
-
-    public Report(int invoiceNumber, String productName, String category, String paymentStatus, LocalDateTime paymentTime, Schedule schedule, Condominium condominium, Tenant tenant) {
-        this.invoiceNumber = invoiceNumber;
-        this.productName = productName;
-        this.category = category;
-        this.paymentStatus = paymentStatus;
-        this.paymentTime = paymentTime;
-        this.schedule = schedule;
-        this.condominium = condominium;
-        this.tenant = tenant;
-    }
-
-    public Report(){
-
-    }
 
     public int getId() {
         return id;

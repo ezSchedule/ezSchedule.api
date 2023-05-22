@@ -54,6 +54,6 @@ public class ReportController {
     @PostMapping
     public ResponseEntity<ReportResponse> newReport(@RequestBody @Valid Report report){
         reportRepository.save(report);
-        return ResponseEntity.status(200).body(JsonResponseAdapter.reportResponse(report));
+        return ResponseEntity.status(201).build();
     }
 }

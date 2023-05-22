@@ -2,6 +2,7 @@ package br.com.ezschedule.apischedule.controller;
 
 import br.com.ezschedule.apischedule.adapter.JsonResponseAdapter;
 import br.com.ezschedule.apischedule.model.DtoClasses.Response.SaloonResponse;
+import br.com.ezschedule.apischedule.model.DtoClasses.UpdateResponse.UpdateSaloonForm;
 import br.com.ezschedule.apischedule.model.Saloon;
 import br.com.ezschedule.apischedule.repository.SaloonRepository;
 import io.swagger.annotations.Api;
@@ -42,7 +43,7 @@ public class SaloonController {
     @GetMapping("/{id}")
     public ResponseEntity<SaloonResponse> showASaloonById(@PathVariable  int id){
         Optional<Saloon> saloon = saloonRepository.findById(id);
-        if(saloon.isEmpty()){
+        if(!saloon.isPresent()){
             return ResponseEntity.status(404).build();
         }
         return ResponseEntity.status(200).body(JsonResponseAdapter.saloonResponse(saloon.get()));
@@ -56,16 +57,16 @@ public class SaloonController {
         return ResponseEntity.status(201).build();
     }
 
-//    @PutMapping("/{id}")
-//    public ResponseEntity<Saloon> updateSaloonById(@RequestBody @Valid UpdateSaloonForm newSaloon, @PathVariable int id){
-//        Optional<Saloon> oldSaloon = saloonRepository.findById(id);
-//        if(oldSaloon.isPresent()){
-//            Saloon updatedSaloon = JsonResponseAdapter.saloonDTO(newSaloon,id,oldSaloon.get().getCondominium());
-//            saloonRepository.save(updatedSaloon);
-//            return ResponseEntity.status(200).body(updatedSaloon);
-//        }
-//        return ResponseEntity.status(404).build();
-//    }
+    @PutMapping("/{id}")
+    public ResponseEntity<Saloon> updateSaloonById(@RequestBody @Valid UpdateSaloonForm newSaloon, @PathVariable int id){
+        Optional<Saloon> oldSaloon = saloonRepository.findById(id);
+        if(oldSaloon.isPresent()){
+            Saloon updatedSaloon = JsonResponseAdapter.UpdateSaloon(newSaloon,oldSaloon.get());
+            saloonRepository.save(updatedSaloon);
+            return ResponseEntity.status(200).body(updatedSaloon);
+        }
+        return ResponseEntity.status(404).build();
+    }
 
     @ApiResponse(responseCode = "404", description =
             "salão não encontrado.", content = @Content(schema = @Schema(hidden = true)))

@@ -18,42 +18,26 @@ public class ForumPost {
     @NotBlank
     @Size(min = 5)
     private String typeMessage;
-    @PastOrPresent
-    private LocalDateTime dateTimePost;
+
+    private LocalDateTime dateTimePost = LocalDateTime.now();
     private boolean isEdited;
     @ManyToOne
     private Condominium condominium;
 
-    public ForumPost(int id,String textContent, String typeMessage, LocalDateTime dateTimePost, Condominium condominium) {
+    public ForumPost(int id,String textContent, String typeMessage,LocalDateTime dateTimePost, Condominium condominium) {
         this.id = id;
         this.textContent = textContent;
-        this.typeMessage = typeMessage;
         this.dateTimePost = dateTimePost;
+        this.typeMessage = typeMessage;
         this.condominium = condominium;
         isEdited = true;
     }
 
-    public ForumPost(String textContent, String typeMessage, LocalDateTime dateTimePost, boolean isEdited, Condominium condominium) {
-        this.textContent = textContent;
-        this.typeMessage = typeMessage;
-        this.dateTimePost = dateTimePost;
-        this.isEdited = isEdited;
-        this.condominium = condominium;
-    }
-
-    public ForumPost(Integer id, String textContent, String typeMessage, LocalDateTime dateTimePost, boolean isEdited) {
+    public ForumPost(Integer id, String textContent, String typeMessage,boolean isEdited) {
         this.id = id;
         this.textContent = textContent;
         this.typeMessage = typeMessage;
-        this.dateTimePost = dateTimePost;
         this.isEdited = isEdited;
-    }
-    public ForumPost(String textContent, String typeMessage, LocalDateTime dateTimePost, Condominium condominium) {
-        this.textContent = textContent;
-        this.typeMessage = typeMessage;
-        this.dateTimePost = dateTimePost;
-        this.isEdited = false;
-        this.condominium = condominium;
     }
 
     public ForumPost() {

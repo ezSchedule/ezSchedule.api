@@ -8,6 +8,7 @@ import br.com.ezschedule.apischedule.model.ForumPost;
 import br.com.ezschedule.apischedule.model.Tenant;
 import br.com.ezschedule.apischedule.observer.EmailNotifier;
 import br.com.ezschedule.apischedule.observer.FilaObj;
+import br.com.ezschedule.apischedule.observer.PilhaObj;
 import br.com.ezschedule.apischedule.observer.SubscribedTenants;
 import br.com.ezschedule.apischedule.repository.ForumRepository;
 import br.com.ezschedule.apischedule.repository.TenantRepository;
@@ -46,7 +47,6 @@ public class ForumController {
 
     private FilaObj<Tenant> forumPostFila = new FilaObj<>(100);
 
-
     @ApiResponse(responseCode = "204", description =
             "Não há fóruns para exibir.", content = @Content(schema = @Schema(hidden = true)))
     @ApiResponse(responseCode = "200", description = "fóruns postados.")
@@ -56,7 +56,7 @@ public class ForumController {
         if (allPosts.isEmpty()) {
             return ResponseEntity.status(204).build();
         }
-        return ResponseEntity.status(201).build();
+        return ResponseEntity.status(200).body(JsonResponseAdapter.listForumResponse(allPosts));
     }
 
     @ApiResponse(responseCode = "404", description =
@@ -78,7 +78,7 @@ public class ForumController {
 
         //descomente se deseje enviar emails para todos usuários inscritos
 
-        List<Tenant> tenantList = forumRepository.findSubscribedTenants();
+//        List<Tenant> tenantList = forumRepository.findSubscribedTenants();
 
 //        for(Tenant t :tenantList){
 //            forumPostFila.insert(t);
@@ -87,8 +87,7 @@ public class ForumController {
 //        for(int i = 0;forumPostFila.getTamanho() > 0 ;i++){
 //            sendEmailsOnADelayBasis(forumPostFila.poll(),post);
 //        }
-
-        return ResponseEntity.status(200).body(JsonResponseAdapter.forumResponse(post));
+        return ResponseEntity.status(201).build();
     }
 
     @ApiResponse(responseCode = "404", description =

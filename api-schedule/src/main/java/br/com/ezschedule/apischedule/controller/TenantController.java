@@ -85,14 +85,13 @@ public class TenantController {
 
         Integer idCondominium = DecryptToken(newUser.getCondominium());
 
-        if(idCondominium != null) {
-            Tenant t = JsonResponseAdapter.tenantWImg(newUser,new Condominium(idCondominium));
+        if (idCondominium != null) {
+            Tenant t = JsonResponseAdapter.tenantWImg(newUser, new Condominium(idCondominium));
 
             this.tenantService.criar(t);
 
             if (newUser.getNameBlobImage() != null) {
                 uploadImage(t.getIdUser(), newUser.getNameBlobImage());
-                t.setNameBlobImage(getImage(t.getIdUser()).toString());
             }
             return ResponseEntity.status(201).build();
         }
@@ -186,27 +185,19 @@ public class TenantController {
     }
 
     @PutMapping("/update-tenant")
-    public ResponseEntity<TenantResponse> updateTenantInformation(@RequestParam int id, @RequestBody UpdateTenantForm newTenant) {
+    public ResponseEntity<TenantResponse> updateTenantInformation(@RequestParam int id, @ModelAttribute UpdateTenantForm newTenant) throws IOException {
         Optional<Tenant> oldTenant = tenantRepository.findById(id);
         if (oldTenant.isPresent()) {
-            Tenant t = oldTenant.get();
-            Tenant updatedTenant = new Tenant(
-                    id,
-                    newTenant.getEmail(),
-                    newTenant.getCpf(),
-                    t.getPassword(),
-                    newTenant.getName(),
-                    newTenant.getResidentsBlock(),
-                    newTenant.getApartmentNumber(),
-                    newTenant.getPhoneNumber(),
-                    t.isAdmin(),
-                    t.getReportList(),
-                    t.getScheduleList(),
-                    t.getCondominium(),
-                    t.getServices()
-            );
-            Tenant tenant = tenantRepository.save(updatedTenant);
-            return ResponseEntity.status(200).body(JsonResponseAdapter.tenantResponse(tenant));
+            tenantRepository.save(JsonResponseAdapter.updateTenant(oldTenant.get(), newTenant));
+            if (oldTenant.get().getNameBlobImage() != null) {
+                if(newTenant.getImage() != null && !newTenant.getImage().isEmpty()) {
+                    deleteImage(oldTenant.get().getIdUser());
+                    uploadImage(oldTenant.get().getIdUser(), newTenant.getImage());
+                }
+            } else if (newTenant.getImage() != null && !newTenant.getImage().isEmpty()) {
+                uploadImage(oldTenant.get().getIdUser(), newTenant.getImage());
+            }
+            return ResponseEntity.status(200).body(JsonResponseAdapter.tenantResponse(oldTenant.get()));
         }
         return ResponseEntity.status(204).build();
     }
@@ -301,12 +292,12 @@ public class TenantController {
     @GetMapping("/generate-token/{id}")
     public ResponseEntity<String> generateEncryptedToken(@PathVariable int id) {
 
-        if(tenantRepository.existsById(id)){
+        if (tenantRepository.existsById(id)) {
 
             String idCondominium = String.valueOf(tenantRepository.findById(id).get().getCondominium().getId());
 
-          String encodedId = passwordEncoder.encode(idCondominium);
-          return ResponseEntity.status(200).body(encodedId);
+            String encodedId = passwordEncoder.encode(idCondominium);
+            return ResponseEntity.status(200).body(encodedId);
         }
         return ResponseEntity.status(404).build();
     }
@@ -314,8 +305,8 @@ public class TenantController {
     public Integer DecryptToken(String encodedId) {
         List<Integer> idList = tenantRepository.findAllCondominiumIdFromTenants();
 
-        for(int i =0;i < idList.size();i++){
-            if(passwordEncoder.matches(String.valueOf(idList.get(i)),encodedId)){
+        for (int i = 0; i < idList.size(); i++) {
+            if (passwordEncoder.matches(String.valueOf(idList.get(i)), encodedId)) {
                 return idList.get(i);
             }
         }
@@ -329,12 +320,12 @@ public class TenantController {
 
         Optional<Tenant> tenant = tenantRepository.findById(idUser);
 
-        if(!tenant.isPresent()){
-            return ResponseEntity.status (404).body("User not found");
+        if (!tenant.isPresent()) {
+            return ResponseEntity.status(404).body("User not found");
         }
 
-        if(tenant.get().getNameBlobImage() == null || tenant.get().getNameBlobImage() == ""){
-            return ResponseEntity.status (404).body("User not content image");
+        if (tenant.get().getNameBlobImage() == null || tenant.get().getNameBlobImage() == "") {
+            return ResponseEntity.status(404).body("User not content image");
         }
 
         String blobName = tenant.get().getNameBlobImage();
@@ -351,7 +342,7 @@ public class TenantController {
 
         Optional<BlobClient> blob = Optional.of(container.getBlobClient(blobName));
 
-        if(!blob.get().exists()){
+        if (!blob.get().exists()) {
             return ResponseEntity.status(204).build();
         }
 
@@ -365,15 +356,15 @@ public class TenantController {
 
         Optional<Tenant> tenant = tenantRepository.findById(idUser);
 
-        if(!tenant.isPresent()){
-            return ResponseEntity.status (404).body("User not found");
+        if (!tenant.isPresent()) {
+            return ResponseEntity.status(404).body("User not found");
         }
 
-        if(tenant.get().getNameBlobImage() == null || tenant.get().getNameBlobImage() == ""){
-            return ResponseEntity.status (404).body("User not content image");
+        if (tenant.get().getNameBlobImage() == null || tenant.get().getNameBlobImage() == "") {
+            return ResponseEntity.status(404).body("User not content image");
         }
 
-        if(image.isEmpty()){
+        if (image.isEmpty()) {
             return ResponseEntity.status(404).build();
         }
 
@@ -393,7 +384,7 @@ public class TenantController {
 
         boolean delete = blob.get().deleteIfExists();
 
-        if(delete){
+        if (delete) {
 
             String nameUpdate = LocalDateTime.now() + image.getOriginalFilename();
 
@@ -424,16 +415,16 @@ public class TenantController {
     }
 
     @DeleteMapping("/delete-image/{idUser}")
-    public ResponseEntity<String> deleteImage(@PathVariable int idUser){
+    public ResponseEntity<String> deleteImage(@PathVariable int idUser) {
 
         Optional<Tenant> tenant = tenantRepository.findById(idUser);
 
-        if(!tenant.isPresent()){
-            return ResponseEntity.status (404).body("User not found");
+        if (!tenant.isPresent()) {
+            return ResponseEntity.status(404).body("User not found");
         }
 
-        if(tenant.get().getNameBlobImage() == null || tenant.get().getNameBlobImage() == ""){
-            return ResponseEntity.status (404).body("User not content image");
+        if (tenant.get().getNameBlobImage() == null || tenant.get().getNameBlobImage() == "") {
+            return ResponseEntity.status(404).body("User not content image");
         }
 
         String nameBlobOriginal = tenant.get().getNameBlobImage();
@@ -452,7 +443,7 @@ public class TenantController {
 
         boolean delete = blob.get().deleteIfExists();
 
-        if(delete){
+        if (delete) {
 
             tenant.get().setNameBlobImage(null);
 
