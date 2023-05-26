@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 
 public interface ScheduleRepository extends JpaRepository<Schedule,Integer> {
 
-    @Query("SELECT COUNT(s.totalNumberGuests) " +
+    @Query("SELECT SUM(s.totalNumberGuests) " +
             "FROM Schedule s " +
             "JOIN s.tenant t " +
             "WHERE s.dateEvent >= :selectedDateOneMonth AND s.dateEvent <= :selectedDateTwoMonth AND t.condominium.id = :id")
