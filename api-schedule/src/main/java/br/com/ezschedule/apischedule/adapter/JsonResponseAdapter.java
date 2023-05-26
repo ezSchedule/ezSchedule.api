@@ -80,7 +80,7 @@ public interface JsonResponseAdapter {
                 t.getPhoneNumber(),
                 t.isAuthenticated(),
                 t.isAdmin(),
-                listReportDTO(t.getReportList()),
+                listReportCondoDTO(t.getReportList()),
                 listScheduleDTO(t.getScheduleList()),
                condominiumDTO(t.getCondominium())
         );
@@ -273,8 +273,8 @@ public interface JsonResponseAdapter {
         );
     }
 
-    public static List<ReportCondoDTO> listReportCondoDTO(List<Report> r){
-        return r.stream().map(JsonResponseAdapter::reportCondoDTO).toList();
+    public static List<ReportDTO> listReportCondoDTO(List<Report> r){
+        return r.stream().map(JsonResponseAdapter::reportDTO).toList();
     }
 
     public static CondominiumDto condominiumDTO(Condominium c) {
@@ -304,7 +304,7 @@ public interface JsonResponseAdapter {
                 listTenantDTO(c.getTenantList()),
                 listSaloonDTO(c.getSaloonList()),
                 listForumDTO(c.getForumPostList()),
-                listReportDTO(c.getReportList())
+                listReportCondoDTO(c.getReportList())
         );
     }
 

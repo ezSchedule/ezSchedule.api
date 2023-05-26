@@ -12,6 +12,8 @@ public class Schedule {
     private String nameEvent;
     private String typeEvent;
     private LocalDateTime dateEvent;
+
+    @Column(name = "total_number_guests")
     private int totalNumberGuests;
 
     @ManyToOne

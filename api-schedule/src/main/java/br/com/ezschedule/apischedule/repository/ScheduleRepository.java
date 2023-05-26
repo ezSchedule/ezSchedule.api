@@ -3,19 +3,26 @@ package br.com.ezschedule.apischedule.repository;
 import br.com.ezschedule.apischedule.model.Schedule;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDate;
-import java.time.Month;
-import java.time.Year;
+import java.time.LocalDateTime;
 
 public interface ScheduleRepository extends JpaRepository<Schedule,Integer> {
 
-    Schedule findByDateEvent(LocalDate date);
+        @Query("SELECT SUM(totalNumberGuests) " +
+                "FROM Schedule " +
+                "WHERE dateEvent >= :selectedDateOneMonth AND dateEvent <= :selectedDateTwoMonth")
+        Integer totalGuestsByMonth(@Param("selectedDateOneMonth") LocalDateTime selectedDateOneMonth,
+                                   @Param("selectedDateTwoMonth") LocalDateTime selectedDateTwoMonth);
 
 
-//    @Query(value = "SELECT COUNT(*) FROM Schedule WHERE year = :year GROUP BY year, month HAVING month = :month", nativeQuery = true)
-//    Integer countEventsByMonth(int year, int month);
+        @Query("SELECT SUM(s.totalNumberGuests) " +
+                "FROM Schedule s " +
+                "JOIN s.tenant t " +
+                "WHERE s.dateEvent >= :selectedDateOneMonth AND s.dateEvent <= :selectedDateTwoMonth AND t.condominium.id = :id")
+        Integer countEventsByMonth(@Param("selectedDateOneMonth") LocalDateTime selectedDateOneMonth,
+                                   @Param("selectedDateTwoMonth") LocalDateTime selectedDateTwoMonth,
+                                   @Param("id") int id);
 
-    @Query(value = "select sum(total_number_guests) from schedule where date_event between :dateOne and :dateTwo;",nativeQuery = true)
-    Integer totalGuestsByMonth(LocalDate dateOne, LocalDate dateTwo);
-}
+    }
