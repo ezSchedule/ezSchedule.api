@@ -125,7 +125,7 @@ public class ScheduleController {
                 String monthStringExtended = month.getDisplayName(TextStyle.FULL, locale);
                 monthStringExtended = monthStringExtended.substring(0,1).toUpperCase().concat(monthStringExtended.substring(1));
 
-                Integer totalGuestsByMonth = scheduleRepository.totalGuestsByMonth(startDateTime, endDateTime);
+                Integer totalGuestsByMonth = scheduleRepository.totalGuestsByMonth(startDateTime, endDateTime, idCondominium);
                 Integer totalEventsByMonth = scheduleRepository.countEventsByMonth(startDateTime, endDateTime, idCondominium);
 
                 informationResultList.add(new InfoDate(monthStringExtended, totalGuestsByMonth, totalEventsByMonth));
