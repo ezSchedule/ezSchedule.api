@@ -199,4 +199,14 @@ public class ScheduleController {
         }
         return ResponseEntity.status(404).build();
     }
+
+    @GetMapping("/type")
+    public ResponseEntity<List<ScheduleResponse>> getAllCanceledSchedules(){
+        List<Schedule> scheduleList = scheduleRepository.findAllCanceledSchedules();
+        if(scheduleList.isEmpty()){
+            return ResponseEntity.status(204).build();
+        }
+        return ResponseEntity.status(200).body(JsonResponseAdapter.listScheduleResponse(scheduleList));
+    }
+
 }

@@ -17,7 +17,7 @@ import java.util.Optional;
 @Repository
 public interface TenantRepository extends JpaRepository<Tenant, Integer> {
 
-    @Query(value = "SELECT t FROM Tenant t WHERE t.condominium = :id")
+    @Query(value = "SELECT t FROM Tenant t WHERE t.condominium.id = :id")
     List<Tenant> findAllTenantsCondominium(int id);
 
     @Transactional
