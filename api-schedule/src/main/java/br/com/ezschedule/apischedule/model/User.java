@@ -42,7 +42,7 @@ public abstract class User {
 
     private boolean isAuthenticated;
 
-    private Integer isAdmin;
+    private Integer isAdmin = 0;
 
     private String nameBlobImage;
 
@@ -95,7 +95,6 @@ public abstract class User {
         this.apartmentNumber = apartmentNumber;
         this.phoneNumber = phoneNumber;
         this.isAuthenticated = true;
-        this.isAdmin = isAdmin;
     }
 
     public Integer getIdUser() {

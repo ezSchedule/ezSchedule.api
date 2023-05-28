@@ -22,7 +22,7 @@ public class CreateTenant {
     private Integer apartmentNumber;
     private String phoneNumber;
     private boolean isAuthenticated;
-    private Integer isAdmin;
+    private Integer isAdmin = 0;
     private Integer subscribed = 0;
     private MultipartFile nameBlobImage;
     private List<Report> reportList;

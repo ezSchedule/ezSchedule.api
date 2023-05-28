@@ -17,30 +17,25 @@ import java.util.Optional;
 @Repository
 public interface TenantRepository extends JpaRepository<Tenant, Integer> {
 
-    @Query(
-            value = "SELECT * FROM Tenant WHERE condominium_id = 1", nativeQuery = true
-    )
+    @Query(value = "SELECT t FROM Tenant t WHERE t.condominium = :id")
     List<Tenant> findAllTenantsCondominium(int id);
 
     @Transactional
     @Modifying
-    @Query(value = "UPDATE Tenant SET is_authenticated = 1 WHERE email = ?1", nativeQuery = true)
+    @Query(value = "UPDATE Tenant t SET t.isAuthenticated = 1 WHERE t.email = :email")
     void userAuthenticated(String email);
 
     @Transactional
     @Modifying
-    @Query(value = "UPDATE Tenant SET is_authenticated = 0 WHERE email = ?1 ", nativeQuery = true)
+    @Query(value = "UPDATE Tenant t SET t.isAuthenticated = 0 WHERE t.email = :email")
     Integer logoutUser(String email);
 
     @Transactional
     @Modifying
-    @Query(value = "UPDATE Tenant SET password = :newPassword WHERE email = :email")
+    @Query(value = "UPDATE Tenant t SET t.password = :newPassword WHERE t.email = :email")
     Object updatePasswordUser(String email, String newPassword);
 
-    @Query("Select t from Tenant t where subscribed = 1")
-    List<Tenant> findSubscribedTenants();
-
-    @Query("Update Tenant set subscribed = :isSubscribed where idUser = :id")
+    @Query("Update Tenant t set t.subscribed = :isSubscribed where t.idUser = :id")
     void subscribeOrUnsubTenant(Integer isSubscribed,int id);
 
 

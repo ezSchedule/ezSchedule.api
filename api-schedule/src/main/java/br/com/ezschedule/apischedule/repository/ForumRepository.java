@@ -18,4 +18,8 @@ public interface ForumRepository extends JpaRepository<ForumPost, Integer> {
 
     @Query("Select t from Tenant t where subscribed = 1")
     List<Tenant> findSubscribedTenants();
+
+    @Query("Select f from ForumPost f where f.typeMessage = :content")
+    List<ForumPost> findBasedOnType(String content);
+
 }

@@ -6,9 +6,7 @@ import br.com.ezschedule.apischedule.model.DtoClasses.Response.ForumResponse;
 import br.com.ezschedule.apischedule.model.DtoClasses.UpdateResponse.UpdateForumPostForm;
 import br.com.ezschedule.apischedule.model.ForumPost;
 import br.com.ezschedule.apischedule.model.Tenant;
-import br.com.ezschedule.apischedule.observer.EmailNotifier;
 import br.com.ezschedule.apischedule.observer.FilaObj;
-import br.com.ezschedule.apischedule.observer.PilhaObj;
 import br.com.ezschedule.apischedule.observer.SubscribedTenants;
 import br.com.ezschedule.apischedule.repository.ForumRepository;
 import br.com.ezschedule.apischedule.repository.TenantRepository;
@@ -114,6 +112,15 @@ public class ForumController {
             return ResponseEntity.status(204).build();
         }
         return ResponseEntity.status(404).build();
+    }
+
+    @GetMapping("/type/{content}")
+    public ResponseEntity<List<ForumResponse>> getBasedOnType(@PathVariable String content){
+        List<ForumPost> forumPostList = forumRepository.findBasedOnType(content);
+        if(forumPostList.isEmpty()){
+            return ResponseEntity.status(204).build();
+        }
+        return ResponseEntity.status(200).body(JsonResponseAdapter.listForumResponse(forumPostList));
     }
 
 

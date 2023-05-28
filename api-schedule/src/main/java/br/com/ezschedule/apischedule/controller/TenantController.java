@@ -90,7 +90,7 @@ public class TenantController {
 
             this.tenantService.criar(t);
 
-            if (newUser.getNameBlobImage() != null) {
+            if (newUser.getNameBlobImage() != null && newUser.getNameBlobImage().getSize() > 0) {
                 uploadImage(t.getIdUser(), newUser.getNameBlobImage());
             }
             return ResponseEntity.status(201).build();
@@ -190,11 +190,11 @@ public class TenantController {
         if (oldTenant.isPresent()) {
             tenantRepository.save(JsonResponseAdapter.updateTenant(oldTenant.get(), newTenant));
             if (oldTenant.get().getNameBlobImage() != null) {
-                if(newTenant.getImage() != null && !newTenant.getImage().isEmpty()) {
+                if(newTenant.getImage() != null && newTenant.getImage().getSize() > 0) {
                     deleteImage(oldTenant.get().getIdUser());
                     uploadImage(oldTenant.get().getIdUser(), newTenant.getImage());
                 }
-            } else if (newTenant.getImage() != null && !newTenant.getImage().isEmpty()) {
+            } else if (newTenant.getImage() != null && newTenant.getImage().getSize() > 0) {
                 uploadImage(oldTenant.get().getIdUser(), newTenant.getImage());
             }
             return ResponseEntity.status(200).body(JsonResponseAdapter.tenantResponse(oldTenant.get()));

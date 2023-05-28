@@ -6,17 +6,19 @@ import br.com.ezschedule.apischedule.model.Tenant;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
 import java.util.List;
 
+@Repository
 public interface ServiceRepository extends JpaRepository<Service, Integer> {
 
     List<Service> findAllByServiceName(String name);
 
     @Modifying
     @Transactional
-    @Query(value = "UPDATE service SET service_name = :serviceName where id = :id", nativeQuery = true)
+    @Query(value = "UPDATE Service s SET s.serviceName = :serviceName where s.id = :id")
     void updateService(int id, String serviceName);
 
 
