@@ -7,6 +7,7 @@ import br.com.ezschedule.apischedule.model.DtoClasses.UpdateResponse.UpdateForum
 import br.com.ezschedule.apischedule.model.ForumPost;
 import br.com.ezschedule.apischedule.model.Tenant;
 import br.com.ezschedule.apischedule.observer.FilaObj;
+import br.com.ezschedule.apischedule.observer.PilhaObj;
 import br.com.ezschedule.apischedule.observer.SubscribedTenants;
 import br.com.ezschedule.apischedule.repository.ForumRepository;
 import br.com.ezschedule.apischedule.repository.TenantRepository;
@@ -21,6 +22,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -45,16 +47,33 @@ public class ForumController {
 
     private FilaObj<Tenant> forumPostFila = new FilaObj<>(100);
 
+
     @ApiResponse(responseCode = "204", description =
             "Não há fóruns para exibir.", content = @Content(schema = @Schema(hidden = true)))
     @ApiResponse(responseCode = "200", description = "fóruns postados.")
     @GetMapping
     public ResponseEntity<List<ForumResponse>> showAllPosts() {
         List<ForumPost> allPosts = forumRepository.findAll();
-        if (allPosts.isEmpty()) {
+        PilhaObj<ForumPost> auxPilha =  new PilhaObj<>(allPosts.size());
+        List<ForumPost> postsEmpilhados = new ArrayList<>();
+
+        for(int i = 0; i < allPosts.size();i++){
+            auxPilha.push(allPosts.get(i));
+        }
+
+        if (auxPilha.isEmpty()) {
             return ResponseEntity.status(204).build();
         }
-        return ResponseEntity.status(200).body(JsonResponseAdapter.listForumResponse(allPosts));
+
+        if(auxPilha.getTopo() == 0){
+            postsEmpilhados.add(auxPilha.pop());
+        }else {
+            while (auxPilha.getTopo() > 0) {
+                postsEmpilhados.add(auxPilha.pop());
+            }
+        }
+
+        return ResponseEntity.status(200).body(JsonResponseAdapter.listForumResponse(postsEmpilhados));
     }
 
     @ApiResponse(responseCode = "404", description =
