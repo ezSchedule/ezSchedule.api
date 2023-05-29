@@ -43,7 +43,8 @@ public class ForumController {
     @Autowired
     private SendMail sendMail;
 
-    private SubscribedTenants observer = new SubscribedTenants();
+    @Autowired
+    private SubscribedTenants observer;
 
     private FilaObj<Tenant> forumPostFila = new FilaObj<>(100);
 

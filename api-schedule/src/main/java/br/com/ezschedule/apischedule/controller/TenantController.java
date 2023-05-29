@@ -61,6 +61,8 @@ public class TenantController {
     private SendMail sendMail;
     @Autowired
     private ServiceRepository serviceRepository;
+    @Autowired
+    private Txt txt;
     List<Tenant> listUsers = new ArrayList<>();
     private String token = "";
 
@@ -463,23 +465,11 @@ public class TenantController {
     }
 
     @PostMapping("/import-txt")
-    public ResponseEntity<List<ServiceImportDTO>> saveByTxt(@RequestParam MultipartFile arquivo){
+    public ResponseEntity<Boolean> saveByTxt(@RequestParam MultipartFile arquivo){
 
-        String nameArchive = Txt.save(arquivo);
+        String nameArchive = txt.save(arquivo);
 
-        List<ServiceImportDTO> listService = Txt.writeTxt(nameArchive);
-
-        for(ServiceImportDTO service : listService){
-            Optional<Tenant> user = tenantRepository.findByEmail(service.getEmailUsuario());
-
-            if(user.isPresent()){
-                Service serviceCreate = new Service();
-                serviceCreate.setServiceName(service.getServiceName());
-                serviceCreate.setTenant(user.get());
-
-                serviceRepository.save(serviceCreate);
-            }
-        }
+        boolean listService = txt.writeTxt(nameArchive);
 
         return ResponseEntity.status(200).body(listService);
     }

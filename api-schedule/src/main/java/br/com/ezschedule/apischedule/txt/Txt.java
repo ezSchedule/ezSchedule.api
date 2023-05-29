@@ -1,11 +1,11 @@
 package br.com.ezschedule.apischedule.txt;
 
 import br.com.ezschedule.apischedule.model.DtoClasses.ServiceImportDTO.ServiceImportDTO;
-import br.com.ezschedule.apischedule.model.Service;
 import br.com.ezschedule.apischedule.model.Tenant;
 import br.com.ezschedule.apischedule.repository.ServiceRepository;
 import br.com.ezschedule.apischedule.repository.TenantRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
@@ -14,8 +14,12 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
+@Service
 public class Txt {
+    @Autowired
+    private ServiceRepository repository;
+    @Autowired
+    private TenantRepository tenantRepository;
 
     public static String save(MultipartFile file){
 
@@ -38,7 +42,7 @@ public class Txt {
 
     }
 
-    public static List<ServiceImportDTO> writeTxt(String nameArchive){
+    public boolean writeTxt(String nameArchive){
 
         BufferedReader entrada = null;
 
@@ -97,9 +101,17 @@ public class Txt {
                     emailUser = registro.substring(72,112).trim();
                     System.out.println(emailUser);
 
-                    ServiceImportDTO serviceImportDTO = new ServiceImportDTO(nameService, emailUser);
+                    Optional<Tenant> tenant = tenantRepository.findByEmail(emailUser);
 
-                    listService.add(serviceImportDTO);
+                    if(tenant.isPresent()){
+                        System.out.println("Prestador de serviço existente...");
+                        br.com.ezschedule.apischedule.model.Service service = new br.com.ezschedule.apischedule.model.Service();
+                        service.setTenant(tenant.get());
+                        service.setServiceName(nameService);
+
+                        repository.save(service);
+
+                    }
 
                     // contabiliza que leu mais um registro de dados
                     contaRegDadoLido++;
@@ -121,7 +133,7 @@ public class Txt {
             throw new RuntimeException(e);
         }
 
-        return listService;
+        return true;
     }
 
 }
