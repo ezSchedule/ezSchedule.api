@@ -8,13 +8,17 @@ import br.com.ezschedule.apischedule.messages.EmailMessages;
 import br.com.ezschedule.apischedule.model.Condominium;
 import br.com.ezschedule.apischedule.model.DtoClasses.CreateTenant.CreateTenant;
 import br.com.ezschedule.apischedule.model.DtoClasses.Response.TenantResponse;
+import br.com.ezschedule.apischedule.model.DtoClasses.ServiceImportDTO.ServiceImportDTO;
 import br.com.ezschedule.apischedule.model.DtoClasses.UpdateResponse.UpdateTenantForm;
+import br.com.ezschedule.apischedule.model.Service;
 import br.com.ezschedule.apischedule.model.Tenant;
 import br.com.ezschedule.apischedule.model.DtoClasses.UpdateResponse.UpdatePasswordForm;
+import br.com.ezschedule.apischedule.repository.ServiceRepository;
 import br.com.ezschedule.apischedule.repository.TenantRepository;
 import br.com.ezschedule.apischedule.service.TenantService;
 import br.com.ezschedule.apischedule.service.autenticacao.dto.UsuarioLoginDto;
 import br.com.ezschedule.apischedule.service.autenticacao.dto.UsuarioTokenDto;
+import br.com.ezschedule.apischedule.txt.Txt;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.storage.blob.BlobClient;
@@ -51,11 +55,12 @@ public class TenantController {
 
     @Autowired
     private TenantRepository tenantRepository;
-
     @Autowired
     private TenantService tenantService;
     @Autowired
     private SendMail sendMail;
+    @Autowired
+    private ServiceRepository serviceRepository;
     List<Tenant> listUsers = new ArrayList<>();
     private String token = "";
 
@@ -456,4 +461,27 @@ public class TenantController {
         return ResponseEntity.status(400).body("Remove falied");
 
     }
+
+    @PostMapping("/import-txt")
+    public ResponseEntity<List<ServiceImportDTO>> saveByTxt(@RequestParam MultipartFile arquivo){
+
+        String nameArchive = Txt.save(arquivo);
+
+        List<ServiceImportDTO> listService = Txt.writeTxt(nameArchive);
+
+        for(ServiceImportDTO service : listService){
+            Optional<Tenant> user = tenantRepository.findByEmail(service.getEmailUsuario());
+
+            if(user.isPresent()){
+                Service serviceCreate = new Service();
+                serviceCreate.setServiceName(service.getServiceName());
+                serviceCreate.setTenant(user.get());
+
+                serviceRepository.save(serviceCreate);
+            }
+        }
+
+        return ResponseEntity.status(200).body(listService);
+    }
+
 }
