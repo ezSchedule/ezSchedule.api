@@ -20,7 +20,7 @@ public class UsuarioDetalhesDto implements UserDetails {
   private Integer isAdmin;
 
   public UsuarioDetalhesDto(Tenant t) {
-    this.id = t.getIdUser();
+    this.id = t.getId();
     this.email = t.getEmail();
     this.cpf = t.getCpf();
     this.name = t.getName();
@@ -29,7 +29,7 @@ public class UsuarioDetalhesDto implements UserDetails {
     this.apartmentNumber = t.getApartmentNumber();
     this.phoneNumber = t.getPhoneNumber();
     this.isAuthenticated = t.isAuthenticated();
-    this.isAdmin = t.isAdmin();
+    this.isAdmin = t.getIsAdmin();
   }
 
   public int getId() {

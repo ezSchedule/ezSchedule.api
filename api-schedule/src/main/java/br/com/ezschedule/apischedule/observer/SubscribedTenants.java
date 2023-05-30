@@ -22,11 +22,11 @@ public class SubscribedTenants {
 
 
     public void subscribe(Tenant t) {
-        tenantRepository.subscribeOrUnsubTenant(1,t.getIdUser());
+        tenantRepository.subscribeOrUnsubTenant(1,t.getId());
     }
 
     public void unsubscribe(Tenant t) {
-        tenantRepository.subscribeOrUnsubTenant(0,t.getIdUser());
+        tenantRepository.subscribeOrUnsubTenant(0,t.getId());
     }
 
     public void notifySubscribers(Tenant t,ForumPost f) {

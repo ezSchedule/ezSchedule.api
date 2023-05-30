@@ -45,13 +45,13 @@ public class CsvTenant {
             {
                 Tenant tenant = lista.getElemento(i);
                 saida.format("%d;%s;%s;%d;%s;%s;%b\n",
-                                                 tenant.getIdUser(),
+                                                 tenant.getId(),
                                                  tenant.getName(),
                                                  tenant.getEmail(),
                                                  tenant.getApartmentNumber(),
                                                  tenant.getResidentsBlock(),
                                                  tenant.getPhoneNumber(),
-                                                 tenant.isAdmin());
+                                                 tenant.getIsAdmin());
             }
 
         }catch (FormatterClosedException e){

@@ -38,7 +38,7 @@ public interface JsonResponseAdapter {
 
     static UsuarioTokenDto tenantWTokenDTO(Tenant t, String token) {
         return new UsuarioTokenDto(
-                t.getIdUser(),
+                t.getId(),
                 t.getEmail(),
                 t.getCpf(),
                 t.getName(),
@@ -47,7 +47,7 @@ public interface JsonResponseAdapter {
                 t.getApartmentNumber(),
                 t.getPhoneNumber(),
                 t.isAuthenticated(),
-                t.isAdmin(),
+                t.getIsAdmin(),
                 token,
                 t.getCondominium().getId(),
                 t.getNameBlobImage()
@@ -59,7 +59,7 @@ public interface JsonResponseAdapter {
             return null;
         }
         return new TenantDTO(
-                t.getIdUser(),
+                t.getId(),
                 t.getEmail(),
                 t.getCpf(),
                 t.getName(),
@@ -67,7 +67,7 @@ public interface JsonResponseAdapter {
                 t.getApartmentNumber(),
                 t.getPhoneNumber(),
                 t.isAuthenticated(),
-                t.isAdmin(),
+                t.getIsAdmin(),
                 t.getNameBlobImage());
     }
 
@@ -83,7 +83,7 @@ public interface JsonResponseAdapter {
             return null;
         }
         return new TenantResponse(
-                t.getIdUser(),
+                t.getId(),
                 t.getEmail(),
                 t.getCpf(),
                 t.getName(),
@@ -91,7 +91,7 @@ public interface JsonResponseAdapter {
                 t.getApartmentNumber(),
                 t.getPhoneNumber(),
                 t.isAuthenticated(),
-                t.isAdmin(),
+                t.getIsAdmin(),
                 listReportDTO(t.getReportList()),
                 listScheduleDTO(t.getScheduleList()),
                 condominiumDTO(t.getCondominium()),
@@ -107,7 +107,7 @@ public interface JsonResponseAdapter {
 
     static Tenant updateTenant(Tenant t, UpdateTenantForm u) {
         return new Tenant(
-                t.getIdUser(),
+                t.getId(),
                 u.getEmail(),
                 u.getCpf(),
                 t.getPassword(),
@@ -116,7 +116,7 @@ public interface JsonResponseAdapter {
                 u.getApartmentNumber(),
                 u.getPhoneNumber(),
                 t.getNameBlobImage(),
-                t.isAdmin(),
+                t.getIsAdmin(),
                 t.getReportList(),
                 t.getScheduleList(),
                 t.getCondominium(),
