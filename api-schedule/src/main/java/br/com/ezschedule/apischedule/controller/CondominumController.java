@@ -24,9 +24,6 @@ import java.util.List;
 public class CondominumController {
 
     @Autowired
-    private CondominumRepository condominumRepository;
-
-    @Autowired
     private CondominumService service;
 
     @ApiResponse(responseCode = "204", description =
@@ -46,19 +43,13 @@ public class CondominumController {
             "Condomínio cadastrado", content = @Content(schema = @Schema(hidden = true)))
     @PostMapping
     public ResponseEntity<Condominium> addCondominum(@RequestBody @Valid Condominium c){
-        condominumRepository.save(c);
+        service.saveCondominium(c);
 
         return ResponseEntity.status(201).build();
     }
 
     @GetMapping("/settings")
     public ResponseEntity<CondominiumInformationDto> settingsCondominiumInformation(@RequestParam Integer id) {
-        Integer amountTenants = condominumRepository.amountTenantsCondominium(id);
-        Integer amountApartments = condominumRepository.amountApartmentsCondominium(id);
-        Integer amountSaloons = condominumRepository.amountSaloonsCondominium(id);
-
-        return ResponseEntity.status(200).body(new CondominiumInformationDto(
-                amountTenants, amountApartments, amountSaloons
-        ));
+        return ResponseEntity.status(200).body(service.settingsCondominium(id));
     }
 }

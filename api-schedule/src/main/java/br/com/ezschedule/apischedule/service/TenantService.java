@@ -1,12 +1,18 @@
 package br.com.ezschedule.apischedule.service;
 
 import br.com.ezschedule.apischedule.adapter.JsonResponseAdapter;
+import br.com.ezschedule.apischedule.email.SendMail;
+import br.com.ezschedule.apischedule.messages.EmailMessages;
+import br.com.ezschedule.apischedule.model.DtoClasses.Response.TenantResponse;
+import br.com.ezschedule.apischedule.model.DtoClasses.UpdateResponse.UpdateTenantForm;
 import br.com.ezschedule.apischedule.model.Tenant;
 import br.com.ezschedule.apischedule.repository.TenantRepository;
 import br.com.ezschedule.apischedule.security.jwt.GerenciadorTokenJwt;
 import br.com.ezschedule.apischedule.service.autenticacao.dto.UsuarioLoginDto;
 import br.com.ezschedule.apischedule.service.autenticacao.dto.UsuarioTokenDto;
+import io.swagger.models.Response;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -15,7 +21,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class TenantService {
@@ -31,6 +40,11 @@ public class TenantService {
 
   @Autowired
   private AuthenticationManager authenticationManager;
+
+  @Autowired
+  private SendMail sendMail;
+  List<Tenant> listUsers = new ArrayList<>();
+  private String token = "";
 
   public void criar(Tenant t) {
 
@@ -73,4 +87,54 @@ public class TenantService {
   public Integer updatePasswordTenant(String email, String password) {
     return this.tenantRepository.updatePasswordUser(email, password);
   }
+
+  public ResponseEntity<Void> passwordRecover(String email) {
+
+    Optional<Tenant> tenant = tenantRepository.findByEmail(email);
+
+    if (tenant.isPresent()){
+      this.token = UUID.randomUUID().toString().replace("-", "");
+      this.sendMail.send(email, EmailMessages.createTitle(tenant.get()), EmailMessages.messageRecoveryPassword(tenant.get(), this.token));
+      return ResponseEntity.status(200).build();
+    }
+
+    return ResponseEntity.status(404).build();
+  }
+
+  public Boolean removeTenantById(Integer id) {
+
+    if (tenantRepository.existsById(id)) {
+      this.tenantRepository.deleteById(id);
+      return true;
+    }
+    return false;
+
+  }
+
+  public TenantResponse tenantUpdateInformation(Integer id, UpdateTenantForm newTenant) {
+
+    Optional<Tenant> oldTenant = tenantRepository.findById(id);
+    if (oldTenant.isPresent()) {
+      Tenant t = oldTenant.get();
+      Tenant updatedTenant = new Tenant(
+              id,
+              newTenant.getEmail(),
+              newTenant.getCpf(),
+              t.getPassword(),
+              newTenant.getName(),
+              newTenant.getResidentsBlock(),
+              newTenant.getApartmentNumber(),
+              newTenant.getPhoneNumber(),
+              t.isAdmin(),
+              t.getReportList(),
+              t.getScheduleList(),
+              t.getCondominium()
+      );
+      Tenant tenant = tenantRepository.save(updatedTenant);
+      return JsonResponseAdapter.tenantResponse(tenant);
+    }
+    return null;
+
+  }
+
 }

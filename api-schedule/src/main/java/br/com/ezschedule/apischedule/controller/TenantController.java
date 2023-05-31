@@ -88,8 +88,7 @@ public class TenantController {
     @ApiResponse(responseCode = "200", description = "usuário deletado com sucesso.")
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> removeById(@PathVariable Integer id) {
-        if (tenantRepository.existsById(id)) {
-            this.tenantRepository.deleteById(id);
+        if (tenantService.removeTenantById(id)) {
             return ResponseEntity.status(204).build();
         }
         return ResponseEntity.status(404).build();
@@ -122,17 +121,7 @@ public class TenantController {
 
     @GetMapping("/recovery-password/{email}")
     public ResponseEntity<Void> recoveryPassword(@PathVariable String email) {
-
-        Optional<Tenant> tenant = tenantRepository.findByEmail(email);
-
-        if(tenant.isPresent()){
-
-            this.token = UUID.randomUUID().toString().replace("-", "");
-            this.sendMail.send(email, EmailMessages.createTitle(tenant.get()), EmailMessages.messageRecoveryPassword(tenant.get(), this.token));
-
-            return ResponseEntity.status(200).build();
-        }
-        return ResponseEntity.status(404).build();
+        return tenantService.passwordRecover(email);
     }
 
     @GetMapping("/input-token/{tokenInput}")
@@ -148,25 +137,10 @@ public class TenantController {
 
     @PutMapping("/update-tenant")
     public ResponseEntity<TenantResponse> updateTenantInformation(@RequestParam int id, @RequestBody UpdateTenantForm newTenant) {
-        Optional<Tenant> oldTenant = tenantRepository.findById(id);
-        if (oldTenant.isPresent()) {
-            Tenant t = oldTenant.get();
-            Tenant updatedTenant = new Tenant(
-                    id,
-                    newTenant.getEmail(),
-                    newTenant.getCpf(),
-                    t.getPassword(),
-                    newTenant.getName(),
-                    newTenant.getResidentsBlock(),
-                    newTenant.getApartmentNumber(),
-                    newTenant.getPhoneNumber(),
-                    t.isAdmin(),
-                    t.getReportList(),
-                    t.getScheduleList(),
-                    t.getCondominium()
-            );
-            Tenant tenant = tenantRepository.save(updatedTenant);
-            return ResponseEntity.status(200).body(JsonResponseAdapter.tenantResponse(tenant));
+
+        TenantResponse tenantResponse = tenantService.tenantUpdateInformation(id, newTenant);
+        if (tenantResponse != null){
+            return ResponseEntity.status(200).body(tenantResponse);
         }
         return ResponseEntity.status(204).build();
     }
