@@ -149,10 +149,16 @@ public class Txt {
         Path diretorioBase;
 
         if(System.getProperty("os.name").contains("Windows")){
-            diretorioBase = Path.of(System.getProperty("java.io.tmpdir") + "/arquivos/" + nomeArq);
+            diretorioBase = Path.of(System.getProperty("java.io.tmpdir") + "/arquivos/");
         } else {
-            diretorioBase = Path.of(System.getProperty("user.dir") + "/arquivos/" + nomeArq);
+            diretorioBase = Path.of(System.getProperty("user.dir") + "/arquivos/");
         }
+
+        if(!diretorioBase.toFile().exists()){
+            diretorioBase.toFile().mkdir();
+        }
+
+        diretorioBase = Path.of(diretorioBase + "/" + nomeArq);
 
         // try-catch para abrir o arquivo
         try {
