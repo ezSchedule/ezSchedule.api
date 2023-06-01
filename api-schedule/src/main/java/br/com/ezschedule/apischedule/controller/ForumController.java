@@ -27,7 +27,7 @@ public class ForumController {
     @ApiResponse(responseCode = "200", description = "fóruns postados.")
     @GetMapping
     public ResponseEntity<List<ForumResponse>> showAllPosts() {
-        return forumService.getAllPosts();
+        return forumService.getAll();
     }
 
     @ApiResponse(responseCode = "404", description = "Não foi encontrado nenhum fórum.", content = @Content(schema = @Schema(hidden = true)))
@@ -40,21 +40,21 @@ public class ForumController {
     @ApiResponse(responseCode = "201", description = "post cadastrado", content = @Content(schema = @Schema(hidden = true)))
     @PostMapping
     public ResponseEntity<ForumResponse> newPost(@RequestBody @Valid ForumPost post) {
-        return forumService.savePost(post);
+        return forumService.save(post);
     }
 
     @ApiResponse(responseCode = "404", description = "Nenhum post encontrado.", content = @Content(schema = @Schema(hidden = true)))
     @ApiResponse(responseCode = "200", description = "post atualizado.")
     @PutMapping("/{id}")
     public ResponseEntity<ForumResponse> updatePostById(@RequestBody @Valid UpdateForumPostForm updatePost, @PathVariable int id) {
-        return forumService.updatePostById(updatePost, id);
+        return forumService.update(updatePost, id);
     }
 
     @ApiResponse(responseCode = "404", description = "Nenhum fórum encontrado.", content = @Content(schema = @Schema(hidden = true)))
     @ApiResponse(responseCode = "200", description = "fórum deletado.")
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> deletePostById(@PathVariable int id) {
-        return forumService.deletePostById(id);
+        return forumService.delete(id);
     }
 
     @GetMapping("/type/{content}")

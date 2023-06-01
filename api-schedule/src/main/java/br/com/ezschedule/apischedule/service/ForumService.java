@@ -14,10 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 
-import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,7 +33,7 @@ public class ForumService {
 
     private FilaObj<Tenant> forumPostFila = new FilaObj<>(100);
 
-    public ResponseEntity<List<ForumResponse>> getAllPosts(){
+    public ResponseEntity<List<ForumResponse>> getAll(){
         List<ForumPost> allPosts = forumRepository.findAll();
 
         if (allPosts.isEmpty()) {
@@ -52,7 +49,7 @@ public class ForumService {
         return ResponseEntity.status(404).build();
     }
 
-    public ResponseEntity<ForumResponse> savePost(ForumPost post) {
+    public ResponseEntity<ForumResponse> save(ForumPost post) {
         forumRepository.save(post);
         //descomente se deseje enviar emails para todos usuários inscritos
 //        sendMails(post);
@@ -60,7 +57,7 @@ public class ForumService {
         return ResponseEntity.status(201).build();
     }
 
-    public ResponseEntity<ForumResponse> updatePostById(UpdateForumPostForm updatePost,int id) {
+    public ResponseEntity<ForumResponse> update(UpdateForumPostForm updatePost, int id) {
         if (forumRepository.findById(id).isPresent()) {
             Optional<ForumPost> oldPost = forumRepository.findById(id);
             ForumPost updatedPost = JsonResponseAdapter.updateForumDTO(updatePost, id, oldPost.get());
@@ -70,7 +67,7 @@ public class ForumService {
         return ResponseEntity.status(404).build();
     }
 
-    public ResponseEntity<Void> deletePostById(int id) {
+    public ResponseEntity<Void> delete(int id) {
         if (forumRepository.existsById(id)) {
             forumRepository.deleteById(id);
             return ResponseEntity.status(204).build();

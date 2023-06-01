@@ -21,4 +21,8 @@ public interface ReportRepository extends JpaRepository<Report, Integer> {
             "WHERE sa.condominium.id = :id"
     )
     List<ReportPaymentsDto> findAllReportsCondominium(int id);
+
+
+    @Query("Select r from Report r where r.tenant.id = :id")
+    List<Report> findAllReportsByTenant(int id);
 }
