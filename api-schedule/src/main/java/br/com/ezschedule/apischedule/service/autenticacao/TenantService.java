@@ -1,4 +1,4 @@
-package br.com.ezschedule.apischedule.service;
+package br.com.ezschedule.apischedule.service.autenticacao;
 
 import br.com.ezschedule.apischedule.adapter.JsonResponseAdapter;
 import br.com.ezschedule.apischedule.model.Tenant;

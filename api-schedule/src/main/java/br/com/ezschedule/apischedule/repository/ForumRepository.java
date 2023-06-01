@@ -11,15 +11,10 @@ import java.util.List;
 @Repository
 public interface ForumRepository extends JpaRepository<ForumPost, Integer> {
 
-//    @Transactional
-//    @Modifying
-//    @Query(value = "UPDATE ForumPosts SET  WHERE email = ?1 ", nativeQuery = true)
-//    Object logoutUser();
-
-    @Query("Select t from Tenant t where subscribed = 1")
-    List<Tenant> findSubscribedTenants();
-
     @Query("Select f from ForumPost f where f.typeMessage = :content")
     List<ForumPost> findBasedOnType(String content);
+
+    @Query("Select f from ForumPost f where f.condominium.id = :id")
+    List<ForumPost> findBasedOnCondominiumId(int id);
 
 }

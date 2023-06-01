@@ -1,4 +1,4 @@
-package br.com.ezschedule.apischedule.service.dto;
+package br.com.ezschedule.apischedule.service.autenticacao.dto;
 
 public class UsuarioCriacaoDto {
 

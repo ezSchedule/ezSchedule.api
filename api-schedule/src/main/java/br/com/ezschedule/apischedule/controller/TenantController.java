@@ -8,14 +8,12 @@ import br.com.ezschedule.apischedule.messages.EmailMessages;
 import br.com.ezschedule.apischedule.model.Condominium;
 import br.com.ezschedule.apischedule.model.DtoClasses.CreateTenant.CreateTenant;
 import br.com.ezschedule.apischedule.model.DtoClasses.Response.TenantResponse;
-import br.com.ezschedule.apischedule.model.DtoClasses.ServiceImportDTO.ServiceImportDTO;
 import br.com.ezschedule.apischedule.model.DtoClasses.UpdateResponse.UpdateTenantForm;
-import br.com.ezschedule.apischedule.model.Service;
 import br.com.ezschedule.apischedule.model.Tenant;
 import br.com.ezschedule.apischedule.model.DtoClasses.UpdateResponse.UpdatePasswordForm;
 import br.com.ezschedule.apischedule.repository.ServiceRepository;
 import br.com.ezschedule.apischedule.repository.TenantRepository;
-import br.com.ezschedule.apischedule.service.TenantService;
+import br.com.ezschedule.apischedule.service.autenticacao.TenantService;
 import br.com.ezschedule.apischedule.service.autenticacao.dto.UsuarioLoginDto;
 import br.com.ezschedule.apischedule.service.autenticacao.dto.UsuarioTokenDto;
 import br.com.ezschedule.apischedule.txt.Txt;
@@ -24,9 +22,7 @@ import com.azure.core.util.BinaryData;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobContainerClientBuilder;
-import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlockBlobItem;
-import com.azure.storage.blob.models.DeleteSnapshotsOptionType;
 import com.azure.storage.blob.options.BlobParallelUploadOptions;
 import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -40,7 +36,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
-import java.lang.reflect.Type;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -98,7 +93,7 @@ public class TenantController {
             this.tenantService.criar(t);
 
             if (newUser.getNameBlobImage() != null && newUser.getNameBlobImage().getSize() > 0) {
-                uploadImage(t.getIdUser(), newUser.getNameBlobImage());
+                uploadImage(t.getId(), newUser.getNameBlobImage());
             }
             return ResponseEntity.status(201).build();
         }
@@ -198,11 +193,11 @@ public class TenantController {
             tenantRepository.save(JsonResponseAdapter.updateTenant(oldTenant.get(), newTenant));
             if (oldTenant.get().getNameBlobImage() != null) {
                 if(newTenant.getImage() != null && newTenant.getImage().getSize() > 0) {
-                    deleteImage(oldTenant.get().getIdUser());
-                    uploadImage(oldTenant.get().getIdUser(), newTenant.getImage());
+                    deleteImage(oldTenant.get().getId());
+                    uploadImage(oldTenant.get().getId(), newTenant.getImage());
                 }
             } else if (newTenant.getImage() != null && newTenant.getImage().getSize() > 0) {
-                uploadImage(oldTenant.get().getIdUser(), newTenant.getImage());
+                uploadImage(oldTenant.get().getId(), newTenant.getImage());
             }
             return ResponseEntity.status(200).body(JsonResponseAdapter.tenantResponse(oldTenant.get()));
         }
