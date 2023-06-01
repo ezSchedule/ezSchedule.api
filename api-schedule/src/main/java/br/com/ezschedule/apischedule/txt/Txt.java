@@ -199,7 +199,7 @@ public class Txt {
 
             corpo = "02";
             corpo += String.format("%-20.20s",service.getServiceName());
-            corpo += String.format("%-5.5s",service.getTenant().getIdUser());
+            corpo += String.format("%-5.5s",service.getTenant().getId());
             corpo += String.format("%-20.20s",service.getTenant().getName());
             corpo += String.format("%-40.40s",service.getTenant().getEmail());
 
