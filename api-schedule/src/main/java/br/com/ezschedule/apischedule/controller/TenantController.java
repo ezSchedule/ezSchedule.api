@@ -469,9 +469,21 @@ public class TenantController {
 
         String nameArchive = txt.save(arquivo);
 
-        boolean listService = txt.writeTxt(nameArchive);
+        boolean listService = txt.readTxt(nameArchive);
 
         return ResponseEntity.status(200).body(listService);
+    }
+
+    @GetMapping("/export-txt")
+    public ResponseEntity<byte[]> exportTxt(){
+
+        String name = txt.writeTxt();
+
+        if(name == "not value in list services"){
+            return ResponseEntity.status(204).build();
+        }
+
+        return txt.searchArchiveTxt(name);
     }
 
 }

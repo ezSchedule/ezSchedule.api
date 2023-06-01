@@ -1,16 +1,20 @@
 package br.com.ezschedule.apischedule.txt;
 
+import br.com.ezschedule.apischedule.csv.ListaObj;
 import br.com.ezschedule.apischedule.model.DtoClasses.ServiceImportDTO.ServiceImportDTO;
 import br.com.ezschedule.apischedule.model.Tenant;
 import br.com.ezschedule.apischedule.repository.ServiceRepository;
 import br.com.ezschedule.apischedule.repository.TenantRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -42,7 +46,7 @@ public class Txt {
 
     }
 
-    public boolean writeTxt(String nameArchive){
+    public boolean readTxt(String nameArchive){
 
         BufferedReader entrada = null;
 
@@ -96,9 +100,9 @@ public class Txt {
                 }
                 else if (tipoRegistro.equals("02")) {
                     System.out.println("é um registro de dados");
-                    nameService = registro.substring(7,27).trim();
+                    nameService = registro.substring(2,22).trim();
                     System.out.println(nameService);
-                    emailUser = registro.substring(72,112).trim();
+                    emailUser = registro.substring(47,87).trim();
                     System.out.println(emailUser);
 
                     Optional<Tenant> tenant = tenantRepository.findByEmail(emailUser);
@@ -108,6 +112,8 @@ public class Txt {
                         br.com.ezschedule.apischedule.model.Service service = new br.com.ezschedule.apischedule.model.Service();
                         service.setTenant(tenant.get());
                         service.setServiceName(nameService);
+
+                        System.out.println(service.getServiceName() + service.getId() + service.getTenant().getEmail());
 
                         repository.save(service);
 
@@ -134,6 +140,105 @@ public class Txt {
         }
 
         return true;
+    }
+
+    public static void saveForExport(String registro, String nomeArq){
+        // Grava o registro de header
+        BufferedWriter saida = null;
+
+        Path diretorioBase;
+
+        if(System.getProperty("os.name").contains("Windows")){
+            diretorioBase = Path.of(System.getProperty("java.io.tmpdir") + "/arquivos/" + nomeArq);
+        } else {
+            diretorioBase = Path.of(System.getProperty("user.dir") + "/arquivos/" + nomeArq);
+        }
+
+        // try-catch para abrir o arquivo
+        try {
+            saida = new BufferedWriter(new FileWriter(diretorioBase.toString(), true));
+        }
+        catch (IOException erro) {
+            System.out.println("Erro ao abrir o arquivo");
+            System.exit(1);
+        }
+
+        // try-catch para gravar o registro e finalizar
+        try {
+            saida.append(registro + "\n");
+            saida.close();
+        }
+        catch (IOException erro) {
+            System.out.println("Erro ao gravar no arquivo");
+        }
+    }
+
+    public String writeTxt() {
+
+        String nomeArq = "services.txt" + LocalDateTime.now();
+        int contaRegistroDado = 0;
+
+        // Monta o registro de header
+        String header = "00LISTA DE SERV";
+        header += LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"));
+        header += "01";
+
+        // Grava o registro de header
+        saveForExport(header, nomeArq);
+
+        Optional<List<br.com.ezschedule.apischedule.model.Service>> serviceList = Optional.of(repository.findAll());
+
+        if(!serviceList.isPresent()){
+            return "not value in list services";
+        }
+
+        // Monta e grava os registros de dados ou registros de corpo
+        String corpo;
+
+        for (br.com.ezschedule.apischedule.model.Service service : serviceList.get()) {
+
+            corpo = "02";
+            corpo += String.format("%-20.20s",service.getServiceName());
+            corpo += String.format("%-5.5s",service.getTenant().getIdUser());
+            corpo += String.format("%-20.20s",service.getTenant().getName());
+            corpo += String.format("%-40.40s",service.getTenant().getEmail());
+
+            saveForExport(corpo, nomeArq);
+            contaRegistroDado++;
+        }
+
+        // Monta e grava o registro de trailer
+        String trailer = "01";
+        trailer += String.format("%-5.5s",contaRegistroDado);
+        saveForExport(trailer, nomeArq);
+
+        return nomeArq;
+    }
+
+    public ResponseEntity<byte[]> searchArchiveTxt(String nomeArquivo){
+
+        File arquivoBuscado;
+
+        if(System.getProperty("os.name").contains("Windows")){
+            arquivoBuscado = Path.of(System.getProperty("java.io.tmpdir") + "/arquivos/" + nomeArquivo).toFile();
+        } else {
+            arquivoBuscado = Path.of(System.getProperty("user.dir") + "/arquivos/" + nomeArquivo).toFile();
+        }
+
+        if(!arquivoBuscado.exists()){
+            System.out.println("Erro no endereço");
+            System.out.println(arquivoBuscado);
+        }
+
+        try {
+            InputStream fileInputStream = new FileInputStream(arquivoBuscado);
+            return ResponseEntity.status(200)
+                    .header("Content-Disposition",
+                            "attachment; filename=" + arquivoBuscado.getName())
+                    .body(fileInputStream.readAllBytes());
+        }catch (Exception e){
+            return ResponseEntity.status(404).build();
+        }
     }
 
 }
