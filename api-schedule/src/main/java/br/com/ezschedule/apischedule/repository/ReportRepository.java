@@ -23,6 +23,15 @@ public interface ReportRepository extends JpaRepository<Report, Integer> {
     List<ReportPaymentsDto> findAllReportsCondominium(int id);
 
 
-    @Query("Select r from Report r where r.tenant.id = :id")
+    @Query(
+            "SELECT new br.com.ezschedule.apischedule.model.DtoClasses.ReportPaymentsDto" +
+            "(r.id, r.productName, r.category, r.paymentStatus, r.paymentTime, s.tenant.name, s.tenant.residentsBlock, s.tenant.apartmentNumber, " +
+            "s.tenant.phoneNumber, s.dateEvent, sa.saloonName, sa.saloonPrice, sa.saloonBlock) " +
+            "FROM Report r " +
+            "JOIN r.schedule s " +
+            "JOIN s.tenant t " +
+            "JOIN s.saloon sa " +
+            "WHERE t.id = :id"
+    )
     List<Report> findAllReportsByTenant(int id);
 }

@@ -23,7 +23,7 @@ public class ReportPaymentsDto {
         this.productName = productName;
         this.category = category;
         this.paymentStatus = paymentStatus;
-        this.paymentTime = paymentTime.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+        this.paymentTime = paymentTime != null ? paymentTime.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) : null;
         this.tenantName = tenantName;
         this.tenantBlock = tenantBlock;
         this.tenantNumber = tenantNumber;

@@ -20,20 +20,20 @@ import java.util.List;
 @Api(value = "Condomínio", produces = MediaType.APPLICATION_JSON_VALUE, tags = {"condominio"}, description = "requisições relacionadas ao condomínio")
 @RestController
 @RequestMapping("${uri.condominium}")
-public class CondominumController {
+public class CondominiumController {
 
     @Autowired
-    CondominumRepository condominumRepository;
+    CondominumRepository condominiumRepository;
 
     @ApiResponse(responseCode = "204", description =
             "Não há condomínio cadastrados.", content = @Content(schema = @Schema(hidden = true)))
     @ApiResponse(responseCode = "200", description = "condomínios encontrados.")
     @GetMapping
     public ResponseEntity<List<CondominiumResponse>> listar(){
-        List<Condominium> condominiumList = condominumRepository.findAll();
+        List<Condominium> condominiumList = condominiumRepository.findAll();
 
         if(!condominiumList.isEmpty()){
-            return ResponseEntity.status(200).body(JsonResponseAdapter.listCondominumDTO(condominiumList));
+            return ResponseEntity.status(200).body(JsonResponseAdapter.listCondominiumDTO(condominiumList));
         }
         return ResponseEntity.status(204).build();
     }
@@ -41,17 +41,17 @@ public class CondominumController {
     @ApiResponse(responseCode = "201", description =
             "Condomínio cadastrado", content = @Content(schema = @Schema(hidden = true)))
     @PostMapping
-    public ResponseEntity<Condominium> addCondominum(@RequestBody @Valid Condominium c){
-        condominumRepository.save(c);
+    public ResponseEntity<Condominium> addCondominium(@RequestBody @Valid Condominium c){
+        condominiumRepository.save(c);
 
         return ResponseEntity.status(201).build();
     }
 
     @GetMapping("/settings")
     public ResponseEntity<CondominiumInformationDto> settingsCondominiumInformation(@RequestParam Integer id) {
-        Integer amountTenants = condominumRepository.amountTenantsCondominium(id);
-        Integer amountApartments = condominumRepository.amountApartmentsCondominium(id);
-        Integer amountSaloons = condominumRepository.amountSaloonsCondominium(id);
+        Integer amountTenants = condominiumRepository.amountTenantsCondominium(id);
+        Integer amountApartments = condominiumRepository.amountApartmentsCondominium(id);
+        Integer amountSaloons = condominiumRepository.amountSaloonsCondominium(id);
 
         return ResponseEntity.status(200).body(new CondominiumInformationDto(
                 amountTenants, amountApartments, amountSaloons

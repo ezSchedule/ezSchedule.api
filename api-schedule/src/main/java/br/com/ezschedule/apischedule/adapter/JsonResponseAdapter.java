@@ -10,7 +10,6 @@ import br.com.ezschedule.apischedule.model.DtoClasses.UpdateResponse.UpdateSched
 import br.com.ezschedule.apischedule.model.DtoClasses.UpdateResponse.UpdateTenantForm;
 import br.com.ezschedule.apischedule.service.autenticacao.dto.UsuarioTokenDto;
 
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -54,7 +53,7 @@ public interface JsonResponseAdapter {
         );
     }
 
-    static TenantDTO tentantDTO(Tenant t) {
+    static TenantDTO tenantDTO(Tenant t) {
         if (t == null) {
             return null;
         }
@@ -75,7 +74,7 @@ public interface JsonResponseAdapter {
         if (t == null) {
             return null;
         }
-        return t.stream().map(JsonResponseAdapter::tentantDTO).toList();
+        return t.stream().map(JsonResponseAdapter::tenantDTO).toList();
     }
 
     static TenantResponse tenantResponse(Tenant t) {
@@ -135,7 +134,7 @@ public interface JsonResponseAdapter {
         return s != null ? new ServiceResponse(
                 s.getId(),
                 s.getServiceName(),
-                tentantDTO(s.getTenant())
+                tenantDTO(s.getTenant())
         ) : null;
     }
 
@@ -233,7 +232,7 @@ public interface JsonResponseAdapter {
                 s.getDateEvent().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")),
                 s.getTotalNumberGuests(),
                 saloonDTO(s.getSaloon()),
-                tentantDTO(s.getTenant())
+                tenantDTO(s.getTenant())
         );
     }
 
@@ -261,7 +260,6 @@ public interface JsonResponseAdapter {
         return s.stream().map(JsonResponseAdapter::serviceDTO).toList();
     }
 
-
     static Schedule updateScheduleDTO(UpdateScheduleForm u, int id, Saloon saloon, Tenant t) {
         return new Schedule(
                 id,
@@ -281,10 +279,10 @@ public interface JsonResponseAdapter {
                 r.getProductName(),
                 r.getCategory(),
                 r.getPaymentStatus(),
-                r.getPaymentTime().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")),
+                r.getPaymentTime() != null ? r.getPaymentTime().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")) : null,
                 scheduleDTO(r.getSchedule()),
                 condominiumDTO(r.getCondominium()),
-                tentantDTO(r.getTenant())
+                tenantDTO(r.getTenant())
         );
     }
 
@@ -326,7 +324,7 @@ public interface JsonResponseAdapter {
                 r.getProductName(),
                 r.getCategory(),
                 r.getPaymentStatus(),
-                r.getPaymentTime().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"))
+                r.getPaymentTime() != null ? r.getPaymentTime().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")) : null
         );
     }
 
@@ -352,7 +350,7 @@ public interface JsonResponseAdapter {
         );
     }
 
-    static CondominiumResponse condominumResponseDTO(Condominium c) {
+    static CondominiumResponse condominiumResponseDTO(Condominium c) {
         return new CondominiumResponse(
                 c.getId(),
                 c.getName(),
@@ -368,8 +366,8 @@ public interface JsonResponseAdapter {
         );
     }
 
-    static List<CondominiumResponse> listCondominumDTO(List<Condominium> c) {
-        return c.stream().map(JsonResponseAdapter::condominumResponseDTO).toList();
+    static List<CondominiumResponse> listCondominiumDTO(List<Condominium> c) {
+        return c.stream().map(JsonResponseAdapter::condominiumResponseDTO).toList();
     }
 
 }
