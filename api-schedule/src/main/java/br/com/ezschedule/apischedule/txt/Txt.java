@@ -179,7 +179,7 @@ public class Txt {
         }
     }
 
-    public String writeTxt() {
+    public String writeTxt(int idCondominium) {
 
         String nomeArq = "services.txt" + LocalDateTime.now();
         int contaRegistroDado = 0;
@@ -192,7 +192,7 @@ public class Txt {
         // Grava o registro de header
         saveForExport(header, nomeArq);
 
-        Optional<List<br.com.ezschedule.apischedule.model.Service>> serviceList = Optional.of(repository.findAll());
+        Optional<List<br.com.ezschedule.apischedule.model.Service>> serviceList = Optional.of(repository.listServiceByCondominium(idCondominium));
 
         if(!serviceList.isPresent()){
             return "not value in list services";

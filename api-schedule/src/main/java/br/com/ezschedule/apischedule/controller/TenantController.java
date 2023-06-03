@@ -495,10 +495,10 @@ public class TenantController {
         return ResponseEntity.status(200).body(listService);
     }
 
-    @GetMapping("/export-txt")
-    public ResponseEntity<byte[]> exportTxt(){
+    @GetMapping("/export-txt/{idCondominium}")
+    public ResponseEntity<byte[]> exportTxt(@PathVariable int idCondominium){
 
-        String name = txt.writeTxt();
+        String name = txt.writeTxt(idCondominium);
 
         if(name == "not value in list services"){
             return ResponseEntity.status(204).build();
