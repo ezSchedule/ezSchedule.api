@@ -46,7 +46,7 @@ public class Txt {
 
     }
 
-    public boolean readTxt(String nameArchive){
+    public boolean readTxt(String fileName){
 
         BufferedReader entrada = null;
 
@@ -60,9 +60,9 @@ public class Txt {
         Path diretorioBase;
 
         if(System.getProperty("os.name").contains("Windows")){
-            diretorioBase = Path.of(System.getProperty("java.io.tmpdir") + "/arquivos/" + nameArchive);
+            diretorioBase = Path.of(System.getProperty("java.io.tmpdir") + "/arquivos/" + fileName);
         } else {
-            diretorioBase = Path.of(System.getProperty("user.dir") + "/arquivos/" + nameArchive);
+            diretorioBase = Path.of(System.getProperty("user.dir") + "/arquivos/" + fileName);
         }
 
         try {

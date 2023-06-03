@@ -486,11 +486,11 @@ public class TenantController {
     }
 
     @PostMapping("/import-txt")
-    public ResponseEntity<Boolean> saveByTxt(@RequestParam MultipartFile arquivo){
+    public ResponseEntity<Boolean> saveByTxt(@RequestParam MultipartFile file){
 
-        String nameArchive = txt.save(arquivo);
+        String fileName = txt.save(file);
 
-        boolean listService = txt.readTxt(nameArchive);
+        boolean listService = txt.readTxt(fileName);
 
         return ResponseEntity.status(200).body(listService);
     }
