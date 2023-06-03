@@ -11,6 +11,8 @@ import br.com.ezschedule.apischedule.model.DtoClasses.Response.TenantResponse;
 import br.com.ezschedule.apischedule.model.DtoClasses.UpdateResponse.UpdateTenantForm;
 import br.com.ezschedule.apischedule.model.Tenant;
 import br.com.ezschedule.apischedule.model.DtoClasses.UpdateResponse.UpdatePasswordForm;
+import br.com.ezschedule.apischedule.observer.FilaObj;
+import br.com.ezschedule.apischedule.observer.PilhaObj;
 import br.com.ezschedule.apischedule.repository.ServiceRepository;
 import br.com.ezschedule.apischedule.repository.TenantRepository;
 import br.com.ezschedule.apischedule.service.autenticacao.TenantService;
@@ -204,14 +206,38 @@ public class TenantController {
         return ResponseEntity.status(204).build();
     }
 
-    @GetMapping("/generate-csv")
-    public ResponseEntity<byte[]> generatorCsv() {
-        List<Tenant> tenants = tenantRepository.findAll();
+    @GetMapping("/generate-csv/{idCondominium}/{order}")
+    public ResponseEntity<byte[]> generatorCsv(@PathVariable int idCondominium, @PathVariable String order) {
+        List<Tenant> tenants = tenantRepository.findAllTenantsCondominium(idCondominium);
+
         if (!tenants.isEmpty()) {
+
             ListaObj<Tenant> tenantsReturn = new ListaObj<Tenant>(tenants.size());
-            for (Tenant tenant : tenants) {
-                tenantsReturn.adiciona(tenant);
+
+            PilhaObj<Tenant> pilhaTenant = new PilhaObj<>(tenants.size());
+
+            FilaObj<Tenant> filaTenant = new FilaObj<>(tenants.size());
+
+            if(order.equals("desc")){
+                for (Tenant tenant : tenants) {
+                    tenantsReturn.adiciona(tenant);
+                }
             }
+
+            if(order.equals("asc")){
+                for (Tenant tenant : tenants) {
+                    pilhaTenant.push(tenant);
+                }
+
+                while (!pilhaTenant.isEmpty()){
+                    filaTenant.insert(pilhaTenant.pop());
+                }
+
+                while (!filaTenant.isEmpty()){
+                    tenantsReturn.adiciona(filaTenant.poll());
+                }
+            }
+
             CsvTenant.saveArchiveCsv(tenantsReturn, "Tenants");
             return CsvTenant.searchArchive("Tenants");
         }
