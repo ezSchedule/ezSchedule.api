@@ -56,7 +56,7 @@ public class ServiceController {
 
     @ApiResponse(responseCode = "404", description = "Não há serviços cadastrados.", content = @Content(schema = @Schema(hidden = true)))
     @ApiResponse(responseCode = "200", description = "serviços deletado.")
-    @DeleteMapping("/delete")
+    @DeleteMapping
     public ResponseEntity<ServiceDTO> deleteService(@RequestParam int id) {
         return service.delete(id);
     }
