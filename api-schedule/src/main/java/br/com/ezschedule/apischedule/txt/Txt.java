@@ -181,7 +181,7 @@ public class Txt {
 
     public String writeTxt(int idCondominium) {
 
-        String nomeArq = "services.txt" + LocalDateTime.now();
+        String nomeArq = "services.txt" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("mm-ss"));
         int contaRegistroDado = 0;
 
         // Monta o registro de header
