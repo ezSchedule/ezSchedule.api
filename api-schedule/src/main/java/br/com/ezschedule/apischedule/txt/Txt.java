@@ -123,7 +123,7 @@ public class Txt {
                     contaRegDadoLido++;
                 }
                 else {
-                    System.out.println("tipo de registro inválido");
+                    System.out.println("file type invalid");
                 }
 
                 // le o proximo registro do arquivo
@@ -165,7 +165,7 @@ public class Txt {
             saida = new BufferedWriter(new FileWriter(diretorioBase.toString(), true));
         }
         catch (IOException erro) {
-            System.out.println("Erro ao abrir o arquivo");
+            System.out.println("Error to open file");
             System.exit(1);
         }
 
@@ -175,7 +175,7 @@ public class Txt {
             saida.close();
         }
         catch (IOException erro) {
-            System.out.println("Erro ao gravar no arquivo");
+            System.out.println("Error to save file");
         }
     }
 
@@ -221,26 +221,26 @@ public class Txt {
         return nomeArq;
     }
 
-    public ResponseEntity<byte[]> searchArchiveTxt(String nomeArquivo){
+    public ResponseEntity<byte[]> searchArchiveTxt(String fileName){
 
-        File arquivoBuscado;
+        File pathBase;
 
         if(System.getProperty("os.name").contains("Windows")){
-            arquivoBuscado = Path.of(System.getProperty("java.io.tmpdir") + "/arquivos/" + nomeArquivo).toFile();
+            pathBase = Path.of(System.getProperty("java.io.tmpdir") + "/arquivos/" + fileName).toFile();
         } else {
-            arquivoBuscado = Path.of(System.getProperty("user.dir") + "/arquivos/" + nomeArquivo).toFile();
+            pathBase = Path.of(System.getProperty("user.dir") + "/arquivos/" + fileName).toFile();
         }
 
-        if(!arquivoBuscado.exists()){
-            System.out.println("Erro no endereço");
-            System.out.println(arquivoBuscado);
+        if(!pathBase.exists()){
+            System.out.println("Address error");
+            System.out.println(pathBase);
         }
 
         try {
-            InputStream fileInputStream = new FileInputStream(arquivoBuscado);
+            InputStream fileInputStream = new FileInputStream(pathBase);
             return ResponseEntity.status(200)
                     .header("Content-Disposition",
-                            "attachment; filename=" + arquivoBuscado.getName())
+                            "attachment; filename=" + pathBase.getName())
                     .body(fileInputStream.readAllBytes());
         }catch (Exception e){
             return ResponseEntity.status(404).build();
