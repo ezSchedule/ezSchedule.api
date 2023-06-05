@@ -9,14 +9,14 @@ import java.util.Formatter;
 import java.util.FormatterClosedException;
 
 public class CsvTenant {
-    public static void saveArchiveCsv(ListaObj<Tenant> lista, String nomeArquivo)
+    public static void saveArchiveCsv(ListaObj<Tenant> lista, String fileName)
     {
         FileWriter arq = null;
         Formatter saida = null;
         Boolean deuRuim = false;
         Path diretorioBase;
 
-        nomeArquivo += ".csv";
+        fileName += ".csv";
 
         if(System.getProperty("os.name").contains("Windows")){
             diretorioBase = Path.of(System.getProperty("java.io.tmpdir") + "/arquivos");
@@ -29,7 +29,7 @@ public class CsvTenant {
         }
 
         try {
-            arq = new FileWriter(diretorioBase + "/" + nomeArquivo);
+            arq = new FileWriter(diretorioBase + "/" + fileName);
             saida = new Formatter(arq);
 
         }catch (IOException e){
@@ -75,14 +75,14 @@ public class CsvTenant {
         }
     }
 
-    public static ResponseEntity<byte[]> searchArchive(String nomeArquivo){
+    public static ResponseEntity<byte[]> searchArchive(String fileName){
 
-        nomeArquivo +=".csv";
+        fileName +=".csv";
 
-        File arquivoBuscado = Path.of(System.getProperty("user.dir") + "/arquivos/" + nomeArquivo).toFile();
+        File arquivoBuscado = Path.of(System.getProperty("user.dir") + "/arquivos/" + fileName).toFile();
 
         if(System.getProperty("os.name").contains("Windows")){
-            arquivoBuscado = Path.of(System.getProperty("java.io.tmpdir") + "/arquivos/" + nomeArquivo).toFile();
+            arquivoBuscado = Path.of(System.getProperty("java.io.tmpdir") + "/arquivos/" + fileName).toFile();
         }
 
         if(!arquivoBuscado.exists()){
