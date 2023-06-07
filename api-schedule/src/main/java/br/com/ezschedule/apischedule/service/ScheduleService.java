@@ -28,7 +28,7 @@ public class ScheduleService {
     ScheduleRepository scheduleRepository;
 
     public ResponseEntity<Object> findScheduleByMonth(@PathVariable int idCondominium) {
-        List<Schedule> listSchedule = scheduleRepository.findAll();
+        List<Schedule> listSchedule = scheduleRepository.findAllSchedules();
 
         if (listSchedule.isEmpty()) {
             return ResponseEntity.status(204).build();
@@ -125,7 +125,7 @@ public class ScheduleService {
 
 
     public ResponseEntity<List<ScheduleResponse>> findAll() {
-        List<Schedule> allSchedules = scheduleRepository.findAll();
+        List<Schedule> allSchedules = scheduleRepository.findAllSchedules();
         if (allSchedules.isEmpty()) {
             return ResponseEntity.status(204).build();
         }

@@ -230,6 +230,7 @@ public interface JsonResponseAdapter {
                 s.getNameEvent(),
                 s.getTypeEvent(),
                 s.getDateEvent().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")),
+                s.getIsCanceled(),
                 s.getTotalNumberGuests(),
                 saloonDTO(s.getSaloon()),
                 tenantDTO(s.getTenant())
@@ -265,6 +266,7 @@ public interface JsonResponseAdapter {
                 id,
                 u.getNameEvent(),
                 u.getTypeEvent(),
+                u.getIsCanceled(),
                 u.getDateEvent(),
                 u.getTotalNumberGuests(),
                 saloon,

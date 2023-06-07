@@ -6,12 +6,14 @@ public class UpdateScheduleForm {
 
     private String nameEvent;
     private String typeEvent;
+    private Integer isCanceled;
     private LocalDateTime dateEvent;
     private int totalNumberGuests;
 
-    public UpdateScheduleForm(String nameEvent, String typeEvent, LocalDateTime dateEvent, int totalNumberGuests) {
+    public UpdateScheduleForm(String nameEvent, String typeEvent,Integer isCanceled, LocalDateTime dateEvent, int totalNumberGuests) {
         this.nameEvent = nameEvent;
         this.typeEvent = typeEvent;
+        this.isCanceled = isCanceled;
         this.dateEvent = dateEvent;
         this.totalNumberGuests = totalNumberGuests;
     }
@@ -30,6 +32,14 @@ public class UpdateScheduleForm {
 
     public void setTypeEvent(String typeEvent) {
         this.typeEvent = typeEvent;
+    }
+
+    public Integer getIsCanceled() {
+        return isCanceled;
+    }
+
+    public void setIsCanceled(Integer isCanceled) {
+        this.isCanceled = isCanceled;
     }
 
     public LocalDateTime getDateEvent() {

@@ -14,6 +14,8 @@ public class Schedule {
     private LocalDateTime dateEvent;
     private int totalNumberGuests;
 
+    private int isCanceled;
+
     @ManyToOne
     private Saloon saloon;
 
@@ -21,19 +23,21 @@ public class Schedule {
     private Tenant tenant;
 
 
-    public Schedule(String nameEvent, String typeEvent, LocalDateTime dateEvent, int totalNumberGuests, Saloon saloon, Tenant tenant) {
+    public Schedule(String nameEvent, String typeEvent,Integer isCanceled, LocalDateTime dateEvent, int totalNumberGuests, Saloon saloon, Tenant tenant) {
         this.nameEvent = nameEvent;
         this.typeEvent = typeEvent;
         this.dateEvent = dateEvent;
         this.totalNumberGuests = totalNumberGuests;
+        this.isCanceled = isCanceled;
         this.saloon = saloon;
         this.tenant = tenant;
     }
 
-    public Schedule(int id,String nameEvent, String typeEvent, LocalDateTime dateEvent, int totalNumberGuests, Saloon saloon, Tenant tenant) {
+    public Schedule(int id,String nameEvent, String typeEvent,Integer isCanceled, LocalDateTime dateEvent, int totalNumberGuests, Saloon saloon, Tenant tenant) {
         this.id = id;
         this.nameEvent = nameEvent;
         this.typeEvent = typeEvent;
+        this.isCanceled = isCanceled;
         this.dateEvent = dateEvent;
         this.totalNumberGuests = totalNumberGuests;
         this.saloon = saloon;
@@ -73,6 +77,14 @@ public class Schedule {
 
     public void setDateEvent(LocalDateTime dateEvent) {
         this.dateEvent = dateEvent;
+    }
+
+    public int getIsCanceled() {
+        return isCanceled;
+    }
+
+    public void setIsCanceled(int isCanceled) {
+        this.isCanceled = isCanceled;
     }
 
     public int getTotalNumberGuests() {

@@ -9,15 +9,18 @@ public class ScheduleResponse {
     private String nameEvent;
     private String typeEvent;
     private String dateEvent;
+
+    private int isCanceled;
     private int totalNumberGuests;
     private SaloonDTO saloon;
     private TenantDTO tenant;
 
-    public ScheduleResponse(int id, String nameEvent, String typeEvent, String dateEvent, int totalNumberGuests, SaloonDTO saloon, TenantDTO tenant) {
+    public ScheduleResponse(int id, String nameEvent, String typeEvent, String dateEvent,int isCanceled, int totalNumberGuests, SaloonDTO saloon, TenantDTO tenant) {
         this.id = id;
         this.nameEvent = nameEvent;
         this.typeEvent = typeEvent;
         this.dateEvent = dateEvent;
+        this.isCanceled = isCanceled;
         this.totalNumberGuests = totalNumberGuests;
         this.saloon = saloon;
         this.tenant = tenant;
@@ -53,6 +56,14 @@ public class ScheduleResponse {
 
     public void setDateEvent(String dateEvent) {
         this.dateEvent = dateEvent;
+    }
+
+    public int getIsCanceled() {
+        return isCanceled;
+    }
+
+    public void setIsCanceled(int isCanceled) {
+        this.isCanceled = isCanceled;
     }
 
     public int getTotalNumberGuests() {
