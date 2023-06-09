@@ -112,6 +112,18 @@ public class Tenant  {
         this.services = services;
     }
 
+    public Tenant(int id, String email, String cpf, String password, String name, String residentsBlock, Integer apartmentNumber, String phoneNumber, Integer isAdmin) {
+        this.id = id;
+        this.email = email;
+        this.cpf = cpf;
+        this.password = password;
+        this.name = name;
+        this.residentsBlock = residentsBlock;
+        this.apartmentNumber = apartmentNumber;
+        this.phoneNumber = phoneNumber;
+        this.isAdmin = isAdmin;
+    }
+
     public Tenant() {
     }
 

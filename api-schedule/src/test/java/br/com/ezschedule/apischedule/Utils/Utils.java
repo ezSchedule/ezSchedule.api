@@ -30,36 +30,35 @@ public class Utils {
 
         List<Tenant> listTenants = new ArrayList<>();
 
-//        Tenant c = new Tenant(
-//                1,
-//                "teste@gmail.com",
-//                "12345678901",
-//                "123Teste#",
-//                "Andrew Ferrari",
-//                "1B",
-//                32,
-//                "11961748392",
-//                0
-//        );
+        Tenant c = new Tenant(
+                1,
+                "teste@gmail.com",
+                "12345678901",
+                "123Teste#",
+                "Andrew Ferrari",
+                "1B",
+                32,
+                "11961748392",
+                0
+        );
 
-//        listTenants.add(c);
+        listTenants.add(c);
 
         return listTenants;
     }
 
     public static Tenant createTenant() {
 
-//        return new Tenant(
-//                1,
-//                "teste@gmail.com",
-//                "12345678901",
-//                "123Teste#",
-//                "Andrew Ferrari",
-//                "1B",
-//                32,
-//                "11961748392",
-//                0
-//        );
-        return null;
+        return new Tenant(
+                1,
+                "teste@gmail.com",
+                "12345678901",
+                "123Teste#",
+                "Andrew Ferrari",
+                "1B",
+                32,
+                "11961748392",
+                0
+        );
     }
 }

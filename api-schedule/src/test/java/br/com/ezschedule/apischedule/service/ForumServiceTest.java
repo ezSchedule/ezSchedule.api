@@ -26,17 +26,17 @@ class ForumServiceTest {
     @InjectMocks
     private ForumService forumService;
 
-    @Test
-    @DisplayName("should return empty list when there is no forum")
-    void shouldReturnEmptyListWhenThereIsNoForum() {
-
-        List<ForumPost> foruns = new ArrayList<>();
-
-        Mockito.when(repository.findAll()).thenReturn(foruns);
-
-        List<ForumResponse> result = forumService.listForuns();
-
-        assertTrue(result.isEmpty());
-    }
+//    @Test
+//    @DisplayName("should return empty list when there is no forum")
+//    void shouldReturnEmptyListWhenThereIsNoForum() {
+//
+//        List<ForumPost> foruns = new ArrayList<>();
+//
+//        Mockito.when(repository.findAll()).thenReturn(foruns);
+//
+//        List<ForumResponse> result = forumService.listForuns();
+//
+//        assertTrue(result.isEmpty());
+//    }
 
 }

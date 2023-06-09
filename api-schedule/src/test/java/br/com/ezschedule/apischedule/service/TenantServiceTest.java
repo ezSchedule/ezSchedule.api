@@ -1,8 +1,9 @@
 package br.com.ezschedule.apischedule.service;
 
-import br.com.ezschedule.apischedule.utils.Utils;
+import br.com.ezschedule.apischedule.Utils.Utils;
 import br.com.ezschedule.apischedule.model.Tenant;
 import br.com.ezschedule.apischedule.repository.TenantRepository;
+import br.com.ezschedule.apischedule.service.autenticacao.TenantService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -54,7 +55,7 @@ class TenantServiceTest {
         assertEquals(list.get(0).getName(), tenants.get(0).getName());
         assertEquals(list.get(0).getApartmentNumber(), tenants.get(0).getApartmentNumber());
         assertEquals(list.get(0).getCpf(), tenants.get(0).getCpf());
-        assertEquals(list.get(0).getIdUser(), tenants.get(0).getIdUser());
+        assertEquals(list.get(0).getId(), tenants.get(0).getId());
         assertEquals(list.get(0).getPassword(), tenants.get(0).getPassword());
         assertEquals(list.get(0).getPhoneNumber(), tenants.get(0).getPhoneNumber());
         assertEquals(list.get(0).getResidentsBlock(), tenants.get(0).getResidentsBlock());
