@@ -3,10 +3,12 @@ package br.com.ezschedule.apischedule.txt;
 import br.com.ezschedule.apischedule.csv.ListaObj;
 import br.com.ezschedule.apischedule.model.DtoClasses.ServiceImportDTO.ServiceImportDTO;
 import br.com.ezschedule.apischedule.model.Tenant;
+import br.com.ezschedule.apischedule.observer.PilhaObj;
 import br.com.ezschedule.apischedule.repository.ServiceRepository;
 import br.com.ezschedule.apischedule.repository.TenantRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -24,6 +26,8 @@ public class Txt {
     private ServiceRepository repository;
     @Autowired
     private TenantRepository tenantRepository;
+
+    private PilhaObj<File> pilhaOfPath = new PilhaObj<>(100);
 
     public static String save(MultipartFile file){
 
@@ -236,6 +240,8 @@ public class Txt {
             System.out.println(pathBase);
         }
 
+        pilhaOfPath.push(pathBase);
+
         try {
             InputStream fileInputStream = new FileInputStream(pathBase);
             return ResponseEntity.status(200)
@@ -247,4 +253,16 @@ public class Txt {
         }
     }
 
+    @Scheduled(fixedDelay = 300000)
+    public void excludeFiles(){
+        if(!pilhaOfPath.isEmpty()){
+            while (!pilhaOfPath.isEmpty()){
+                System.out.println("drop file");
+                File file = pilhaOfPath.pop();
+                file.delete();
+            }
+        }
+        System.out.println("Pilha is empty");
+        System.out.println("Finish schedule");
+    }
 }
