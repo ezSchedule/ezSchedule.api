@@ -293,6 +293,7 @@ public interface JsonResponseAdapter {
     }
 
     static SaloonDTO saloonDTO(Saloon s) {
+        if(s == null) return null;
         return new SaloonDTO(
                 s.getId(),
                 s.getSaloonName(),

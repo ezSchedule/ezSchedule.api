@@ -5,18 +5,10 @@ import br.com.ezschedule.apischedule.model.DtoClasses.ReportPaymentsDto;
 import br.com.ezschedule.apischedule.model.DtoClasses.Response.ReportResponse;
 import br.com.ezschedule.apischedule.model.Report;
 import br.com.ezschedule.apischedule.repository.ReportRepository;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.validation.Valid;
 import java.util.List;
 
 @Service
@@ -52,4 +44,19 @@ public class ReportService {
         reportRepository.save(report);
         return ResponseEntity.status(201).build();
     }
+
+    public ResponseEntity<List<ReportResponse>> findAllCondominiumReportsWNoPayment(int id){
+        if (reportRepository.verifyIfCondominiumExists(id) > 0){
+            return ResponseEntity.status(200).body(JsonResponseAdapter.listReportResponse(reportRepository.findAllCondominiumReportsWNoPayment(id)));
+        }
+        return ResponseEntity.status(404).build();
+    }
+
+    public ResponseEntity<List<ReportResponse>> findAllTenantsReportsWNoPayment(int id){
+        if (reportRepository.verifyIfTenantexists(id) > 0){
+            return ResponseEntity.status(200).body(JsonResponseAdapter.listReportResponse(reportRepository.findAllTenantsReportsWNoPayment(id)));
+        }
+        return ResponseEntity.status(404).build();
+    }
+
 }

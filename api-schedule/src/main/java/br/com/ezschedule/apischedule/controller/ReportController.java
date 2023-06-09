@@ -47,4 +47,16 @@ public class ReportController {
     public ResponseEntity<ReportResponse> newReport(@RequestBody @Valid Report report) {
         return service.add(report);
     }
+
+
+    @GetMapping("/tenant/no-payment/{id}")
+    public ResponseEntity<List<ReportResponse>> findAllTenantsReportsWNoPayment(@PathVariable int id){
+        return service.findAllTenantsReportsWNoPayment(id);
+    }
+
+    @GetMapping("/condominium/no-payment/{id}")
+    public ResponseEntity<List<ReportResponse>> findAllCondominiumReportsWNoPayment(@PathVariable int id){
+        return service.findAllCondominiumReportsWNoPayment(id);
+    }
+
 }

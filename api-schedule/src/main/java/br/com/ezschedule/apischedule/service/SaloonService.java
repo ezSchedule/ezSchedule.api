@@ -5,15 +5,11 @@ import br.com.ezschedule.apischedule.model.DtoClasses.Response.SaloonResponse;
 import br.com.ezschedule.apischedule.model.DtoClasses.UpdateResponse.UpdateSaloonForm;
 import br.com.ezschedule.apischedule.model.Saloon;
 import br.com.ezschedule.apischedule.repository.SaloonRepository;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -67,6 +63,13 @@ public class SaloonService {
         if (saloonRepository.existsById(id)) {
             saloonRepository.deleteById(id);
             return ResponseEntity.status(200).build();
+        }
+        return ResponseEntity.status(404).build();
+    }
+
+    public ResponseEntity<Boolean> verifyDate(int saloonID, LocalDateTime date){
+        if(saloonRepository.existsById(saloonID)){
+            return ResponseEntity.status(200).body(saloonRepository.countIfDateIsScheduled(saloonID,date) > 0);
         }
         return ResponseEntity.status(404).build();
     }
