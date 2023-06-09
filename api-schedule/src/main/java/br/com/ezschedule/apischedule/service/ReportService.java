@@ -52,11 +52,5 @@ public class ReportService {
         return ResponseEntity.status(404).build();
     }
 
-    public ResponseEntity<List<ReportResponse>> findAllTenantsReportsWNoPayment(int id){
-        if (reportRepository.verifyIfTenantexists(id) > 0){
-            return ResponseEntity.status(200).body(JsonResponseAdapter.listReportResponse(reportRepository.findAllTenantsReportsWNoPayment(id)));
-        }
-        return ResponseEntity.status(404).build();
-    }
 
 }

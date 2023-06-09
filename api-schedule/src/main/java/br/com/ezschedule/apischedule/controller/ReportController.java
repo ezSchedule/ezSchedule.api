@@ -49,11 +49,6 @@ public class ReportController {
     }
 
 
-    @GetMapping("/tenant/no-payment/{id}")
-    public ResponseEntity<List<ReportResponse>> findAllTenantsReportsWNoPayment(@PathVariable int id){
-        return service.findAllTenantsReportsWNoPayment(id);
-    }
-
     @GetMapping("/condominium/no-payment/{id}")
     public ResponseEntity<List<ReportResponse>> findAllCondominiumReportsWNoPayment(@PathVariable int id){
         return service.findAllCondominiumReportsWNoPayment(id);
