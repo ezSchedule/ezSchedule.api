@@ -54,4 +54,9 @@ public class ReportController {
         return service.findAllCondominiumReportsWNoPayment(id);
     }
 
+    @PutMapping("/{id}/{status}")
+    public ResponseEntity<Void> updateReport(@PathVariable int id,@PathVariable String status){
+        return service.update(id,status);
+    }
+
 }

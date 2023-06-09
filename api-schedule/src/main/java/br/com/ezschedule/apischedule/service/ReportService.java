@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ReportService {
@@ -52,5 +53,16 @@ public class ReportService {
         return ResponseEntity.status(404).build();
     }
 
-
+    public ResponseEntity<Void> update(int id ,String status){
+        if(reportRepository.existsById(id)){
+            Optional<Report> report = reportRepository.findById(id);
+            if(report.isPresent()){
+                report.get().setPaymentStatus(status);
+                reportRepository.save(report.get());
+                return ResponseEntity.status(200).build();
+            }
+            return ResponseEntity.status(404).build();
+        }
+        return ResponseEntity.status(404).build();
+    }
 }
