@@ -63,6 +63,8 @@ public class TenantController {
     List<Tenant> listUsers = new ArrayList<>();
     private String token = "";
 
+
+
     @Autowired
     private PasswordEncoder passwordEncoder;
 
@@ -305,18 +307,6 @@ public class TenantController {
 
     }
 
-    @GetMapping("/generate-token/{id}")
-    public ResponseEntity<String> generateEncryptedToken(@PathVariable int id) {
-
-        if (tenantRepository.existsById(id)) {
-
-            String idCondominium = String.valueOf(tenantRepository.findById(id).get().getCondominium().getId());
-
-            String encodedId = passwordEncoder.encode(idCondominium);
-            return ResponseEntity.status(200).body(encodedId);
-        }
-        return ResponseEntity.status(404).build();
-    }
 
     public Integer DecryptToken(String encodedId) {
         List<Integer> idList = tenantRepository.findAllCondominiumIdFromTenants();

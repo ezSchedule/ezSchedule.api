@@ -13,6 +13,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -28,6 +29,9 @@ public class CondominiumController {
 
     @Autowired
     private CondominumService condominumService;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @ApiResponse(responseCode = "204", description =
             "Não há condomínio cadastrados.", content = @Content(schema = @Schema(hidden = true)))
@@ -54,5 +58,17 @@ public class CondominiumController {
     @GetMapping("/settings")
     public ResponseEntity<CondominiumInformationDto> settingsCondominiumInformation(@RequestParam Integer id) {
         return ResponseEntity.status(200).body(condominumService.settingsCondominium(id));
+    }
+
+    @GetMapping("/generate-token/{id}")
+    public ResponseEntity<String> generateEncryptedToken(@PathVariable int id) {
+
+        if (condominiumRepository.existsById(id)) {
+
+
+            String encodedId = passwordEncoder.encode(String.valueOf(id));
+            return ResponseEntity.status(200).body(encodedId);
+        }
+        return ResponseEntity.status(404).build();
     }
 }
