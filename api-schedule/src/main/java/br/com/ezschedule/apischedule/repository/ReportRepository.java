@@ -36,7 +36,7 @@ public interface ReportRepository extends JpaRepository<Report, Integer> {
     List<ReportPaymentsDto> findAllReportsByTenant(int id);
 
 
-    @Query("select r from Report r join Tenant t on r.tenant.id = t.id where payment_status = 'Não Pago'")
+    @Query("select r from Report r join Condominium c on r.tenant.condominium.id = c.id where payment_status = 'Não Pago'")
     List<Report> findAllCondominiumReportsWNoPayment(int id);
 
     @Query("Select count(c.id) from Condominium c where c.id = :id")
