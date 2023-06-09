@@ -38,7 +38,7 @@ public class ReportController {
     }
 
     @GetMapping("/tenant/{id}")
-    public ResponseEntity<List<ReportResponse>> showReportsByTenant(@PathVariable int id) {
+    public ResponseEntity<List<ReportPaymentsDto>> showReportsByTenant(@PathVariable int id) {
         return service.findAllByTenant(id);
     }
 

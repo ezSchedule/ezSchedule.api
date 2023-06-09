@@ -32,12 +32,12 @@ public class ReportService {
         return ResponseEntity.status(200).body(allPosts);
     }
 
-    public ResponseEntity<List<ReportResponse>> findAllByTenant(int id) {
-        List<Report> allPosts = reportRepository.findAllReportsByTenant(id);
+    public ResponseEntity<List<ReportPaymentsDto>> findAllByTenant(int id) {
+        List<ReportPaymentsDto> allPosts = reportRepository.findAllReportsByTenant(id);
         if (allPosts.isEmpty()) {
             return ResponseEntity.status(204).build();
         }
-        return ResponseEntity.status(200).body(JsonResponseAdapter.listReportResponse(allPosts));
+        return ResponseEntity.status(200).body(allPosts);
     }
 
     public ResponseEntity<ReportResponse> add(Report report) {

@@ -33,7 +33,7 @@ public interface ReportRepository extends JpaRepository<Report, Integer> {
             "JOIN s.saloon sa " +
             "WHERE t.id = :id"
     )
-    List<Report> findAllReportsByTenant(int id);
+    List<ReportPaymentsDto> findAllReportsByTenant(int id);
 
 
     @Query("Select r from Report r where r.paymentStatus = 'Não Pago' AND r.condominium.id = :id")
