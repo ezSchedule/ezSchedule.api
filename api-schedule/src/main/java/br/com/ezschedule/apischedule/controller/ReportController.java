@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -51,13 +52,13 @@ public class ReportController {
 
 
     @GetMapping("/condominium/no-payment/{id}")
-    public ResponseEntity<List<ReportResponse>> findAllCondominiumReportsWNoPayment(@PathVariable int id){
+    public ResponseEntity<List<ReportResponse>> findAllCondominiumReportsWNoPayment(@PathVariable int id) {
         return service.findAllCondominiumReportsWNoPayment(id);
     }
 
     @PutMapping("/{id}/{status}/{paymentTime}")
-    public ResponseEntity<Void> updateReport(@PathVariable int id, @PathVariable String status, @PathVariable LocalDateTime paymentTime){
-        return service.update(id,status,paymentTime);
+    public ResponseEntity<Void> updateReport(@PathVariable int id, @PathVariable String status, @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime paymentTime) {
+        return service.update(id, status, paymentTime);
     }
 
 }
