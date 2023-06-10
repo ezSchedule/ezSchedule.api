@@ -12,6 +12,8 @@ public class Schedule {
     private String nameEvent;
     private String typeEvent;
     private LocalDateTime dateEvent;
+
+    @Column(name = "total_number_guests")
     private int totalNumberGuests;
 
     private int isCanceled;
@@ -32,7 +34,7 @@ public class Schedule {
         this.saloon = saloon;
         this.tenant = tenant;
     }
-
+  
     public Schedule(int id,String nameEvent, String typeEvent,Integer isCanceled, LocalDateTime dateEvent, int totalNumberGuests, Saloon saloon, Tenant tenant) {
         this.id = id;
         this.nameEvent = nameEvent;

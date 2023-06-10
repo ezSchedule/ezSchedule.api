@@ -2,6 +2,7 @@ package br.com.ezschedule.apischedule.controller;
 
 import br.com.ezschedule.apischedule.model.DtoClasses.Response.ScheduleResponse;
 import br.com.ezschedule.apischedule.model.DtoClasses.UpdateResponse.UpdateScheduleForm;
+import br.com.ezschedule.apischedule.model.DtoClasses.InfoDate;
 import br.com.ezschedule.apischedule.model.Schedule;
 import br.com.ezschedule.apischedule.service.ScheduleService;
 import io.swagger.annotations.Api;
@@ -10,10 +11,14 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.time.*;
+import java.time.format.TextStyle;
+import java.util.ArrayList;
 import java.util.List;
 
 @Api(value = "Agendamentos", produces = MediaType.APPLICATION_JSON_VALUE, tags = {"agendamentos"}, description = "requisições relacionadas a agendamentos")
@@ -25,6 +30,7 @@ public class ScheduleController {
     ScheduleService service;
 
     @ApiResponse(responseCode = "204", description = "Não há agendamentos cadastrados.", content = @Content(schema = @Schema(hidden = true)))
+
     @ApiResponse(responseCode = "200", description = "Agendamentos encontrados.")
     @GetMapping
     public ResponseEntity<List<ScheduleResponse>> showAllSchedules() {
