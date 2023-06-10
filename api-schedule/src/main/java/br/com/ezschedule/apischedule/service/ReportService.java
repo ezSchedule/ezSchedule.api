@@ -54,6 +54,7 @@ public class ReportService {
         return ResponseEntity.status(404).build();
     }
 
+    
     public ResponseEntity<Void> update(int id , String status, LocalDateTime paymentTime){
         if(reportRepository.existsById(id)){
             Optional<Report> report = reportRepository.findById(id);
