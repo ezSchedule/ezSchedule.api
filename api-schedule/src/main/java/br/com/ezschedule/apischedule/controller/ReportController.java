@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Api(value = "Relatórios", produces = MediaType.APPLICATION_JSON_VALUE, tags = {"relatorios"}, description = "requisições relacionadas a relatórios")
@@ -54,9 +55,9 @@ public class ReportController {
         return service.findAllCondominiumReportsWNoPayment(id);
     }
 
-    @PutMapping("/{id}/{status}")
-    public ResponseEntity<Void> updateReport(@PathVariable int id,@PathVariable String status){
-        return service.update(id,status);
+    @PutMapping("/{id}/{status}/{paymentTime}")
+    public ResponseEntity<Void> updateReport(@PathVariable int id, @PathVariable String status, @PathVariable LocalDateTime paymentTime){
+        return service.update(id,status,paymentTime);
     }
 
 }
