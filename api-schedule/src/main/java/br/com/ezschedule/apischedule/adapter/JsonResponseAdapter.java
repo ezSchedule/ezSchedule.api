@@ -330,7 +330,6 @@ public interface JsonResponseAdapter {
                 r.getPaymentTime() != null ? r.getPaymentTime().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")) : null
         );
     }
-
     static List<ReportDTO> listReportDTO(List<Report> r) {
         if (r == null) {
             return null;
@@ -365,7 +364,7 @@ public interface JsonResponseAdapter {
                 listTenantDTO(c.getTenantList()),
                 listSaloonDTO(c.getSaloonList()),
                 listForumDTO(c.getForumPostList()),
-                listReportDTO(c.getReportList())
+                listReportCondoDTO(c.getReportList())
         );
     }
 

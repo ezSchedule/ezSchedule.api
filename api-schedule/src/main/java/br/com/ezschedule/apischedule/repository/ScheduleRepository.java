@@ -4,7 +4,6 @@ import br.com.ezschedule.apischedule.model.Schedule;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
@@ -35,6 +34,6 @@ public interface ScheduleRepository extends JpaRepository<Schedule, Integer> {
 
     @Query("Select s from Schedule s where s.tenant.id = :id AND s.isCanceled = 0")
     List<Schedule> findAllSchedulesByTenant(int id);
-
-
+  
 }
+

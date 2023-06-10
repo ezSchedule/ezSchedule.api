@@ -1,6 +1,9 @@
 package br.com.ezschedule.apischedule.model.DtoClasses;
 
+import br.com.ezschedule.apischedule.model.DtoClasses.Response.TenantResponse;
+
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class ScheduleDTO {
     private int id;
@@ -18,6 +21,8 @@ public class ScheduleDTO {
     }
 
     public ScheduleDTO() {
+        this.saloon = saloon;
+        this.tenant = tenant;
     }
 
     public int getId() {
@@ -58,5 +63,34 @@ public class ScheduleDTO {
 
     public void setTotalNumberGuests(int totalNumberGuests) {
         this.totalNumberGuests = totalNumberGuests;
+    }
+
+    public List<SaloonDTO> getSaloon() {
+        return saloon;
+    }
+
+    public void setSaloon(List<SaloonDTO> saloon) {
+        this.saloon = saloon;
+    }
+
+    public TenantResponse getTenant() {
+        return tenant;
+    }
+
+    public void setTenant(TenantResponse tenant) {
+        this.tenant = tenant;
+    }
+
+    @Override
+    public String toString() {
+        return "Schedule{" +
+                "id=" + id +
+                ", nameEvent='" + nameEvent + '\'' +
+                ", typeEvent='" + typeEvent + '\'' +
+                ", dateEvent=" + dateEvent +
+                ", totalNumberGuests=" + totalNumberGuests +
+                ", saloon=" + saloon +
+                ", tenant=" + tenant +
+                '}';
     }
 }
