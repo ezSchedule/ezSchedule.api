@@ -50,7 +50,6 @@ public class ReportController {
         return service.add(report);
     }
 
-
     @GetMapping("/condominium/no-payment/{id}")
     public ResponseEntity<List<ReportResponse>> findAllCondominiumReportsWNoPayment(@PathVariable int id){
         return service.findAllCondominiumReportsWNoPayment(id);
