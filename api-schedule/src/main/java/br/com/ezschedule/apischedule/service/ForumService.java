@@ -6,7 +6,7 @@ import br.com.ezschedule.apischedule.model.DtoClasses.Response.ForumResponse;
 import br.com.ezschedule.apischedule.model.DtoClasses.UpdateResponse.UpdateForumPostForm;
 import br.com.ezschedule.apischedule.model.ForumPost;
 import br.com.ezschedule.apischedule.model.Tenant;
-import br.com.ezschedule.apischedule.observer.FilaObj;
+import br.com.ezschedule.apischedule.observer.RowObject;
 import br.com.ezschedule.apischedule.observer.SubscribedTenants;
 import br.com.ezschedule.apischedule.repository.ForumRepository;
 import br.com.ezschedule.apischedule.repository.TenantRepository;
@@ -31,7 +31,7 @@ public class ForumService {
     @Autowired
     private SendMail sendMail;
 
-    private FilaObj<Tenant> forumPostFila = new FilaObj<>(100);
+    private RowObject<Tenant> forumPostFila = new RowObject<>(100);
 
     public ResponseEntity<List<ForumResponse>> getAll(){
         List<ForumPost> allPosts = forumRepository.findAll();
@@ -99,7 +99,7 @@ public class ForumService {
             forumPostFila.insert(t);
         }
 
-        for (int i = 0; forumPostFila.getTamanho() > 0; i++) {
+        for (int i = 0; forumPostFila.getLength() > 0; i++) {
             sendEmailsOnADelayBasis(forumPostFila.poll(), p);
         }
     }

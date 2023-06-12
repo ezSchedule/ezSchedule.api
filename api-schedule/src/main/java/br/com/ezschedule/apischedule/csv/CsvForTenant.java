@@ -8,8 +8,8 @@ import java.nio.file.Path;
 import java.util.Formatter;
 import java.util.FormatterClosedException;
 
-public class CsvTenant {
-    public static void saveArchiveCsv(ListaObj<Tenant> lista, String fileName)
+public class CsvForTenant {
+    public static void saveArchiveCsv(ListObject<Tenant> lista, String fileName)
     {
         FileWriter arq = null;
         Formatter saida = null;
@@ -19,9 +19,9 @@ public class CsvTenant {
         fileName += ".csv";
 
         if(System.getProperty("os.name").contains("Windows")){
-            diretorioBase = Path.of(System.getProperty("java.io.tmpdir") + "/arquivos");
+            diretorioBase = Path.of(System.getProperty("java.io.tmpdir") + "/files");
         } else {
-            diretorioBase = Path.of(System.getProperty("user.dir") + "/arquivos");
+            diretorioBase = Path.of(System.getProperty("user.dir") + "/files");
         }
 
         if(!diretorioBase.toFile().exists()){
@@ -41,9 +41,9 @@ public class CsvTenant {
 
             saida.format("%S;%S;%S;%S;%S;%S;%B\n", "ID", "NAME", "EMAIL", "N°-APTO", "BLOCO", "N°-PHONE", "IS ADMIN?");
 
-            for (int i = 0; i < lista.getTamanho(); i++)
+            for (int i = 0; i < lista.getLength(); i++)
             {
-                Tenant tenant = lista.getElemento(i);
+                Tenant tenant = lista.getElement(i);
                 saida.format("%d;%s;%s;%d;%s;%s;%b\n",
                                                  tenant.getId(),
                                                  tenant.getName(),
@@ -79,10 +79,10 @@ public class CsvTenant {
 
         fileName +=".csv";
 
-        File arquivoBuscado = Path.of(System.getProperty("user.dir") + "/arquivos/" + fileName).toFile();
+        File arquivoBuscado = Path.of(System.getProperty("user.dir") + "/files/" + fileName).toFile();
 
         if(System.getProperty("os.name").contains("Windows")){
-            arquivoBuscado = Path.of(System.getProperty("java.io.tmpdir") + "/arquivos/" + fileName).toFile();
+            arquivoBuscado = Path.of(System.getProperty("java.io.tmpdir") + "/files/" + fileName).toFile();
         }
 
         if(!arquivoBuscado.exists()){
