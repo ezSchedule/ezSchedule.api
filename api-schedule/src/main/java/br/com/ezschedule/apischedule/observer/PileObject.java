@@ -1,24 +1,24 @@
 package br.com.ezschedule.apischedule.observer;
 
-public class PilhaObj<T> {
-    private T[] pilha;
-    private int topo;
+public class PileObject<T> {
+    private T[] pile;
+    private int top;
 
-    public PilhaObj(int capacidade) {
-        pilha = (T[]) new Object[capacidade];
-        topo = -1;
+    public PileObject(int capacity) {
+        pile = (T[]) new Object[capacity];
+        top = -1;
     }
 
     public Boolean isEmpty() {
-        return topo == -1;
+        return top == -1;
     }
     public Boolean isFull() {
-        return topo == pilha.length - 1;
+        return top == pile.length - 1;
     }
 
     public void push(T info) {
         if (!isFull()) {
-            pilha[++topo] = info;
+            pile[++top] = info;
         }
         else {
             throw new IllegalStateException("model.Pilha cheia!");
@@ -27,14 +27,14 @@ public class PilhaObj<T> {
 
     public T pop() {
         if(!isEmpty()){
-            return pilha[topo--];
+            return pile[top--];
         }
         return null;
     }
 
     public T peek() {
         if(!isEmpty()){
-            return pilha[topo];
+            return pile[top];
         }
         return null;
     }
@@ -44,14 +44,14 @@ public class PilhaObj<T> {
             System.out.println("model.Pilha vazia");
         }
         else {
-            for (int i = 0; i < topo; i++) {
-                System.out.print(" " + pilha[i]);
+            for (int i = 0; i < top; i++) {
+                System.out.print(" " + pile[i]);
             }
             System.out.println();
         }
     }
 
-    public int getTopo() {
-        return topo;
+    public int getTop() {
+        return top;
     }
 }
