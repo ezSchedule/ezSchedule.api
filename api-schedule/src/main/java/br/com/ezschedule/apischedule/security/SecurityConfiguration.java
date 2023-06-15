@@ -51,7 +51,7 @@ public class SecurityConfiguration {
                 .antMatchers(
 
                         "/users/login","/users",
-                        "/condominium","condominium/**","error/**", "error",
+                        "/condominium","/condominium/**","error/**", "error",
                         "/swagger-ui","/swagger-ui/**",
                         "/v2/**","/webjar/**","/swagger-resources/**","/h2-console/**"
                 ).permitAll()
