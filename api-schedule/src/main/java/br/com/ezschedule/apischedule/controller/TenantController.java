@@ -63,6 +63,8 @@ public class TenantController {
     List<Tenant> listUsers = new ArrayList<>();
     private String token = "";
 
+
+
     @Autowired
     private PasswordEncoder passwordEncoder;
 
@@ -118,8 +120,7 @@ public class TenantController {
     @ApiResponse(responseCode = "200", description = "usuário deletado com sucesso.")
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> removeById(@PathVariable Integer id) {
-        if (tenantRepository.existsById(id)) {
-            this.tenantRepository.deleteById(id);
+        if (tenantService.removeTenantById(id)) {
             return ResponseEntity.status(204).build();
         }
         return ResponseEntity.status(404).build();
@@ -129,17 +130,17 @@ public class TenantController {
     @ApiResponse(responseCode = "200", description =
             "Logout realizado", content = @Content(schema = @Schema(hidden = true)))
     @PostMapping("/logout/{email}")
-    public ResponseEntity<Void> logout(@PathVariable String email) {
-        Object user = this.tenantRepository.logoutUser(email);
-        if (user.equals(1)) {
-            return ResponseEntity.status(200).build();
+    public ResponseEntity<Integer> logout(@PathVariable String email) {
+        Integer result = this.tenantService.logoutTenant(email);
+        if (result.equals(1)) {
+            return ResponseEntity.status(200).body(result);
         } else {
             return ResponseEntity.status(401).build();
         }
     }
 
     @PutMapping("/forgot-password")
-    public ResponseEntity<Object> forgotPassword(@RequestBody UpdatePasswordForm updatePasswordForm) {
+    public ResponseEntity<Tenant> forgotPassword(@RequestBody UpdatePasswordForm updatePasswordForm) {
         Optional<Tenant> tenant = this.tenantRepository.findByEmail(updatePasswordForm.getEmail());
         if (tenant.isPresent()) {
             tenant.get().setPassword(this.tenantService.encryptPassword(updatePasswordForm.getPassword()));
@@ -157,24 +158,13 @@ public class TenantController {
         if (updatePasswordForm.getPassword().equals(updatePasswordForm.getNewPassword())) {
             return ResponseEntity.status(404).build();
         } else {
-            Object user = this.tenantRepository.updatePasswordUser(updatePasswordForm.getEmail(), updatePasswordForm.getNewPassword());
-            return ResponseEntity.status(200).build();
+            return ResponseEntity.status(200).body(this.tenantService.updatePasswordTenant(updatePasswordForm.getEmail(), updatePasswordForm.getNewPassword()));
         }
     }
 
     @GetMapping("/recovery-password/{email}")
     public ResponseEntity<Void> recoveryPassword(@PathVariable String email) {
-
-        Optional<Tenant> tenant = tenantRepository.findByEmail(email);
-
-        if (tenant.isPresent()) {
-
-            this.token = UUID.randomUUID().toString().replace("-", "");
-            this.sendMail.send(email, EmailMessages.createTitle(tenant.get()), EmailMessages.messageRecoveryPassword(tenant.get(), this.token));
-
-            return ResponseEntity.status(200).build();
-        }
-        return ResponseEntity.status(404).build();
+        return tenantService.passwordRecover(email);
     }
 
     @GetMapping("/input-token/{tokenInput}")
@@ -317,18 +307,6 @@ public class TenantController {
 
     }
 
-    @GetMapping("/generate-token/{id}")
-    public ResponseEntity<String> generateEncryptedToken(@PathVariable int id) {
-
-        if (tenantRepository.existsById(id)) {
-
-            String idCondominium = String.valueOf(tenantRepository.findById(id).get().getCondominium().getId());
-
-            String encodedId = passwordEncoder.encode(idCondominium);
-            return ResponseEntity.status(200).body(encodedId);
-        }
-        return ResponseEntity.status(404).build();
-    }
 
     public Integer DecryptToken(String encodedId) {
         List<Integer> idList = tenantRepository.findAllCondominiumIdFromTenants();

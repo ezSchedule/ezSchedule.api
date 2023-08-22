@@ -2,11 +2,12 @@ package br.com.ezschedule.apischedule.repository;
 
 import br.com.ezschedule.apischedule.model.Schedule;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import javax.transaction.Transactional;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 
 public interface ScheduleRepository extends JpaRepository<Schedule, Integer> {
@@ -35,6 +36,14 @@ public interface ScheduleRepository extends JpaRepository<Schedule, Integer> {
 
     @Query("Select s from Schedule s where s.tenant.id = :id AND s.isCanceled = 0")
     List<Schedule> findAllSchedulesByTenant(int id);
+
+
+    @Query("Select count(s.id) from Schedule s where s.isCanceled = 0 AND s.id = :id")
+    Integer isThisScheduleCanceled(int id);
+
+    @Query("delete from Report r where r.schedule.id = :id")
+    @Modifying
+    Integer deleteReport(int id);
 
 
 }

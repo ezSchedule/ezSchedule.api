@@ -52,7 +52,7 @@ public class ForumService {
     public ResponseEntity<ForumResponse> save(ForumPost post) {
         forumRepository.save(post);
         //descomente se deseje enviar emails para todos usuários inscritos
-//        sendMails(post);
+        sendMails(post);
 
         return ResponseEntity.status(201).build();
     }

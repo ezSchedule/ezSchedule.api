@@ -41,7 +41,7 @@ public interface TenantRepository extends JpaRepository<Tenant, Integer> {
     //Existe pelo email
     Boolean existsByEmail(String email);
 
-    @Query("Select distinct(t.condominium.id) from Tenant t ")
+    @Query("Select distinct(c.id) from Condominium c ")
     List<Integer> findAllCondominiumIdFromTenants();
 
     Optional<Tenant> findByEmail(String email);

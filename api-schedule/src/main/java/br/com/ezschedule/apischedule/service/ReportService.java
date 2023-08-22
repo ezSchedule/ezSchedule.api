@@ -9,7 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ReportService {
@@ -52,11 +54,19 @@ public class ReportService {
         return ResponseEntity.status(404).build();
     }
 
-    public ResponseEntity<List<ReportResponse>> findAllTenantsReportsWNoPayment(int id){
-        if (reportRepository.verifyIfTenantexists(id) > 0){
-            return ResponseEntity.status(200).body(JsonResponseAdapter.listReportResponse(reportRepository.findAllTenantsReportsWNoPayment(id)));
+
+    
+    public ResponseEntity<Void> update(int id , String status, LocalDateTime paymentTime){
+        if(reportRepository.existsById(id)){
+            Optional<Report> report = reportRepository.findById(id);
+            if(report.isPresent()){
+                report.get().setPaymentStatus(status);
+                report.get().setPaymentTime(paymentTime);
+                reportRepository.save(report.get());
+                return ResponseEntity.status(200).build();
+            }
+            return ResponseEntity.status(404).build();
         }
         return ResponseEntity.status(404).build();
     }
-
 }

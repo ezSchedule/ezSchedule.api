@@ -9,14 +9,18 @@ import br.com.ezschedule.apischedule.repository.ScheduleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
 
+import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.Month;
 import java.time.format.TextStyle;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+import java.util.Optional;
 
 @Service
 public class ScheduleService {
@@ -167,10 +171,16 @@ public class ScheduleService {
         return ResponseEntity.status(404).build();
     }
 
+    @Transactional
     public ResponseEntity<Void> delete(int id) {
         if (scheduleRepository.existsById(id)) {
-            scheduleRepository.deleteById(id);
-            return ResponseEntity.status(204).build();
+
+            if (scheduleRepository.isThisScheduleCanceled(id) == 1) {
+                scheduleRepository.deleteReport(id);
+                scheduleRepository.deleteById(id);
+                return ResponseEntity.status(204).build();
+            }
+            return ResponseEntity.status(418).build();
         }
         return ResponseEntity.status(404).build();
     }
