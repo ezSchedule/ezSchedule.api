@@ -5,6 +5,7 @@ import br.com.ezschedule.apischedule.email.SendMail;
 import br.com.ezschedule.apischedule.messages.EmailMessages;
 import br.com.ezschedule.apischedule.model.DtoClasses.Response.TenantResponse;
 import br.com.ezschedule.apischedule.model.DtoClasses.UpdateResponse.UpdateTenantForm;
+import br.com.ezschedule.apischedule.model.Schedule;
 import br.com.ezschedule.apischedule.model.Tenant;
 import br.com.ezschedule.apischedule.repository.TenantRepository;
 import br.com.ezschedule.apischedule.security.jwt.GerenciadorTokenJwt;
@@ -50,6 +51,14 @@ public class TenantService {
     t.setPassword(senhaCriptografada);
 
     this.tenantRepository.save(t);
+  }
+
+  public ResponseEntity<TenantResponse> findById(int id){
+    Optional<Tenant> tenant = tenantRepository.findById(id);
+    if(tenant.isPresent()){
+      return ResponseEntity.status(200).body(JsonResponseAdapter.tenantResponse(tenant.get()));
+    }
+    return ResponseEntity.status(404).build();
   }
 
   public String encryptPassword(String password) {

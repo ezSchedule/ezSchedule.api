@@ -19,6 +19,7 @@ import br.com.ezschedule.apischedule.service.autenticacao.TenantService;
 import br.com.ezschedule.apischedule.service.autenticacao.dto.UsuarioLoginDto;
 import br.com.ezschedule.apischedule.service.autenticacao.dto.UsuarioTokenDto;
 import br.com.ezschedule.apischedule.txt.Txt;
+import com.azure.core.annotation.Get;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.storage.blob.BlobClient;
@@ -81,6 +82,11 @@ public class TenantController {
             return ResponseEntity.status(200).body(JsonResponseAdapter.listTenantResponse(users));
         }
 
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<TenantResponse> findById(@PathVariable int id){
+        return tenantService.findById(id);
     }
 
     //Register new user
