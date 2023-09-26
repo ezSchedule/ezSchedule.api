@@ -5,6 +5,7 @@ import br.com.ezschedule.apischedule.model.DtoClasses.InfoDate;
 import br.com.ezschedule.apischedule.model.DtoClasses.Response.ScheduleResponse;
 import br.com.ezschedule.apischedule.model.DtoClasses.UpdateResponse.UpdateScheduleForm;
 import br.com.ezschedule.apischedule.model.Schedule;
+import br.com.ezschedule.apischedule.repository.CondominumRepository;
 import br.com.ezschedule.apischedule.repository.ScheduleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +28,9 @@ public class ScheduleService {
 
     @Autowired
     ScheduleRepository scheduleRepository;
+
+    @Autowired
+    CondominumRepository condominumRepository;
 
     public ResponseEntity<Object> findScheduleByMonth(@PathVariable int idCondominium) {
         List<Schedule> listSchedule = scheduleRepository.findAllSchedules();
@@ -139,6 +143,16 @@ public class ScheduleService {
             return ResponseEntity.status(204).build();
         }
         return ResponseEntity.status(200).body(JsonResponseAdapter.listScheduleResponse(allSchedules));
+    }
+
+    public ResponseEntity<List<ScheduleResponse>> findByCondominiumId(@PathVariable int id) {
+        if(condominumRepository.existsById(id)) {
+            List<Schedule> schedule = scheduleRepository.findByCondominiumId(id);
+            if(!schedule.isEmpty()){
+                return ResponseEntity.status(200).body(JsonResponseAdapter.listScheduleResponse(schedule));
+            }
+        }
+        return ResponseEntity.status(404).build();
     }
 
     public ResponseEntity<ScheduleResponse> findById(@PathVariable int id) {

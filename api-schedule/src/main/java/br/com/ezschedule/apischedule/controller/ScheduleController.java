@@ -51,6 +51,10 @@ public class ScheduleController {
     public ResponseEntity<ScheduleResponse> showAScheduleById(@PathVariable int id) {
         return service.findById(id);
     }
+    @GetMapping("/condominium/{id}")
+    public ResponseEntity<List<ScheduleResponse>> showScheduleByCondominiumId(@PathVariable int id){
+        return service.findByCondominiumId(id);
+    }
 
     @ApiResponse(responseCode = "201", description =
             "Agendamento cadastrado", content = @Content(schema = @Schema(hidden = true)))

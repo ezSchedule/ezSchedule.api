@@ -18,6 +18,9 @@ public interface ScheduleRepository extends JpaRepository<Schedule, Integer> {
     @Query("Select s from Schedule s where s.isCanceled = 1")
     List<Schedule> findAllCanceledSchedules();
 
+    @Query("Select s from Schedule s where s.tenant.condominium.id = :id")
+    List<Schedule> findByCondominiumId(int id);
+
     @Query("SELECT SUM(s.totalNumberGuests) " +
             "FROM Schedule s " +
             "JOIN s.tenant t " +
