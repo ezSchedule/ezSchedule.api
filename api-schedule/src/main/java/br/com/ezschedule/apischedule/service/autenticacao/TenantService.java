@@ -56,6 +56,10 @@ public class TenantService {
   public ResponseEntity<TenantResponse> findById(int id){
     Optional<Tenant> tenant = tenantRepository.findById(id);
     if(tenant.isPresent()){
+      if(!tenant.get().getNameBlobImage().isBlank() && tenant.get().getNameBlobImage() != null){
+        tenant.get().setNameBlobImage("https://ezscheduleusersimages.blob.core.windows.net/ezschedules/" + tenant.get().getNameBlobImage());
+      }
+
       return ResponseEntity.status(200).body(JsonResponseAdapter.tenantResponse(tenant.get()));
     }
     return ResponseEntity.status(404).build();

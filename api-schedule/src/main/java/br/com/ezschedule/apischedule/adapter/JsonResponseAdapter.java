@@ -49,8 +49,8 @@ public interface JsonResponseAdapter {
                 t.getIsAdmin(),
                 token,
                 t.getCondominium().getId(),
-                t.getNameBlobImage()
-        );
+                "https://ezscheduleusersimages.blob.core.windows.net/ezschedules/" + t.getNameBlobImage()
+                );
     }
 
     static TenantDTO tenantDTO(Tenant t) {
