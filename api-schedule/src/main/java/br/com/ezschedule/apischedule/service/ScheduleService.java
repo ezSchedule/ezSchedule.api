@@ -2,6 +2,7 @@ package br.com.ezschedule.apischedule.service;
 
 import br.com.ezschedule.apischedule.adapter.JsonResponseAdapter;
 import br.com.ezschedule.apischedule.model.DtoClasses.InfoDate;
+import br.com.ezschedule.apischedule.model.DtoClasses.InfoDateV2;
 import br.com.ezschedule.apischedule.model.DtoClasses.Response.ScheduleResponse;
 import br.com.ezschedule.apischedule.model.DtoClasses.UpdateResponse.UpdateScheduleForm;
 import br.com.ezschedule.apischedule.model.Schedule;
@@ -128,6 +129,31 @@ public class ScheduleService {
         return ResponseEntity.status(200).body(informationResultList);
     }
 
+    public ResponseEntity<List<InfoDateV2>> findAllSchedulesData(int idCondominium) {
+        List<Schedule> listSchedule = scheduleRepository.findByCondominiumId(idCondominium);
+
+        if (listSchedule.isEmpty()) {
+            return ResponseEntity.status(204).build();
+        }
+
+        List<InfoDateV2> listInfoDate = new ArrayList<>();
+
+        int year = LocalDate.now().getYear();
+        LocalDate startDate = LocalDate.of(year, 12, 1);
+        LocalDate endDate = LocalDate.of(year, 12, 31);
+
+        for (int i = 0; i < 12; i++) {
+            LocalDateTime startDateTime = startDate.atStartOfDay().minusMonths(i);
+            LocalDateTime endDateTime = endDate.atStartOfDay().minusMonths(i);
+            Integer totalGuestByMonth = scheduleRepository.totalGuestsByMonth(startDateTime, endDateTime, idCondominium);
+            Integer totalEventsByMonth = scheduleRepository.countEventsByMonth(startDateTime, endDateTime, idCondominium);
+            listInfoDate.add(new InfoDateV2(12 - i,totalGuestByMonth,totalEventsByMonth));
+        }
+
+        return ResponseEntity.status(200).body(listInfoDate);
+
+    }
+
 
     public ResponseEntity<List<ScheduleResponse>> findAll() {
         List<Schedule> allSchedules = scheduleRepository.findAllSchedules();
@@ -146,9 +172,9 @@ public class ScheduleService {
     }
 
     public ResponseEntity<List<ScheduleResponse>> findByCondominiumId(@PathVariable int id) {
-        if(condominumRepository.existsById(id)) {
+        if (condominumRepository.existsById(id)) {
             List<Schedule> schedule = scheduleRepository.findByCondominiumId(id);
-            if(!schedule.isEmpty()){
+            if (!schedule.isEmpty()) {
                 return ResponseEntity.status(200).body(JsonResponseAdapter.listScheduleResponse(schedule));
             }
         }
