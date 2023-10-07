@@ -139,15 +139,15 @@ public class ScheduleService {
         List<InfoDateV2> listInfoDate = new ArrayList<>();
 
         int year = LocalDate.now().getYear();
-        LocalDate startDate = LocalDate.of(year, 12, 1);
-        LocalDate endDate = LocalDate.of(year, 12, 31);
+        LocalDate startDate = LocalDate.of(year, 1, 1);
+        LocalDate endDate = LocalDate.of(year, 1, 31);
 
         for (int i = 0; i < 12; i++) {
-            LocalDateTime startDateTime = startDate.atStartOfDay().minusMonths(i);
-            LocalDateTime endDateTime = endDate.atStartOfDay().minusMonths(i);
+            LocalDateTime startDateTime = startDate.atStartOfDay().plusMonths(i);
+            LocalDateTime endDateTime = endDate.atStartOfDay().plusMonths(i);
             Integer totalGuestByMonth = scheduleRepository.totalGuestsByMonth(startDateTime, endDateTime, idCondominium);
             Integer totalEventsByMonth = scheduleRepository.countEventsByMonth(startDateTime, endDateTime, idCondominium);
-            listInfoDate.add(new InfoDateV2(12 - i,totalGuestByMonth,totalEventsByMonth));
+            listInfoDate.add(new InfoDateV2(i+1,totalGuestByMonth,totalEventsByMonth));
         }
 
         return ResponseEntity.status(200).body(listInfoDate);
