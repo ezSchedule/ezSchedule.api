@@ -8,4 +8,8 @@ COPY api-schedule/target /app
 
 WORKDIR /app
 
-#CMD ["java", "-jar", "api-eschedule-0.0.1-SNAPSHOT.jar"]
+EXPOSE 8080
+
+ENTRYPOINT ["java","-jar","api-schedule.jar"]
+
+#CMD ["java", "-jar", "/app/target/api-eschedule.jar"]
