@@ -75,6 +75,7 @@ public class TenantController {
     @GetMapping
     public ResponseEntity<List<TenantResponse>> showAllUsers() {
         List<Tenant> users = this.tenantRepository.findAll();
+
         if (users.isEmpty()) {
             return ResponseEntity.status(204).build();
         } else {

@@ -10,6 +10,4 @@ WORKDIR /app
 
 EXPOSE 8080
 
-ENTRYPOINT ["java","-jar","api-schedule-0.0.1-SNAPSHOT.jar"]
-
-#CMD ["java", "-jar", "/app/target/api-eschedule.jar"]
+ENTRYPOINT ["java","-jar","api-schedule.jar"]
