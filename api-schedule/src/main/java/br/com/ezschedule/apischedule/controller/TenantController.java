@@ -88,6 +88,7 @@ public class TenantController {
 //            Document userMongo = new Document("Nome", user.getName());
 //            collection.insertOne(userMongo);
 //        }
+        //Comentado, usar somente em teste
         if (users.isEmpty()) {
             return ResponseEntity.status(204).build();
         } else {
