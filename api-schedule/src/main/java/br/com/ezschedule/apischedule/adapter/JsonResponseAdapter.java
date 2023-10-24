@@ -49,8 +49,8 @@ public interface JsonResponseAdapter {
                 t.getIsAdmin(),
                 token,
                 t.getCondominium().getId(),
-                t.getNameBlobImage()
-        );
+                "https://ezscheduleusersimages.blob.core.windows.net/ezschedules/" + t.getNameBlobImage()
+                );
     }
 
     static TenantDTO tenantDTO(Tenant t) {
@@ -67,7 +67,7 @@ public interface JsonResponseAdapter {
                 t.getPhoneNumber(),
                 t.isAuthenticated(),
                 t.getIsAdmin(),
-                t.getNameBlobImage());
+                "https://ezscheduleusersimages.blob.core.windows.net/ezschedules/" + t.getNameBlobImage());
     }
 
     static List<TenantDTO> listTenantDTO(List<Tenant> t) {
@@ -95,7 +95,7 @@ public interface JsonResponseAdapter {
                 listScheduleDTO(t.getScheduleList()),
                 condominiumDTO(t.getCondominium()),
                 listServiceDTO(t.getServices()),
-                t.getNameBlobImage(),
+                "https://ezscheduleusersimages.blob.core.windows.net/ezschedules/" + t.getNameBlobImage(),
                 t.getSubscribed()
         );
     }
