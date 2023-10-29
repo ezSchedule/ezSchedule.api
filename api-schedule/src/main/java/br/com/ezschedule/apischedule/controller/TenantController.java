@@ -28,13 +28,10 @@ import com.azure.storage.blob.BlobContainerClientBuilder;
 import com.azure.storage.blob.models.BlockBlobItem;
 import com.azure.storage.blob.options.BlobParallelUploadOptions;
 import com.mongodb.client.MongoClient;
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoDatabase;
 import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -82,14 +79,6 @@ public class TenantController {
     @GetMapping
     public ResponseEntity<List<TenantResponse>> showAllUsers() {
         List<Tenant> users = this.tenantRepository.findAll();
-//        MongoDatabase database = this.mongoClient.getDatabase("ezschedule");
-//        System.out.println(database);
-//        MongoCollection collection = database.getCollection("logs");
-//        for(Tenant user : users){
-//            Document userMongo = new Document("Nome", user.getName());
-//            collection.insertOne(userMongo);
-//        }
-        //Comentado, usar somente em teste
         if (users.isEmpty()) {
             return ResponseEntity.status(204).build();
         } else {
