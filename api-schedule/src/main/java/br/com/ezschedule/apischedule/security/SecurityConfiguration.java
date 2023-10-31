@@ -49,7 +49,10 @@ public class SecurityConfiguration {
                 .disable()
                 .authorizeRequests()
                 .antMatchers(
-                        "/**"
+                        "/api/**", "/api/users/login","/api/users",
+                        "/api/condominium","/api/condominium/**","/api/error/**", "/api/error",
+                        "/swagger-ui","/swagger-ui/**",
+                        "/v2/**","/webjar/**","/swagger-resources/**","/h2-console/**"
                 ).permitAll()
                 .antMatchers().hasAnyRole()
                 .anyRequest().authenticated()
