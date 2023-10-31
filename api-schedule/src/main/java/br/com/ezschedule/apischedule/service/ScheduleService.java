@@ -120,6 +120,9 @@ public class ScheduleService {
                 monthStringExtended = monthStringExtended.substring(0, 1).toUpperCase().concat(monthStringExtended.substring(1));
 
                 Integer totalGuestsByMonth = scheduleRepository.totalGuestsByMonth(startDateTime, endDateTime, idCondominium);
+                if(totalGuestsByMonth == null){
+                    totalGuestsByMonth = 0;
+                }
                 Integer totalEventsByMonth = scheduleRepository.countEventsByMonth(startDateTime, endDateTime, idCondominium);
 
                 informationResultList.add(new InfoDate(monthStringExtended, totalGuestsByMonth, totalEventsByMonth));
@@ -146,6 +149,9 @@ public class ScheduleService {
             LocalDateTime startDateTime = startDate.atStartOfDay().plusMonths(i);
             LocalDateTime endDateTime = endDate.atStartOfDay().plusMonths(i);
             Integer totalGuestByMonth = scheduleRepository.totalGuestsByMonth(startDateTime, endDateTime, idCondominium);
+            if(totalGuestByMonth == null){
+                totalGuestByMonth = 0;
+            }
             Integer totalEventsByMonth = scheduleRepository.countEventsByMonth(startDateTime, endDateTime, idCondominium);
             listInfoDate.add(new InfoDateV2(i+1,totalGuestByMonth,totalEventsByMonth));
         }
