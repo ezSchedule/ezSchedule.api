@@ -2,16 +2,12 @@ package br.com.ezschedule.apischedule.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.PastOrPresent;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 
-@Entity
-public class ForumPost {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+public class UserNotification {
+
     @NotBlank
     @Size(min = 5)
     private String textContent;
@@ -24,8 +20,7 @@ public class ForumPost {
     @ManyToOne
     private Condominium condominium;
 
-    public ForumPost(int id,String textContent, String typeMessage,LocalDateTime dateTimePost, Condominium condominium) {
-        this.id = id;
+    public UserNotification(String textContent, String typeMessage, LocalDateTime dateTimePost, Condominium condominium) {
         this.textContent = textContent;
         this.dateTimePost = dateTimePost;
         this.typeMessage = typeMessage;
@@ -33,22 +28,13 @@ public class ForumPost {
         isEdited = true;
     }
 
-    public ForumPost(Integer id, String textContent, String typeMessage,boolean isEdited) {
-        this.id = id;
+    public UserNotification(String textContent, String typeMessage, boolean isEdited) {
         this.textContent = textContent;
         this.typeMessage = typeMessage;
         this.isEdited = isEdited;
     }
 
-    public ForumPost() {
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
+    public UserNotification() {
     }
 
     public String getTextContent() {
@@ -94,7 +80,6 @@ public class ForumPost {
     @Override
     public String toString() {
         return "ForumPosts{" +
-                "id=" + id +
                 ", textContent='" + textContent + '\'' +
                 ", typeMessage='" + typeMessage + '\'' +
                 ", dateTimePost=" + dateTimePost +

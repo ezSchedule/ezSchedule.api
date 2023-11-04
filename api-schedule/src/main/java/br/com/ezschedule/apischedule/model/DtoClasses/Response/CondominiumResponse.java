@@ -17,10 +17,9 @@ public class CondominiumResponse {
     private String country;
     private List<TenantDTO> tenantList;
     private List<SaloonDTO> saloonList;
-    private List<ForumDTO> forumPostList;
     private List<ReportDTO> reportList;
 
-    public CondominiumResponse(int id, String name, String street, String city, String state, String postalCode, String country, List<TenantDTO> tenantList, List<SaloonDTO> saloonList, List<ForumDTO> forumPostList, List<ReportDTO> reportList) {
+    public CondominiumResponse(int id, String name, String street, String city, String state, String postalCode, String country, List<TenantDTO> tenantList, List<SaloonDTO> saloonList, List<ReportDTO> reportList) {
         this.id = id;
         this.name = name;
         this.street = street;
@@ -30,7 +29,6 @@ public class CondominiumResponse {
         this.country = country;
         this.tenantList = tenantList;
         this.saloonList = saloonList;
-        this.forumPostList = forumPostList;
         this.reportList = reportList;
     }
 
@@ -106,12 +104,7 @@ public class CondominiumResponse {
         this.saloonList = saloonList;
     }
 
-    public List<ForumDTO> getForumList() {
-        return forumPostList;
-    }
-
     public void setForumList(List<ForumDTO> forumPostList) {
-        this.forumPostList = forumPostList;
     }
 
     public List<ReportDTO> getReportList() {

@@ -19,15 +19,9 @@ public class PixController {
     @Autowired
     PixService pixService;
 
-
     @PostMapping
     public ResponseEntity<PixResponse> createPix(@RequestBody @Valid PixRequest pix) {
         return pixService.createPix(pix);
-    }
-
-    @PostMapping("/webhook")
-    public ResponseEntity<Void> pixPayed() {
-        return ResponseEntity.status(200).build();
     }
 
 }

@@ -20,12 +20,10 @@ public class Condominium {
     @OneToMany(mappedBy = "condominium",fetch = FetchType.LAZY)
     private List<Saloon> saloonList;
     @OneToMany(mappedBy = "condominium",fetch = FetchType.LAZY)
-    private List<ForumPost> forumPostList;
-    @OneToMany(mappedBy = "condominium",fetch = FetchType.LAZY)
     private List<Report> reportList;
 
 
-    public Condominium(String name, String street, String city, String state, String postalCode, String country, List<Tenant> tenantList, List<Saloon> saloonList, List<ForumPost> forumPostList, List<Report> reportList) {
+    public Condominium(String name, String street, String city, String state, String postalCode, String country, List<Tenant> tenantList, List<Saloon> saloonList, List<Report> reportList) {
         this.name = name;
         this.street = street;
         this.city = city;
@@ -34,7 +32,6 @@ public class Condominium {
         this.country = country;
         this.tenantList = tenantList;
         this.saloonList = saloonList;
-        this.forumPostList = forumPostList;
         this.reportList = reportList;
     }
 
@@ -47,7 +44,6 @@ public class Condominium {
         this.country = country;
         this.tenantList = new ArrayList<>();
         this.saloonList = new ArrayList<>();
-        this.forumPostList = new ArrayList<>();
         this.reportList = new ArrayList<>();
     }
 
@@ -131,14 +127,6 @@ public class Condominium {
         this.saloonList = saloonList;
     }
 
-    public List<ForumPost> getForumPostList() {
-        return forumPostList;
-    }
-
-    public void setForumPostList(List<ForumPost> forumPostList) {
-        this.forumPostList = forumPostList;
-    }
-
     public List<Report> getReportList() {
         return reportList;
     }
@@ -147,7 +135,7 @@ public class Condominium {
         this.reportList = reportList;
     }
 
-    public Condominium(int id, String name, String street, String city, String state, String postalCode, String country, List<Tenant> tenantList, List<Saloon> saloonList, List<ForumPost> forumPostList, List<Report> reportList) {
+    public Condominium(int id, String name, String street, String city, String state, String postalCode, String country, List<Tenant> tenantList, List<Saloon> saloonList, List<Report> reportList) {
         this.id = id;
         this.name = name;
         this.street = street;
@@ -157,7 +145,6 @@ public class Condominium {
         this.country = country;
         this.tenantList = tenantList;
         this.saloonList = saloonList;
-        this.forumPostList = forumPostList;
         this.reportList = reportList;
     }
 }

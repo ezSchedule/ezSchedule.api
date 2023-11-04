@@ -156,48 +156,6 @@ public interface JsonResponseAdapter {
         return serviceDTOList;
     }
 
-    static ForumPost updateForumDTO(UpdateForumPostForm newPost, int id, ForumPost oldPost) {
-        return new ForumPost(
-                id,
-                newPost.getTextContent(),
-                newPost.getTypeMessage(),
-                oldPost.getDateTimePost(),
-                oldPost.getCondominium()
-        );
-    }
-
-    static ForumResponse forumResponse(ForumPost f) {
-        return new ForumResponse(
-                f.getId(),
-                f.getTextContent(),
-                f.getTypeMessage(),
-                f.getDateTimePost().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")),
-                f.isEdited(),
-                condominiumDTO(f.getCondominium())
-        );
-    }
-
-    static List<ForumResponse> listForumResponse(List<ForumPost> f) {
-        return f.stream().map(JsonResponseAdapter::forumResponse).toList();
-    }
-
-    static ForumDTO forumDto(ForumPost f) {
-        return new ForumDTO(
-                f.getId(),
-                f.getTextContent(),
-                f.getTypeMessage(),
-                f.getDateTimePost().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")),
-                f.isEdited()
-        );
-    }
-
-    static List<ForumDTO> listForumDTO(List<ForumPost> f) {
-        if (f == null) {
-            return null;
-        }
-        return f.stream().map(JsonResponseAdapter::forumDto).toList();
-    }
-
     static SaloonResponse saloonResponse(Saloon s) {
         return new SaloonResponse(
                 s.getId(),
@@ -364,7 +322,6 @@ public interface JsonResponseAdapter {
                 c.getCountry(),
                 listTenantDTO(c.getTenantList()),
                 listSaloonDTO(c.getSaloonList()),
-                listForumDTO(c.getForumPostList()),
                 listReportDTO(c.getReportList())
         );
     }
