@@ -35,7 +35,7 @@ public class NotificationService {
         //descomente se deseje enviar emails para todos usuários inscritos
 //        sendMails(notification);
         try {
-            String topic = "conversations";
+            String topic = "conversations-" + userNotification.getCondominium().getId();
 
             Notification notification = Notification.builder()
                     .setBody(userNotification.getTextContent())
