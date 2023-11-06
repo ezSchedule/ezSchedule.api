@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class ReportPaymentsDto {
-    private int id;
+    private String id;
     private String productName;
     private String category;
     private String paymentStatus;
@@ -18,7 +18,7 @@ public class ReportPaymentsDto {
     private Double saloonPrice;
     private String saloonBlock;
 
-    public ReportPaymentsDto(int id, String productName, String category, String paymentStatus, LocalDateTime paymentTime, String tenantName, String tenantBlock, Integer tenantNumber, String tenantPhone, LocalDateTime dateEvent, String saloonName, Double saloonPrice, String saloonBlock) {
+    public ReportPaymentsDto(String id, String productName, String category, String paymentStatus, LocalDateTime paymentTime, String tenantName, String tenantBlock, Integer tenantNumber, String tenantPhone, LocalDateTime dateEvent, String saloonName, Double saloonPrice, String saloonBlock) {
         this.id = id;
         this.productName = productName;
         this.category = category;
@@ -34,11 +34,11 @@ public class ReportPaymentsDto {
         this.saloonBlock = saloonBlock;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 

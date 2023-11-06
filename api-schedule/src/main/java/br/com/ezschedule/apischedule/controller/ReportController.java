@@ -24,7 +24,7 @@ import java.util.List;
 
 @Api(value = "Relatórios", produces = MediaType.APPLICATION_JSON_VALUE, tags = {"relatorios"}, description = "requisições relacionadas a relatórios")
 @RestController
-@RequestMapping("/api/reports")
+@RequestMapping("${uri.reports}")
 public class ReportController {
     @Autowired
     private MongoClient mongoClient;
@@ -57,16 +57,16 @@ public class ReportController {
         MongoCollection collection = database.getCollection("logs");
 
         //Inserção de dados no MongoBd V1
-        Document reportMongo = new Document();
-        reportMongo.append("id", report.getId());
-        reportMongo.append("invoiceNumber", report.getInvoiceNumber());
-        reportMongo.append("productName", report.getProductName());
-        reportMongo.append("category", report.getCategory());
-        reportMongo.append("paymentStatus", report.getPaymentStatus());
-        reportMongo.append("paymentTime", report.getPaymentTime());
-        reportMongo.append("schedule", report.getSchedule());
-        reportMongo.append("condominium", report.getCondominium().getId());
-        collection.insertOne(reportMongo);
+//        Document reportMongo = new Document();
+//        reportMongo.append("id", report.getId());
+//        reportMongo.append("invoiceNumber", report.getInvoiceNumber());
+//        reportMongo.append("productName", report.getProductName());
+//        reportMongo.append("category", report.getCategory());
+//        reportMongo.append("paymentStatus", report.getPaymentStatus());
+//        reportMongo.append("paymentTime", report.getPaymentTime());
+//        reportMongo.append("schedule", report.getSchedule());
+//        reportMongo.append("condominium", report.getCondominium().getId());
+//        collection.insertOne(reportMongo);
 
         return service.add(report);
     }

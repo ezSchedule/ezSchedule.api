@@ -8,13 +8,10 @@ import java.time.LocalDateTime;
 
 public class UserNotification {
 
-    @NotBlank
-    @Size(min = 5)
-    private String textContent;
-    @NotBlank
-    @Size(min = 5)
-    private String typeMessage;
 
+    private String textContent;
+
+    private String typeMessage;
     private LocalDateTime dateTimePost = LocalDateTime.now();
     private boolean isEdited;
     @ManyToOne

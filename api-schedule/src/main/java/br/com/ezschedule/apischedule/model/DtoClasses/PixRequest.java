@@ -1,5 +1,8 @@
 package br.com.ezschedule.apischedule.model.DtoClasses;
 
+import br.com.ezschedule.apischedule.model.Condominium;
+import br.com.ezschedule.apischedule.model.Schedule;
+import br.com.ezschedule.apischedule.model.Tenant;
 import org.json.JSONObject;
 
 public class PixRequest {
@@ -8,11 +11,19 @@ public class PixRequest {
     private String value;
     private String paymentDescription;
 
-    public PixRequest(String name, String cpf, String value, String paymentDescription) {
+    private Schedule schedule;
+    private Condominium condominium;
+    private Tenant tenant;
+
+
+    public PixRequest(String name, String cpf, String value, String paymentDescription, Schedule schedule, Condominium condominium, Tenant tenant) {
         this.name = name;
         this.cpf = cpf;
         this.value = value;
         this.paymentDescription = paymentDescription;
+        this.schedule = schedule;
+        this.condominium = condominium;
+        this.tenant = tenant;
     }
 
     public String getName() {
@@ -45,6 +56,30 @@ public class PixRequest {
 
     public void setPaymentDescription(String paymentDescription) {
         this.paymentDescription = paymentDescription;
+    }
+
+    public Schedule getSchedule() {
+        return schedule;
+    }
+
+    public void setSchedule(Schedule schedule) {
+        this.schedule = schedule;
+    }
+
+    public Condominium getCondominium() {
+        return condominium;
+    }
+
+    public void setCondominium(Condominium condominium) {
+        this.condominium = condominium;
+    }
+
+    public Tenant getTenant() {
+        return tenant;
+    }
+
+    public void setTenant(Tenant tenant) {
+        this.tenant = tenant;
     }
 
     public JSONObject getObjectAsJson(String pixKey) {

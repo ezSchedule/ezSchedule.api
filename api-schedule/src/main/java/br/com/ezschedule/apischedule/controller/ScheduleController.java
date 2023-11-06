@@ -19,7 +19,7 @@ import java.util.List;
 
 @Api(value = "Agendamentos", produces = MediaType.APPLICATION_JSON_VALUE, tags = {"agendamentos"}, description = "requisições relacionadas a agendamentos")
 @RestController
-@RequestMapping("/api/schedules")
+@RequestMapping("${uri.schedules}")
 public class ScheduleController {
 
     @Autowired

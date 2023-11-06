@@ -3,14 +3,14 @@ package br.com.ezschedule.apischedule.model.DtoClasses;
 import java.time.LocalDateTime;
 
 public class ReportDTO {
-    private int id;
-    private int invoiceNumber;
+    private String id;
+    private String invoiceNumber;
     private String productName;
     private String category;
     private String paymentStatus;
     private String paymentTime;
 
-    public ReportDTO(int id, int invoiceNumber, String productName, String category, String paymentStatus, String paymentTime) {
+    public ReportDTO(String id, String invoiceNumber, String productName, String category, String paymentStatus, String paymentTime) {
         this.id = id;
         this.invoiceNumber = invoiceNumber;
         this.productName = productName;
@@ -19,19 +19,19 @@ public class ReportDTO {
         this.paymentTime = paymentTime;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
-    public int getInvoiceNumber() {
+    public String getInvoiceNumber() {
         return invoiceNumber;
     }
 
-    public void setInvoiceNumber(int invoiceNumber) {
+    public void setInvoiceNumber(String invoiceNumber) {
         this.invoiceNumber = invoiceNumber;
     }
 
