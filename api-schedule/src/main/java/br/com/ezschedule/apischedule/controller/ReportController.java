@@ -26,8 +26,8 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/reports")
 public class ReportController {
-    @Autowired
-    private MongoClient mongoClient;
+//    @Autowired
+//    private MongoClient mongoClient;
     @Autowired
     ReportService service;
     @ApiResponse(responseCode = "204", description = "Não há relatórios cadastrados.", content = @Content(schema = @Schema(hidden = true)))
@@ -53,20 +53,20 @@ public class ReportController {
     @PostMapping
     public ResponseEntity<ReportResponse> newReport(@RequestBody @Valid Report report) {
 
-        MongoDatabase database = this.mongoClient.getDatabase("ezschedule");
-        MongoCollection collection = database.getCollection("logs");
-
-        //Inserção de dados no MongoBd V1
-        Document reportMongo = new Document();
-        reportMongo.append("id", report.getId());
-        reportMongo.append("invoiceNumber", report.getInvoiceNumber());
-        reportMongo.append("productName", report.getProductName());
-        reportMongo.append("category", report.getCategory());
-        reportMongo.append("paymentStatus", report.getPaymentStatus());
-        reportMongo.append("paymentTime", report.getPaymentTime());
-        reportMongo.append("schedule", report.getSchedule());
-        reportMongo.append("condominium", report.getCondominium().getId());
-        collection.insertOne(reportMongo);
+//        MongoDatabase database = this.mongoClient.getDatabase("ezschedule");
+//        MongoCollection collection = database.getCollection("logs");
+//
+//        //Inserção de dados no MongoBd V1
+//        Document reportMongo = new Document();
+//        reportMongo.append("id", report.getId());
+//        reportMongo.append("invoiceNumber", report.getInvoiceNumber());
+//        reportMongo.append("productName", report.getProductName());
+//        reportMongo.append("category", report.getCategory());
+//        reportMongo.append("paymentStatus", report.getPaymentStatus());
+//        reportMongo.append("paymentTime", report.getPaymentTime());
+//        reportMongo.append("schedule", report.getSchedule());
+//        reportMongo.append("condominium", report.getCondominium().getId());
+//        collection.insertOne(reportMongo);
 
         return service.add(report);
     }
