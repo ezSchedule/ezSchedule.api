@@ -98,6 +98,7 @@ public class PixService {
 
             List<Report> ongoingReports = allReports.stream().filter(report -> report.getPaymentStatus().equals("ATIVA")).toList();
 
+
             JSONArray pixList = response.getJSONArray("cobs");
 
             List<Report> updateListPix = new ArrayList<>();
