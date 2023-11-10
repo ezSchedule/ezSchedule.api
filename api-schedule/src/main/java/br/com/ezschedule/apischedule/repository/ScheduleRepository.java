@@ -18,6 +18,9 @@ public interface ScheduleRepository extends JpaRepository<Schedule, Integer> {
     @Query("Select s from Schedule s where s.isCanceled = 1")
     List<Schedule> findAllCanceledSchedules();
 
+    @Query("Select s from Schedule s where s.tenant.condominium.id = :id")
+    List<Schedule> findByCondominiumId(int id);
+
     @Query("SELECT SUM(s.totalNumberGuests) " +
             "FROM Schedule s " +
             "JOIN s.tenant t " +
@@ -26,7 +29,7 @@ public interface ScheduleRepository extends JpaRepository<Schedule, Integer> {
                                @Param("selectedDateTwoMonth") LocalDateTime selectedDateTwoMonth,
                                @Param("id") int id);
 
-    @Query("SELECT COUNT(s.totalNumberGuests) " +
+    @Query("SELECT COUNT(s.id)" +
             "FROM Schedule s " +
             "JOIN s.tenant t " +
             "WHERE s.dateEvent >= :selectedDateOneMonth AND s.dateEvent <= :selectedDateTwoMonth AND t.condominium.id = :id AND s.isCanceled = 0")

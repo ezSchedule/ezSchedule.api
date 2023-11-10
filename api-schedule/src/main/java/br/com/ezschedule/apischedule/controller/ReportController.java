@@ -20,7 +20,7 @@ import java.util.List;
 
 @Api(value = "Relatórios", produces = MediaType.APPLICATION_JSON_VALUE, tags = {"relatorios"}, description = "requisições relacionadas a relatórios")
 @RestController
-@RequestMapping("${uri.report}")
+@RequestMapping("${uri.reports}")
 public class ReportController {
     @Autowired
     ReportService service;
@@ -51,13 +51,13 @@ public class ReportController {
     }
 
     @GetMapping("/condominium/no-payment/{id}")
-    public ResponseEntity<List<ReportResponse>> findAllCondominiumReportsWNoPayment(@PathVariable int id){
+    public ResponseEntity<List<ReportResponse>> findAllCondominiumReportsWNoPayment(@PathVariable int id) {
         return service.findAllCondominiumReportsWNoPayment(id);
     }
 
     @PutMapping("/{id}/{status}/{paymentTime}")
-    public ResponseEntity<Void> updateReport(@PathVariable int id, @PathVariable String status, @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)LocalDateTime paymentTime){
-        return service.update(id,status,paymentTime);
+    public ResponseEntity<Void> updateReport(@PathVariable int id, @PathVariable String status, @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime paymentTime) {
+        return service.update(id, status, paymentTime);
     }
 
 }

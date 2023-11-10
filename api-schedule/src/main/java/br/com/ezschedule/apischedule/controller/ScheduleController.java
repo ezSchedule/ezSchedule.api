@@ -1,5 +1,6 @@
 package br.com.ezschedule.apischedule.controller;
 
+import br.com.ezschedule.apischedule.model.DtoClasses.InfoDateV2;
 import br.com.ezschedule.apischedule.model.DtoClasses.Response.ScheduleResponse;
 import br.com.ezschedule.apischedule.model.DtoClasses.UpdateResponse.UpdateScheduleForm;
 import br.com.ezschedule.apischedule.model.Schedule;
@@ -9,7 +10,6 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +19,7 @@ import java.util.List;
 
 @Api(value = "Agendamentos", produces = MediaType.APPLICATION_JSON_VALUE, tags = {"agendamentos"}, description = "requisições relacionadas a agendamentos")
 @RestController
-@RequestMapping("${uri.schedule}")
+@RequestMapping("${uri.schedules}")
 public class ScheduleController {
 
     @Autowired
@@ -44,12 +44,24 @@ public class ScheduleController {
         return service.findScheduleByMonth(idCondominium);
     }
 
+
+    @ApiResponse(responseCode = "404", description = "Nenhuma informação encontrada.", content = @Content(schema = @Schema(hidden = true)))
+    @ApiResponse(responseCode = "200", description = "Informações encontradas.")
+    @GetMapping("/findSchedule/v2/{idCondominium}")
+    public ResponseEntity<List<InfoDateV2>> findAllScheduleData(@PathVariable int idCondominium) {
+        return service.findAllSchedulesData(idCondominium);
+    }
+
     @ApiResponse(responseCode = "404", description =
             "Não foi encontrado agendamento.", content = @Content(schema = @Schema(hidden = true)))
     @ApiResponse(responseCode = "200", description = "agendamento encontrado.")
     @GetMapping("/{id}")
     public ResponseEntity<ScheduleResponse> showAScheduleById(@PathVariable int id) {
         return service.findById(id);
+    }
+    @GetMapping("/condominium/{id}")
+    public ResponseEntity<List<ScheduleResponse>> showScheduleByCondominiumId(@PathVariable int id){
+        return service.findByCondominiumId(id);
     }
 
     @ApiResponse(responseCode = "201", description =

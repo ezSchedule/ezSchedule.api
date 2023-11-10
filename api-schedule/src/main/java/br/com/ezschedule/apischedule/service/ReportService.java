@@ -8,7 +8,6 @@ import br.com.ezschedule.apischedule.repository.ReportRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -19,11 +18,11 @@ public class ReportService {
     ReportRepository reportRepository;
 
     public ResponseEntity<List<ReportResponse>> findAll() {
-        List<Report> allPosts = reportRepository.findAll();
-        if (allPosts.isEmpty()) {
+        List<Report> allReports = reportRepository.findAll();
+        if (allReports.isEmpty()) {
             return ResponseEntity.status(204).build();
         }
-        return ResponseEntity.status(200).body(JsonResponseAdapter.listReportResponse(allPosts));
+        return ResponseEntity.status(200).body(JsonResponseAdapter.listReportResponse(allReports));
     }
 
     public ResponseEntity<List<ReportPaymentsDto>> findAllByCondominium(int id) {
@@ -47,19 +46,18 @@ public class ReportService {
         return ResponseEntity.status(201).build();
     }
 
-    public ResponseEntity<List<ReportResponse>> findAllCondominiumReportsWNoPayment(int id){
-        if (reportRepository.verifyIfCondominiumExists(id) > 0){
+    public ResponseEntity<List<ReportResponse>> findAllCondominiumReportsWNoPayment(int id) {
+        if (reportRepository.verifyIfCondominiumExists(id) > 0) {
             return ResponseEntity.status(200).body(JsonResponseAdapter.listReportResponse(reportRepository.findAllCondominiumReportsWNoPayment(id)));
         }
         return ResponseEntity.status(404).build();
     }
 
 
-    
-    public ResponseEntity<Void> update(int id , String status, LocalDateTime paymentTime){
-        if(reportRepository.existsById(id)){
+    public ResponseEntity<Void> update(int id, String status, LocalDateTime paymentTime) {
+        if (reportRepository.existsById(id)) {
             Optional<Report> report = reportRepository.findById(id);
-            if(report.isPresent()){
+            if (report.isPresent()) {
                 report.get().setPaymentStatus(status);
                 report.get().setPaymentTime(paymentTime);
                 reportRepository.save(report.get());

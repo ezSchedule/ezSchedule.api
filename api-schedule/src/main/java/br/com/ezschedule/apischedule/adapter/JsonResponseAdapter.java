@@ -4,7 +4,6 @@ import br.com.ezschedule.apischedule.model.*;
 import br.com.ezschedule.apischedule.model.DtoClasses.*;
 import br.com.ezschedule.apischedule.model.DtoClasses.CreateTenant.CreateTenant;
 import br.com.ezschedule.apischedule.model.DtoClasses.Response.*;
-import br.com.ezschedule.apischedule.model.DtoClasses.UpdateResponse.UpdateForumPostForm;
 import br.com.ezschedule.apischedule.model.DtoClasses.UpdateResponse.UpdateSaloonForm;
 import br.com.ezschedule.apischedule.model.DtoClasses.UpdateResponse.UpdateScheduleForm;
 import br.com.ezschedule.apischedule.model.DtoClasses.UpdateResponse.UpdateTenantForm;
@@ -49,8 +48,8 @@ public interface JsonResponseAdapter {
                 t.getIsAdmin(),
                 token,
                 t.getCondominium().getId(),
-                t.getNameBlobImage()
-        );
+                "https://ezscheduleusersimages.blob.core.windows.net/ezschedules/" + t.getNameBlobImage()
+                );
     }
 
     static TenantDTO tenantDTO(Tenant t) {
@@ -67,7 +66,7 @@ public interface JsonResponseAdapter {
                 t.getPhoneNumber(),
                 t.isAuthenticated(),
                 t.getIsAdmin(),
-                t.getNameBlobImage());
+                "https://ezscheduleusersimages.blob.core.windows.net/ezschedules/" + t.getNameBlobImage());
     }
 
     static List<TenantDTO> listTenantDTO(List<Tenant> t) {
@@ -95,7 +94,7 @@ public interface JsonResponseAdapter {
                 listScheduleDTO(t.getScheduleList()),
                 condominiumDTO(t.getCondominium()),
                 listServiceDTO(t.getServices()),
-                t.getNameBlobImage(),
+                "https://ezscheduleusersimages.blob.core.windows.net/ezschedules/" + t.getNameBlobImage(),
                 t.getSubscribed()
         );
     }
@@ -140,62 +139,6 @@ public interface JsonResponseAdapter {
 
     static List<ServiceResponse> listServiceResponse(List<Service> services) {
         return services.stream().map(JsonResponseAdapter::serviceResponse).toList();
-    }
-
-    static List<ServiceDTO> serviceArrayDTO(int size, ObjectList<Service> serviceVector) {
-        List<ServiceDTO> serviceDTOList = new ArrayList<>();
-        for (int i = 0; i < size; i++) {
-            Service currentService = serviceVector.getByIndex(i);
-
-            serviceDTOList.add(new ServiceDTO(
-                            currentService.getId(),
-                            currentService.getServiceName()
-                    )
-            );
-        }
-        return serviceDTOList;
-    }
-
-    static ForumPost updateForumDTO(UpdateForumPostForm newPost, int id, ForumPost oldPost) {
-        return new ForumPost(
-                id,
-                newPost.getTextContent(),
-                newPost.getTypeMessage(),
-                oldPost.getDateTimePost(),
-                oldPost.getCondominium()
-        );
-    }
-
-    static ForumResponse forumResponse(ForumPost f) {
-        return new ForumResponse(
-                f.getId(),
-                f.getTextContent(),
-                f.getTypeMessage(),
-                f.getDateTimePost().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")),
-                f.isEdited(),
-                condominiumDTO(f.getCondominium())
-        );
-    }
-
-    static List<ForumResponse> listForumResponse(List<ForumPost> f) {
-        return f.stream().map(JsonResponseAdapter::forumResponse).toList();
-    }
-
-    static ForumDTO forumDto(ForumPost f) {
-        return new ForumDTO(
-                f.getId(),
-                f.getTextContent(),
-                f.getTypeMessage(),
-                f.getDateTimePost().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")),
-                f.isEdited()
-        );
-    }
-
-    static List<ForumDTO> listForumDTO(List<ForumPost> f) {
-        if (f == null) {
-            return null;
-        }
-        return f.stream().map(JsonResponseAdapter::forumDto).toList();
     }
 
     static SaloonResponse saloonResponse(Saloon s) {
@@ -364,7 +307,6 @@ public interface JsonResponseAdapter {
                 c.getCountry(),
                 listTenantDTO(c.getTenantList()),
                 listSaloonDTO(c.getSaloonList()),
-                listForumDTO(c.getForumPostList()),
                 listReportDTO(c.getReportList())
         );
     }

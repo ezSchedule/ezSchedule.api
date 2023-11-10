@@ -1,18 +1,17 @@
 package br.com.ezschedule.apischedule.controller;
 
-import br.com.ezschedule.apischedule.csv.CsvTenant;
-import br.com.ezschedule.apischedule.csv.ListaObj;
 import br.com.ezschedule.apischedule.adapter.JsonResponseAdapter;
+import br.com.ezschedule.apischedule.csv.CsvForTenant;
+import br.com.ezschedule.apischedule.csv.ListObject;
 import br.com.ezschedule.apischedule.email.SendMail;
-import br.com.ezschedule.apischedule.messages.EmailMessages;
 import br.com.ezschedule.apischedule.model.Condominium;
 import br.com.ezschedule.apischedule.model.DtoClasses.CreateTenant.CreateTenant;
 import br.com.ezschedule.apischedule.model.DtoClasses.Response.TenantResponse;
+import br.com.ezschedule.apischedule.model.DtoClasses.UpdateResponse.UpdatePasswordForm;
 import br.com.ezschedule.apischedule.model.DtoClasses.UpdateResponse.UpdateTenantForm;
 import br.com.ezschedule.apischedule.model.Tenant;
-import br.com.ezschedule.apischedule.model.DtoClasses.UpdateResponse.UpdatePasswordForm;
-import br.com.ezschedule.apischedule.observer.FilaObj;
-import br.com.ezschedule.apischedule.observer.PilhaObj;
+import br.com.ezschedule.apischedule.observer.PileObject;
+import br.com.ezschedule.apischedule.observer.RowObject;
 import br.com.ezschedule.apischedule.repository.ServiceRepository;
 import br.com.ezschedule.apischedule.repository.TenantRepository;
 import br.com.ezschedule.apischedule.service.autenticacao.TenantService;
@@ -37,17 +36,17 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @Api(value = "Condômino", produces = MediaType.APPLICATION_JSON_VALUE, tags = {"condomino"}, description = "requisições relacionadas a condônimo")
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/api/users")
 public class TenantController {
 
     @Autowired
@@ -62,8 +61,6 @@ public class TenantController {
     private Txt txt;
     List<Tenant> listUsers = new ArrayList<>();
     private String token = "";
-
-
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -81,6 +78,11 @@ public class TenantController {
             return ResponseEntity.status(200).body(JsonResponseAdapter.listTenantResponse(users));
         }
 
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<TenantResponse> findById(@PathVariable int id) {
+        return tenantService.findById(id);
     }
 
     //Register new user
@@ -184,7 +186,7 @@ public class TenantController {
         if (oldTenant.isPresent()) {
             tenantRepository.save(JsonResponseAdapter.updateTenant(oldTenant.get(), newTenant));
             if (oldTenant.get().getNameBlobImage() != null) {
-                if(newTenant.getImage() != null && newTenant.getImage().getSize() > 0) {
+                if (newTenant.getImage() != null && newTenant.getImage().getSize() > 0) {
                     deleteImage(oldTenant.get().getId());
                     uploadImage(oldTenant.get().getId(), newTenant.getImage());
                 }
@@ -202,34 +204,34 @@ public class TenantController {
 
         if (!tenants.isEmpty()) {
 
-            ListaObj<Tenant> tenantsReturn = new ListaObj<Tenant>(tenants.size());
+            ListObject<Tenant> tenantsReturn = new ListObject<Tenant>(tenants.size());
 
-            PilhaObj<Tenant> pilhaTenant = new PilhaObj<>(tenants.size());
+            PileObject<Tenant> pileTenant = new PileObject<>(tenants.size());
 
-            FilaObj<Tenant> filaTenant = new FilaObj<>(tenants.size());
+            RowObject<Tenant> rowTenant = new RowObject<>(tenants.size());
 
-            if(order.equals("desc")){
+            if (order.equals("desc")) {
                 for (Tenant tenant : tenants) {
-                    tenantsReturn.adiciona(tenant);
+                    tenantsReturn.add(tenant);
                 }
             }
 
-            if(order.equals("asc")){
+            if (order.equals("asc")) {
                 for (Tenant tenant : tenants) {
-                    pilhaTenant.push(tenant);
+                    pileTenant.push(tenant);
                 }
 
-                while (!pilhaTenant.isEmpty()){
-                    filaTenant.insert(pilhaTenant.pop());
+                while (!pileTenant.isEmpty()) {
+                    rowTenant.insert(pileTenant.pop());
                 }
 
-                while (!filaTenant.isEmpty()){
-                    tenantsReturn.adiciona(filaTenant.poll());
+                while (!rowTenant.isEmpty()) {
+                    tenantsReturn.add(rowTenant.poll());
                 }
             }
 
-            CsvTenant.saveArchiveCsv(tenantsReturn, "Tenants");
-            return CsvTenant.searchArchive("Tenants");
+            CsvForTenant.saveArchiveCsv(tenantsReturn, "Tenants");
+            return CsvForTenant.searchArchive("Tenants");
         }
         return ResponseEntity.status(404).build();
     }
@@ -464,7 +466,7 @@ public class TenantController {
     }
 
     @PostMapping("/import-txt")
-    public ResponseEntity<Boolean> saveByTxt(@RequestParam MultipartFile file){
+    public ResponseEntity<Boolean> saveByTxt(@RequestParam MultipartFile file) {
 
         String fileName = txt.save(file);
 
@@ -474,11 +476,11 @@ public class TenantController {
     }
 
     @GetMapping("/export-txt/{idCondominium}")
-    public ResponseEntity<byte[]> exportTxt(@PathVariable int idCondominium){
+    public ResponseEntity<byte[]> exportTxt(@PathVariable int idCondominium) {
 
         String name = txt.writeTxt(idCondominium);
 
-        if(name == "not value in list services"){
+        if (name == "not value in list services") {
             return ResponseEntity.status(204).build();
         }
 

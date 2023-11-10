@@ -1,14 +1,11 @@
 package br.com.ezschedule.apischedule.observer;
 
 
-import br.com.ezschedule.apischedule.model.ForumPost;
+import br.com.ezschedule.apischedule.model.UserNotification;
 import br.com.ezschedule.apischedule.model.Tenant;
 import br.com.ezschedule.apischedule.repository.TenantRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 public class SubscribedTenants {
@@ -29,7 +26,7 @@ public class SubscribedTenants {
         tenantRepository.subscribeOrUnsubTenant(0,t.getId());
     }
 
-    public void notifySubscribers(Tenant t,ForumPost f) {
+    public void notifySubscribers(Tenant t, UserNotification f) {
             emailNotifier.update(f,t);
 
     }

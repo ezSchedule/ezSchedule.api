@@ -1,7 +1,5 @@
 package br.com.ezschedule.apischedule.model;
 
-import org.springframework.web.multipart.MultipartFile;
-
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -9,7 +7,7 @@ import javax.validation.constraints.Size;
 import java.util.List;
 
 @Entity
-public class Tenant  {
+public class Tenant {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -21,7 +19,7 @@ public class Tenant  {
     private String password;
 
     @NotBlank
-    @Size(min=3)
+    @Size(min = 3)
     private String name;
 
     private String residentsBlock;
@@ -50,7 +48,7 @@ public class Tenant  {
     @OneToMany(mappedBy = "tenant")
     private List<Service> services;
 
-    public Tenant(int id, String email, String cpf, String password, String name, String residentsBlock, Integer apartmentNumber, String phoneNumber,String nameBlobImage, Integer isAdmin, List<Report> reportList, List<Schedule> scheduleList, Condominium condominium, List<Service> services) {
+    public Tenant(int id, String email, String cpf, String password, String name, String residentsBlock, Integer apartmentNumber, String phoneNumber, String nameBlobImage, Integer isAdmin, List<Report> reportList, List<Schedule> scheduleList, Condominium condominium, List<Service> services) {
         this.id = id;
         this.email = email;
         this.cpf = cpf;
@@ -68,7 +66,7 @@ public class Tenant  {
     }
 
 
-    public Tenant(String email, String cpf, String password, String name, String residentsBlock, Integer apartmentNumber, String phoneNumber,Integer subscribed, List<Report> reportList, List<Schedule> scheduleList, Condominium condominium, List<Service> services) {
+    public Tenant(String email, String cpf, String password, String name, String residentsBlock, Integer apartmentNumber, String phoneNumber, Integer subscribed, List<Report> reportList, List<Schedule> scheduleList, Condominium condominium, List<Service> services) {
         this.email = email;
         this.cpf = cpf;
         this.password = password;
@@ -82,7 +80,8 @@ public class Tenant  {
         this.condominium = condominium;
         this.services = services;
     }
-    public Tenant(String email, String cpf, String password, String name, String residentsBlock, Integer apartmentNumber, String phoneNumber,Integer subscribed, List<Report> reportList, List<Schedule> scheduleList, Condominium condominium, List<Service> services, String nameBlobImages) {
+
+    public Tenant(String email, String cpf, String password, String name, String residentsBlock, Integer apartmentNumber, String phoneNumber, Integer subscribed, List<Report> reportList, List<Schedule> scheduleList, Condominium condominium, List<Service> services, String nameBlobImages) {
         this.email = email;
         this.cpf = cpf;
         this.password = password;
@@ -96,7 +95,8 @@ public class Tenant  {
         this.condominium = condominium;
         this.services = services;
     }
-    public Tenant(String email, String cpf, String password, String name, String residentsBlock, Integer apartmentNumber, String phoneNumber,Integer isAdmin,Integer subscribed, List<Report> reportList, List<Schedule> scheduleList, Condominium condominium, List<Service> services) {
+
+    public Tenant(String email, String cpf, String password, String name, String residentsBlock, Integer apartmentNumber, String phoneNumber, Integer isAdmin, Integer subscribed, List<Report> reportList, List<Schedule> scheduleList, Condominium condominium, List<Service> services) {
         this.email = email;
         this.cpf = cpf;
         this.password = password;

@@ -2,14 +2,13 @@ package br.com.ezschedule.apischedule.model;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Entity
 public class Report {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-    private int invoiceNumber;
+    private String id;
+    private String invoiceNumber;
     private String productName;
     private String category;
     private String paymentStatus;
@@ -22,19 +21,34 @@ public class Report {
     @ManyToOne
     private Tenant tenant;
 
-    public int getId() {
+    public Report(String id, String invoiceNumber, String productName, String category, String paymentStatus, LocalDateTime paymentTime, Schedule schedule, Condominium condominium, Tenant tenant) {
+        this.id = id;
+        this.invoiceNumber = invoiceNumber;
+        this.productName = productName;
+        this.category = category;
+        this.paymentStatus = paymentStatus;
+        this.paymentTime = paymentTime;
+        this.schedule = schedule;
+        this.condominium = condominium;
+        this.tenant = tenant;
+    }
+
+    public Report() {
+    }
+
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
-    public int getInvoiceNumber() {
-        return invoiceNumber;
+    public String getInvoiceNumber() {
+        return this.invoiceNumber;
     }
 
-    public void setInvoiceNumber(int invoiceNumber) {
+    public void setInvoiceNumber(String invoiceNumber) {
         this.invoiceNumber = invoiceNumber;
     }
 

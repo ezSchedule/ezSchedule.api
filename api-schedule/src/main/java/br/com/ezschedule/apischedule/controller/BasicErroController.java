@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/error")
+@RequestMapping("/api/error")
 @Api(value = "Erro", produces = MediaType.APPLICATION_JSON_VALUE, tags = {"erro "}, description = "requisições relacionadas a síndicos")
 public class BasicErroController implements ErrorController {
 

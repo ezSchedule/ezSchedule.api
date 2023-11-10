@@ -8,8 +8,8 @@ import br.com.ezschedule.apischedule.model.Schedule;
 import java.time.LocalDateTime;
 
 public class ReportResponse {
-    private int id;
-    private int invoiceNumber;
+    private String id;
+    private String invoiceNumber;
     private String productName;
     private String category;
     private String paymentStatus;
@@ -18,7 +18,7 @@ public class ReportResponse {
     private CondominiumDto condominium;
     private TenantDTO tenant;
 
-    public ReportResponse(int id, int invoiceNumber, String productName, String category, String paymentStatus, String paymentTime, ScheduleDTO schedule, CondominiumDto condominium, TenantDTO tenant) {
+    public ReportResponse(String id, String invoiceNumber, String productName, String category, String paymentStatus, String paymentTime, ScheduleDTO schedule, CondominiumDto condominium, TenantDTO tenant) {
         this.id = id;
         this.invoiceNumber = invoiceNumber;
         this.productName = productName;
@@ -33,19 +33,19 @@ public class ReportResponse {
     public ReportResponse() {
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
-    public int getInvoiceNumber() {
+    public String getInvoiceNumber() {
         return invoiceNumber;
     }
 
-    public void setInvoiceNumber(int invoiceNumber) {
+    public void setInvoiceNumber(String invoiceNumber) {
         this.invoiceNumber = invoiceNumber;
     }
 
