@@ -1,6 +1,5 @@
 package br.com.ezschedule.apischedule.model.DtoClasses.Response;
 
-import br.com.ezschedule.apischedule.model.DtoClasses.ForumDTO;
 import br.com.ezschedule.apischedule.model.DtoClasses.ReportDTO;
 import br.com.ezschedule.apischedule.model.DtoClasses.SaloonDTO;
 import br.com.ezschedule.apischedule.model.DtoClasses.TenantDTO;
@@ -102,9 +101,6 @@ public class CondominiumResponse {
 
     public void setSaloonList(List<SaloonDTO> saloonList) {
         this.saloonList = saloonList;
-    }
-
-    public void setForumList(List<ForumDTO> forumPostList) {
     }
 
     public List<ReportDTO> getReportList() {

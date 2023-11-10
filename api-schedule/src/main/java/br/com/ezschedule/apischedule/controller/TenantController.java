@@ -1,25 +1,23 @@
 package br.com.ezschedule.apischedule.controller;
 
+import br.com.ezschedule.apischedule.adapter.JsonResponseAdapter;
 import br.com.ezschedule.apischedule.csv.CsvForTenant;
 import br.com.ezschedule.apischedule.csv.ListObject;
-import br.com.ezschedule.apischedule.adapter.JsonResponseAdapter;
 import br.com.ezschedule.apischedule.email.SendMail;
-import br.com.ezschedule.apischedule.messages.EmailMessages;
 import br.com.ezschedule.apischedule.model.Condominium;
 import br.com.ezschedule.apischedule.model.DtoClasses.CreateTenant.CreateTenant;
 import br.com.ezschedule.apischedule.model.DtoClasses.Response.TenantResponse;
+import br.com.ezschedule.apischedule.model.DtoClasses.UpdateResponse.UpdatePasswordForm;
 import br.com.ezschedule.apischedule.model.DtoClasses.UpdateResponse.UpdateTenantForm;
 import br.com.ezschedule.apischedule.model.Tenant;
-import br.com.ezschedule.apischedule.model.DtoClasses.UpdateResponse.UpdatePasswordForm;
-import br.com.ezschedule.apischedule.observer.RowObject;
 import br.com.ezschedule.apischedule.observer.PileObject;
+import br.com.ezschedule.apischedule.observer.RowObject;
 import br.com.ezschedule.apischedule.repository.ServiceRepository;
 import br.com.ezschedule.apischedule.repository.TenantRepository;
 import br.com.ezschedule.apischedule.service.autenticacao.TenantService;
 import br.com.ezschedule.apischedule.service.autenticacao.dto.UsuarioLoginDto;
 import br.com.ezschedule.apischedule.service.autenticacao.dto.UsuarioTokenDto;
 import br.com.ezschedule.apischedule.txt.Txt;
-import com.azure.core.annotation.Get;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.storage.blob.BlobClient;
@@ -27,7 +25,6 @@ import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobContainerClientBuilder;
 import com.azure.storage.blob.models.BlockBlobItem;
 import com.azure.storage.blob.options.BlobParallelUploadOptions;
-import com.mongodb.client.MongoClient;
 import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -39,13 +36,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @Api(value = "Condômino", produces = MediaType.APPLICATION_JSON_VALUE, tags = {"condomino"}, description = "requisições relacionadas a condônimo")
 @RestController
@@ -64,10 +61,6 @@ public class TenantController {
     private Txt txt;
     List<Tenant> listUsers = new ArrayList<>();
     private String token = "";
-    @Autowired
-    private MongoClient mongoClient;
-
-
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -88,7 +81,7 @@ public class TenantController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<TenantResponse> findById(@PathVariable int id){
+    public ResponseEntity<TenantResponse> findById(@PathVariable int id) {
         return tenantService.findById(id);
     }
 
@@ -193,7 +186,7 @@ public class TenantController {
         if (oldTenant.isPresent()) {
             tenantRepository.save(JsonResponseAdapter.updateTenant(oldTenant.get(), newTenant));
             if (oldTenant.get().getNameBlobImage() != null) {
-                if(newTenant.getImage() != null && newTenant.getImage().getSize() > 0) {
+                if (newTenant.getImage() != null && newTenant.getImage().getSize() > 0) {
                     deleteImage(oldTenant.get().getId());
                     uploadImage(oldTenant.get().getId(), newTenant.getImage());
                 }
@@ -217,22 +210,22 @@ public class TenantController {
 
             RowObject<Tenant> rowTenant = new RowObject<>(tenants.size());
 
-            if(order.equals("desc")){
+            if (order.equals("desc")) {
                 for (Tenant tenant : tenants) {
                     tenantsReturn.add(tenant);
                 }
             }
 
-            if(order.equals("asc")){
+            if (order.equals("asc")) {
                 for (Tenant tenant : tenants) {
                     pileTenant.push(tenant);
                 }
 
-                while (!pileTenant.isEmpty()){
+                while (!pileTenant.isEmpty()) {
                     rowTenant.insert(pileTenant.pop());
                 }
 
-                while (!rowTenant.isEmpty()){
+                while (!rowTenant.isEmpty()) {
                     tenantsReturn.add(rowTenant.poll());
                 }
             }
@@ -473,7 +466,7 @@ public class TenantController {
     }
 
     @PostMapping("/import-txt")
-    public ResponseEntity<Boolean> saveByTxt(@RequestParam MultipartFile file){
+    public ResponseEntity<Boolean> saveByTxt(@RequestParam MultipartFile file) {
 
         String fileName = txt.save(file);
 
@@ -483,11 +476,11 @@ public class TenantController {
     }
 
     @GetMapping("/export-txt/{idCondominium}")
-    public ResponseEntity<byte[]> exportTxt(@PathVariable int idCondominium){
+    public ResponseEntity<byte[]> exportTxt(@PathVariable int idCondominium) {
 
         String name = txt.writeTxt(idCondominium);
 
-        if(name == "not value in list services"){
+        if (name == "not value in list services") {
             return ResponseEntity.status(204).build();
         }
 

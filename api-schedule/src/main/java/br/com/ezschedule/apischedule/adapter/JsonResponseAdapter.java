@@ -141,20 +141,6 @@ public interface JsonResponseAdapter {
         return services.stream().map(JsonResponseAdapter::serviceResponse).toList();
     }
 
-    static List<ServiceDTO> serviceArrayDTO(int size, ObjectList<Service> serviceVector) {
-        List<ServiceDTO> serviceDTOList = new ArrayList<>();
-        for (int i = 0; i < size; i++) {
-            Service currentService = serviceVector.getByIndex(i);
-
-            serviceDTOList.add(new ServiceDTO(
-                            currentService.getId(),
-                            currentService.getServiceName()
-                    )
-            );
-        }
-        return serviceDTOList;
-    }
-
     static SaloonResponse saloonResponse(Saloon s) {
         return new SaloonResponse(
                 s.getId(),
