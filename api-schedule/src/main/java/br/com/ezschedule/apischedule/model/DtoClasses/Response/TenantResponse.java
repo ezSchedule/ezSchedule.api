@@ -1,16 +1,10 @@
 package br.com.ezschedule.apischedule.model.DtoClasses.Response;
 
-import br.com.ezschedule.apischedule.model.Condominium;
 import br.com.ezschedule.apischedule.model.DtoClasses.CondominiumDto;
 import br.com.ezschedule.apischedule.model.DtoClasses.ReportDTO;
 import br.com.ezschedule.apischedule.model.DtoClasses.ScheduleDTO;
 import br.com.ezschedule.apischedule.model.DtoClasses.ServiceDTO;
-import br.com.ezschedule.apischedule.model.Report;
-import br.com.ezschedule.apischedule.model.Schedule;
-import br.com.ezschedule.apischedule.model.Service;
 
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import java.util.List;
 
 public class TenantResponse {

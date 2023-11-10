@@ -1,15 +1,10 @@
 package br.com.ezschedule.apischedule.model.DtoClasses.CreateTenant;
 
-import br.com.ezschedule.apischedule.model.Condominium;
 import br.com.ezschedule.apischedule.model.Report;
 import br.com.ezschedule.apischedule.model.Schedule;
 import br.com.ezschedule.apischedule.model.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.persistence.*;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
 import java.util.List;
 
 public class CreateTenant {

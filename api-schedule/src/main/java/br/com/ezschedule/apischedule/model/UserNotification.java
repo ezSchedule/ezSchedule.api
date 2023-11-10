@@ -1,20 +1,16 @@
 package br.com.ezschedule.apischedule.model;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 
 
 public class UserNotification {
-
 
     private String textContent;
 
     private String typeMessage;
     private LocalDateTime dateTimePost = LocalDateTime.now();
     private boolean isEdited;
-    @ManyToOne
+
     private Condominium condominium;
 
     public UserNotification(String textContent, String typeMessage, LocalDateTime dateTimePost, Condominium condominium) {
