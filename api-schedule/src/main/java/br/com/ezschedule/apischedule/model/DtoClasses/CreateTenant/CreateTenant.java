@@ -1,6 +1,5 @@
 package br.com.ezschedule.apischedule.model.DtoClasses.CreateTenant;
 
-import br.com.ezschedule.apischedule.model.Report;
 import br.com.ezschedule.apischedule.model.Schedule;
 import br.com.ezschedule.apischedule.model.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -20,12 +19,11 @@ public class CreateTenant {
     private Integer isAdmin = 0;
     private Integer subscribed = 0;
     private MultipartFile nameBlobImage;
-    private List<Report> reportList;
     private List<Schedule> scheduleList;
     private String condominium;
     private List<Service> services;
 
-    public CreateTenant(Integer idUser, String email, String cpf, String password, String name, String residentsBlock, Integer apartmentNumber, String phoneNumber, boolean isAuthenticated, Integer isAdmin, MultipartFile nameBlobImage, Integer subscribed, List<Report> reportList, List<Schedule> scheduleList, String condominium, List<Service> services) {
+    public CreateTenant(Integer idUser, String email, String cpf, String password, String name, String residentsBlock, Integer apartmentNumber, String phoneNumber, boolean isAuthenticated, Integer isAdmin, MultipartFile nameBlobImage, Integer subscribed, List<Schedule> scheduleList, String condominium, List<Service> services) {
         this.idUser = idUser;
         this.email = email;
         this.cpf = cpf;
@@ -38,7 +36,6 @@ public class CreateTenant {
         this.isAdmin = isAdmin;
         this.nameBlobImage = nameBlobImage;
         this.subscribed = subscribed;
-        this.reportList = reportList;
         this.scheduleList = scheduleList;
         this.condominium = condominium;
         this.services = services;
@@ -141,14 +138,6 @@ public class CreateTenant {
 
     public void setSubscribed(Integer subscribed) {
         this.subscribed = subscribed;
-    }
-
-    public List<Report> getReportList() {
-        return reportList;
-    }
-
-    public void setReportList(List<Report> reportList) {
-        this.reportList = reportList;
     }
 
     public List<Schedule> getScheduleList() {

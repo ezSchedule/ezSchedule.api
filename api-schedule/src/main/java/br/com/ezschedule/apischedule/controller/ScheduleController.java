@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Map;
 
 @Api(value = "Agendamentos", produces = MediaType.APPLICATION_JSON_VALUE, tags = {"agendamentos"}, description = "requisições relacionadas a agendamentos")
 @RestController
@@ -67,7 +68,7 @@ public class ScheduleController {
     @ApiResponse(responseCode = "201", description =
             "Agendamento cadastrado", content = @Content(schema = @Schema(hidden = true)))
     @PostMapping
-    public ResponseEntity<ScheduleResponse> newSchedule(@RequestBody @Valid Schedule s) {
+    public ResponseEntity<Map<String, Object>> newSchedule(@RequestBody @Valid Schedule s) {
         return service.add(s);
     }
 
