@@ -15,7 +15,14 @@ import java.util.Map;
 @Service
 public class PixService {
 
-    private static final Credentials credentials = new Credentials();
+    private static final Credentials credentials = new Credentials(
+            "Client_Id_ea51c78dc30dc85c5325d2842a18f7bf50524afc",
+            "Client_Secret_7e645fb18eae7850090e93c566671584ebc56545",
+            "homologacao-507903-ezSchedule.p12",
+            "efipay@sejaefi.com.br",
+            true,
+            false
+    );
     private static JSONObject options = new JSONObject();
 
     static {
@@ -56,7 +63,7 @@ public class PixService {
         }
     }
 
-    public ResponseEntity<Map<String,Object>> getAllPixAttempts() {
+    public ResponseEntity<Map<String, Object>> getAllPixAttempts() {
         HashMap<String, String> params = new HashMap<String, String>();
         params.put("inicio", "2023-01-01T16:01:35Z");
         params.put("fim", "2023-12-31T16:01:35Z");
