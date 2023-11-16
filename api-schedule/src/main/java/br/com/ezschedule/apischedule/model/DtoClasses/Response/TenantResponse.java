@@ -1,16 +1,9 @@
 package br.com.ezschedule.apischedule.model.DtoClasses.Response;
 
-import br.com.ezschedule.apischedule.model.Condominium;
 import br.com.ezschedule.apischedule.model.DtoClasses.CondominiumDto;
-import br.com.ezschedule.apischedule.model.DtoClasses.ReportDTO;
 import br.com.ezschedule.apischedule.model.DtoClasses.ScheduleDTO;
 import br.com.ezschedule.apischedule.model.DtoClasses.ServiceDTO;
-import br.com.ezschedule.apischedule.model.Report;
-import br.com.ezschedule.apischedule.model.Schedule;
-import br.com.ezschedule.apischedule.model.Service;
 
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import java.util.List;
 
 public class TenantResponse {
@@ -25,14 +18,13 @@ public class TenantResponse {
 
     private Integer subscribed;
     private Integer isAdmin;
-    private List<ReportDTO> reportList;
     private List<ScheduleDTO> scheduleList;
     private CondominiumDto condominium;
     private List<ServiceDTO> services;
 
     private String nameBlobImage;
 
-    public TenantResponse(int id, String email, String cpf, String name, String residentsBlock, Integer apartmentNumber, String phoneNumber, boolean isAuthenticated, Integer isAdmin, List<ReportDTO> reportList, List<ScheduleDTO> scheduleList, CondominiumDto condominium, List<ServiceDTO> services, String nameBlobImage,Integer subscribed) {
+    public TenantResponse(int id, String email, String cpf, String name, String residentsBlock, Integer apartmentNumber, String phoneNumber, boolean isAuthenticated, Integer isAdmin, List<ScheduleDTO> scheduleList, CondominiumDto condominium, List<ServiceDTO> services, String nameBlobImage, Integer subscribed) {
         this.id = id;
         this.email = email;
         this.cpf = cpf;
@@ -43,7 +35,6 @@ public class TenantResponse {
         this.isAuthenticated = isAuthenticated;
         this.isAdmin = isAdmin;
         this.subscribed = subscribed;
-        this.reportList = reportList;
         this.scheduleList = scheduleList;
         this.condominium = condominium;
         this.services = services;
@@ -131,14 +122,6 @@ public class TenantResponse {
 
     public void setSubscribed(Integer subscribed) {
         this.subscribed = subscribed;
-    }
-
-    public List<ReportDTO> getReportList() {
-        return reportList;
-    }
-
-    public void setReportList(List<ReportDTO> reportList) {
-        this.reportList = reportList;
     }
 
     public List<ScheduleDTO> getScheduleList() {
