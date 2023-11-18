@@ -196,8 +196,6 @@ public class ScheduleService {
 
     public ResponseEntity<Map<String, Object>> add(Schedule s) {
         scheduleRepository.save(s);
-        Firestore db = FirestoreClient.getFirestore();
-
         Map<String, Object> data = JsonResponseAdapter.reportHash(s);
 
         return ResponseEntity.status(201).body(data);

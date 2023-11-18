@@ -2,7 +2,6 @@ package br.com.ezschedule.apischedule.model;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Entity
 public class Schedule {
@@ -23,7 +22,7 @@ public class Schedule {
     private Tenant tenant;
 
 
-    public Schedule(String nameEvent, String typeEvent,Integer isCanceled, LocalDateTime dateEvent, int totalNumberGuests, Saloon saloon, Tenant tenant) {
+    public Schedule(String nameEvent, String typeEvent, Integer isCanceled, LocalDateTime dateEvent, int totalNumberGuests, Saloon saloon, Tenant tenant) {
         this.nameEvent = nameEvent;
         this.typeEvent = typeEvent;
         this.dateEvent = dateEvent;
@@ -33,7 +32,7 @@ public class Schedule {
         this.tenant = tenant;
     }
 
-    public Schedule(int id,String nameEvent, String typeEvent,Integer isCanceled, LocalDateTime dateEvent, int totalNumberGuests, Saloon saloon, Tenant tenant) {
+    public Schedule(int id, String nameEvent, String typeEvent, Integer isCanceled, LocalDateTime dateEvent, int totalNumberGuests, Saloon saloon, Tenant tenant) {
         this.id = id;
         this.nameEvent = nameEvent;
         this.typeEvent = typeEvent;

@@ -15,14 +15,7 @@ import java.util.Map;
 @Service
 public class PixService {
 
-    private static final Credentials credentials = new Credentials(
-            "Client_Id_ea51c78dc30dc85c5325d2842a18f7bf50524afc",
-            "Client_Secret_7e645fb18eae7850090e93c566671584ebc56545",
-            "homologacao-507903-ezSchedule.p12",
-            "efipay@sejaefi.com.br",
-            true,
-            false
-    );
+    private static final Credentials credentials = new Credentials();
     private static JSONObject options = new JSONObject();
 
     static {
@@ -35,6 +28,7 @@ public class PixService {
     public ResponseEntity<PixResponse> createPix(PixRequest pix) {
         try {
             Gerencianet gn = new Gerencianet(options);
+            System.out.println(pix.getObjectAsJson(credentials.getPixKey()));
             JSONObject response = gn.call("pixCreateImmediateCharge", new HashMap<String, String>(), pix.getObjectAsJson(credentials.getPixKey()));
 
             System.out.println(response);
@@ -47,6 +41,7 @@ public class PixService {
             Map<String, Object> secondResponse = gn.call("pixGenerateQRCode", params, new HashMap<String, Object>());
 
             PixResponse pixResponse = new PixResponse(
+                    response.getString("txid"),
                     secondResponse.get("qrcode").toString(),
                     secondResponse.get("imagemQrcode").toString(),
                     secondResponse.get("linkVisualizacao").toString()
