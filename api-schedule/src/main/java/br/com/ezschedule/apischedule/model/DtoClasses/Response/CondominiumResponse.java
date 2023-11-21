@@ -1,6 +1,5 @@
 package br.com.ezschedule.apischedule.model.DtoClasses.Response;
 
-import br.com.ezschedule.apischedule.model.DtoClasses.ReportDTO;
 import br.com.ezschedule.apischedule.model.DtoClasses.SaloonDTO;
 import br.com.ezschedule.apischedule.model.DtoClasses.TenantDTO;
 
@@ -16,9 +15,8 @@ public class CondominiumResponse {
     private String country;
     private List<TenantDTO> tenantList;
     private List<SaloonDTO> saloonList;
-    private List<ReportDTO> reportList;
 
-    public CondominiumResponse(int id, String name, String street, String city, String state, String postalCode, String country, List<TenantDTO> tenantList, List<SaloonDTO> saloonList, List<ReportDTO> reportList) {
+    public CondominiumResponse(int id, String name, String street, String city, String state, String postalCode, String country, List<TenantDTO> tenantList, List<SaloonDTO> saloonList) {
         this.id = id;
         this.name = name;
         this.street = street;
@@ -28,7 +26,6 @@ public class CondominiumResponse {
         this.country = country;
         this.tenantList = tenantList;
         this.saloonList = saloonList;
-        this.reportList = reportList;
     }
 
     public int getId() {
@@ -103,11 +100,4 @@ public class CondominiumResponse {
         this.saloonList = saloonList;
     }
 
-    public List<ReportDTO> getReportList() {
-        return reportList;
-    }
-
-    public void setReportList(List<ReportDTO> reportList) {
-        this.reportList = reportList;
-    }
 }

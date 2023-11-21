@@ -9,9 +9,11 @@ import br.com.ezschedule.apischedule.model.DtoClasses.UpdateResponse.UpdateSched
 import br.com.ezschedule.apischedule.model.DtoClasses.UpdateResponse.UpdateTenantForm;
 import br.com.ezschedule.apischedule.service.autenticacao.dto.UsuarioTokenDto;
 
+import java.sql.Timestamp;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public interface JsonResponseAdapter {
 
@@ -26,7 +28,6 @@ public interface JsonResponseAdapter {
                 newUser.getPhoneNumber(),
                 newUser.getIsAdmin(),
                 newUser.getSubscribed(),
-                newUser.getReportList(),
                 newUser.getScheduleList(),
                 c,
                 newUser.getServices()
@@ -90,7 +91,6 @@ public interface JsonResponseAdapter {
                 t.getPhoneNumber(),
                 t.isAuthenticated(),
                 t.getIsAdmin(),
-                listReportDTO(t.getReportList()),
                 listScheduleDTO(t.getScheduleList()),
                 condominiumDTO(t.getCondominium()),
                 listServiceDTO(t.getServices()),
@@ -115,7 +115,6 @@ public interface JsonResponseAdapter {
                 u.getPhoneNumber(),
                 t.getNameBlobImage(),
                 t.getIsAdmin(),
-                t.getReportList(),
                 t.getScheduleList(),
                 t.getCondominium(),
                 t.getServices()
@@ -217,24 +216,6 @@ public interface JsonResponseAdapter {
         );
     }
 
-    static ReportResponse reportResponse(Report r) {
-        return new ReportResponse(
-                r.getId(),
-                r.getInvoiceNumber(),
-                r.getProductName(),
-                r.getCategory(),
-                r.getPaymentStatus(),
-                r.getPaymentTime() != null ? r.getPaymentTime().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")) : null,
-                scheduleDTO(r.getSchedule()),
-                condominiumDTO(r.getCondominium()),
-                tenantDTO(r.getTenant())
-        );
-    }
-
-    static List<ReportResponse> listReportResponse(List<Report> r) {
-        return r.stream().map(JsonResponseAdapter::reportResponse).toList();
-    }
-
     static SaloonDTO saloonDTO(Saloon s) {
         if(s == null) return null;
         return new SaloonDTO(
@@ -263,24 +244,6 @@ public interface JsonResponseAdapter {
         return s.stream().map(JsonResponseAdapter::saloonDTO).toList();
     }
 
-    static ReportDTO reportDTO(Report r) {
-        return new ReportDTO(
-                r.getId(),
-                r.getInvoiceNumber(),
-                r.getProductName(),
-                r.getCategory(),
-                r.getPaymentStatus(),
-                r.getPaymentTime() != null ? r.getPaymentTime().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")) : null
-        );
-    }
-
-    static List<ReportDTO> listReportDTO(List<Report> r) {
-        if (r == null) {
-            return null;
-        }
-        return r.stream().map(JsonResponseAdapter::reportDTO).toList();
-    }
-
     static CondominiumDto condominiumDTO(Condominium c) {
         if (c == null) {
             return null;
@@ -306,13 +269,55 @@ public interface JsonResponseAdapter {
                 c.getPostalCode(),
                 c.getCountry(),
                 listTenantDTO(c.getTenantList()),
-                listSaloonDTO(c.getSaloonList()),
-                listReportDTO(c.getReportList())
-        );
+                listSaloonDTO(c.getSaloonList()));
     }
 
     static List<CondominiumResponse> listCondominiumDTO(List<Condominium> c) {
         return c.stream().map(JsonResponseAdapter::condominiumResponseDTO).toList();
+    }
+
+    static Map<String,Object> reportHash(Schedule s){
+        Map<String, Object> reportData = new HashMap<>();
+        reportData.put("id", "");
+        reportData.put("invoiceNumber", "");
+        reportData.put("productName", s.getSaloon().getSaloonName());
+        reportData.put("category", s.getTypeEvent());
+        reportData.put("paymentStatus", "ATIVO");
+        reportData.put("schedule", scheduleHash(s));
+        reportData.put("condominiumId", s.getTenant().getCondominium().getId());
+        reportData.put("saloon",saloonHash(s.getSaloon()));
+        reportData.put("tenant", tenantHash(s.getTenant()));
+        return reportData;
+    }
+
+    static HashMap<String,Object> scheduleHash(Schedule s ){
+        HashMap<String, Object> scheduleData = new HashMap<>();
+        scheduleData.put("id", s.getId());
+        scheduleData.put("nameEvent", s.getNameEvent());
+        scheduleData.put("typeEvent", s.getTypeEvent());
+        scheduleData.put("totalNumberGuests", s.getTotalNumberGuests());
+        scheduleData.put("isCanceled", s.getIsCanceled());
+        scheduleData.put("dateEvent", Timestamp.valueOf(s.getDateEvent()));
+        return scheduleData;
+    }
+
+    static Map<String,Object> tenantHash(Tenant t){
+        Map<String, Object> tenantData = new HashMap<>();
+        tenantData.put("id", t.getId());
+        tenantData.put("name", t.getName());
+        tenantData.put("phoneNumber", t.getPhoneNumber());
+        tenantData.put("unit", t.getResidentsBlock());
+        tenantData.put("apartmentNumber", t.getApartmentNumber());
+        return tenantData;
+    }
+
+    static Map<String,Object> saloonHash(Saloon s){
+        Map<String, Object> saloonData = new HashMap<>();
+        saloonData.put("id", s.getId());
+        saloonData.put("name", s.getSaloonName());
+        saloonData.put("saloonPrice", s.getSaloonPrice());
+        saloonData.put("blockEvent", s.getSaloonBlock());
+        return saloonData;
     }
 
 }

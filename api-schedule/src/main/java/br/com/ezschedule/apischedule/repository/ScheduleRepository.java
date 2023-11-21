@@ -44,9 +44,5 @@ public interface ScheduleRepository extends JpaRepository<Schedule, Integer> {
     @Query("Select count(s.id) from Schedule s where s.isCanceled = 0 AND s.id = :id")
     Integer isThisScheduleCanceled(int id);
 
-    @Query("delete from Report r where r.schedule.id = :id")
-    @Modifying
-    Integer deleteReport(int id);
-
 
 }

@@ -37,9 +37,6 @@ public class Tenant {
     private Integer subscribed = 0;
 
     @OneToMany(mappedBy = "tenant")
-    private List<Report> reportList;
-
-    @OneToMany(mappedBy = "tenant")
     private List<Schedule> scheduleList;
 
     @ManyToOne
@@ -48,7 +45,7 @@ public class Tenant {
     @OneToMany(mappedBy = "tenant")
     private List<Service> services;
 
-    public Tenant(int id, String email, String cpf, String password, String name, String residentsBlock, Integer apartmentNumber, String phoneNumber, String nameBlobImage, Integer isAdmin, List<Report> reportList, List<Schedule> scheduleList, Condominium condominium, List<Service> services) {
+    public Tenant(int id, String email, String cpf, String password, String name, String residentsBlock, Integer apartmentNumber, String phoneNumber, String nameBlobImage, Integer isAdmin, List<Schedule> scheduleList, Condominium condominium, List<Service> services) {
         this.id = id;
         this.email = email;
         this.cpf = cpf;
@@ -59,14 +56,13 @@ public class Tenant {
         this.phoneNumber = phoneNumber;
         this.isAdmin = isAdmin;
         this.nameBlobImage = nameBlobImage;
-        this.reportList = reportList;
         this.scheduleList = scheduleList;
         this.condominium = condominium;
         this.services = services;
     }
 
 
-    public Tenant(String email, String cpf, String password, String name, String residentsBlock, Integer apartmentNumber, String phoneNumber, Integer subscribed, List<Report> reportList, List<Schedule> scheduleList, Condominium condominium, List<Service> services) {
+    public Tenant(String email, String cpf, String password, String name, String residentsBlock, Integer apartmentNumber, String phoneNumber, Integer subscribed, List<Schedule> scheduleList, Condominium condominium, List<Service> services) {
         this.email = email;
         this.cpf = cpf;
         this.password = password;
@@ -75,13 +71,12 @@ public class Tenant {
         this.apartmentNumber = apartmentNumber;
         this.phoneNumber = phoneNumber;
         this.subscribed = subscribed;
-        this.reportList = reportList;
         this.scheduleList = scheduleList;
         this.condominium = condominium;
         this.services = services;
     }
 
-    public Tenant(String email, String cpf, String password, String name, String residentsBlock, Integer apartmentNumber, String phoneNumber, Integer subscribed, List<Report> reportList, List<Schedule> scheduleList, Condominium condominium, List<Service> services, String nameBlobImages) {
+    public Tenant(String email, String cpf, String password, String name, String residentsBlock, Integer apartmentNumber, String phoneNumber, Integer subscribed, List<Schedule> scheduleList, Condominium condominium, List<Service> services, String nameBlobImages) {
         this.email = email;
         this.cpf = cpf;
         this.password = password;
@@ -90,13 +85,12 @@ public class Tenant {
         this.apartmentNumber = apartmentNumber;
         this.phoneNumber = phoneNumber;
         this.subscribed = subscribed;
-        this.reportList = reportList;
         this.scheduleList = scheduleList;
         this.condominium = condominium;
         this.services = services;
     }
 
-    public Tenant(String email, String cpf, String password, String name, String residentsBlock, Integer apartmentNumber, String phoneNumber, Integer isAdmin, Integer subscribed, List<Report> reportList, List<Schedule> scheduleList, Condominium condominium, List<Service> services) {
+    public Tenant(String email, String cpf, String password, String name, String residentsBlock, Integer apartmentNumber, String phoneNumber, Integer isAdmin, Integer subscribed,List<Schedule> scheduleList, Condominium condominium, List<Service> services) {
         this.email = email;
         this.cpf = cpf;
         this.password = password;
@@ -106,7 +100,6 @@ public class Tenant {
         this.phoneNumber = phoneNumber;
         this.isAdmin = isAdmin;
         this.subscribed = subscribed;
-        this.reportList = reportList;
         this.scheduleList = scheduleList;
         this.condominium = condominium;
         this.services = services;
@@ -221,14 +214,6 @@ public class Tenant {
 
     public void setSubscribed(Integer subscribed) {
         this.subscribed = subscribed;
-    }
-
-    public List<Report> getReportList() {
-        return reportList;
-    }
-
-    public void setReportList(List<Report> reportList) {
-        this.reportList = reportList;
     }
 
     public List<Schedule> getScheduleList() {

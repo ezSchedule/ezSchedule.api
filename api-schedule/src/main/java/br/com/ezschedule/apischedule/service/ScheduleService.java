@@ -8,6 +8,8 @@ import br.com.ezschedule.apischedule.model.DtoClasses.UpdateResponse.UpdateSched
 import br.com.ezschedule.apischedule.model.Schedule;
 import br.com.ezschedule.apischedule.repository.CondominumRepository;
 import br.com.ezschedule.apischedule.repository.ScheduleRepository;
+import com.google.cloud.firestore.Firestore;
+import com.google.firebase.cloud.FirestoreClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -19,10 +21,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.Month;
 import java.time.format.TextStyle;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class ScheduleService {
@@ -120,7 +119,7 @@ public class ScheduleService {
                 monthStringExtended = monthStringExtended.substring(0, 1).toUpperCase().concat(monthStringExtended.substring(1));
 
                 Integer totalGuestsByMonth = scheduleRepository.totalGuestsByMonth(startDateTime, endDateTime, idCondominium);
-                if(totalGuestsByMonth == null){
+                if (totalGuestsByMonth == null) {
                     totalGuestsByMonth = 0;
                 }
                 Integer totalEventsByMonth = scheduleRepository.countEventsByMonth(startDateTime, endDateTime, idCondominium);
@@ -149,11 +148,11 @@ public class ScheduleService {
             LocalDateTime startDateTime = startDate.atStartOfDay().plusMonths(i);
             LocalDateTime endDateTime = endDate.atStartOfDay().plusMonths(i);
             Integer totalGuestByMonth = scheduleRepository.totalGuestsByMonth(startDateTime, endDateTime, idCondominium);
-            if(totalGuestByMonth == null){
+            if (totalGuestByMonth == null) {
                 totalGuestByMonth = 0;
             }
             Integer totalEventsByMonth = scheduleRepository.countEventsByMonth(startDateTime, endDateTime, idCondominium);
-            listInfoDate.add(new InfoDateV2(i+1,totalGuestByMonth,totalEventsByMonth));
+            listInfoDate.add(new InfoDateV2(i + 1, totalGuestByMonth, totalEventsByMonth));
         }
 
         return ResponseEntity.status(200).body(listInfoDate);
@@ -195,9 +194,11 @@ public class ScheduleService {
         return ResponseEntity.status(200).body(JsonResponseAdapter.scheduleResponse(schedule.get()));
     }
 
-    public ResponseEntity<ScheduleResponse> add(Schedule s) {
+    public ResponseEntity<Map<String, Object>> add(Schedule s) {
         scheduleRepository.save(s);
-        return ResponseEntity.status(200).body(JsonResponseAdapter.scheduleResponse(s));
+        Map<String, Object> data = JsonResponseAdapter.reportHash(s);
+
+        return ResponseEntity.status(201).body(data);
     }
 
     public ResponseEntity<ScheduleResponse> update(UpdateScheduleForm newSchedule, int id) {
@@ -222,7 +223,6 @@ public class ScheduleService {
         if (scheduleRepository.existsById(id)) {
 
             if (scheduleRepository.isThisScheduleCanceled(id) == 1) {
-                scheduleRepository.deleteReport(id);
                 scheduleRepository.deleteById(id);
                 return ResponseEntity.status(204).build();
             }

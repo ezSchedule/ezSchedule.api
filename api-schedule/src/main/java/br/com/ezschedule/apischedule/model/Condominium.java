@@ -19,11 +19,9 @@ public class Condominium {
     private List<Tenant> tenantList;
     @OneToMany(mappedBy = "condominium",fetch = FetchType.LAZY)
     private List<Saloon> saloonList;
-    @OneToMany(mappedBy = "condominium",fetch = FetchType.LAZY)
-    private List<Report> reportList;
 
 
-    public Condominium(String name, String street, String city, String state, String postalCode, String country, List<Tenant> tenantList, List<Saloon> saloonList, List<Report> reportList) {
+    public Condominium(String name, String street, String city, String state, String postalCode, String country, List<Tenant> tenantList, List<Saloon> saloonList) {
         this.name = name;
         this.street = street;
         this.city = city;
@@ -32,7 +30,6 @@ public class Condominium {
         this.country = country;
         this.tenantList = tenantList;
         this.saloonList = saloonList;
-        this.reportList = reportList;
     }
 
     public Condominium(String name, String street, String city, String state, String postalCode, String country) {
@@ -44,7 +41,6 @@ public class Condominium {
         this.country = country;
         this.tenantList = new ArrayList<>();
         this.saloonList = new ArrayList<>();
-        this.reportList = new ArrayList<>();
     }
 
 
@@ -127,15 +123,7 @@ public class Condominium {
         this.saloonList = saloonList;
     }
 
-    public List<Report> getReportList() {
-        return reportList;
-    }
-
-    public void setReportList(List<Report> reportList) {
-        this.reportList = reportList;
-    }
-
-    public Condominium(int id, String name, String street, String city, String state, String postalCode, String country, List<Tenant> tenantList, List<Saloon> saloonList, List<Report> reportList) {
+    public Condominium(int id, String name, String street, String city, String state, String postalCode, String country, List<Tenant> tenantList, List<Saloon> saloonList) {
         this.id = id;
         this.name = name;
         this.street = street;
@@ -145,6 +133,5 @@ public class Condominium {
         this.country = country;
         this.tenantList = tenantList;
         this.saloonList = saloonList;
-        this.reportList = reportList;
     }
 }
