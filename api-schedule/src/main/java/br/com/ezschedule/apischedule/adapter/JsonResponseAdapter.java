@@ -278,8 +278,8 @@ public interface JsonResponseAdapter {
 
     static Map<String,Object> reportHash(Schedule s){
         Map<String, Object> reportData = new HashMap<>();
-        reportData.put("id", "123");
-        reportData.put("invoiceNumber", "123");
+        reportData.put("id", "");
+        reportData.put("invoiceNumber", "");
         reportData.put("productName", s.getSaloon().getSaloonName());
         reportData.put("category", s.getTypeEvent());
         reportData.put("paymentStatus", "ATIVO");

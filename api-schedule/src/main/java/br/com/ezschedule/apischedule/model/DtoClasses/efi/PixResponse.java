@@ -1,14 +1,24 @@
 package br.com.ezschedule.apischedule.model.DtoClasses.efi;
 
 public class PixResponse {
+    private String id;
     private String qrcode;
     private String imageQrcode;
     private String link;
 
-    public PixResponse(String qrCode, String imageQrCode, String link) {
+    public PixResponse(String id,String qrCode, String imageQrCode, String link) {
+        this.id = id;
         this.qrcode = qrCode;
         this.imageQrcode = imageQrCode;
         this.link = link;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getQrcode() {
