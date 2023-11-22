@@ -18,5 +18,12 @@ public class ApiScheduleApplication {
 
     public static void main(String[] args) throws IOException {
         SpringApplication.run(ApiScheduleApplication.class, args);
+
+        InputStream serviceAccount = new FileInputStream("ezschedule-71596-firebase-adminsdk-qjgtx-a60e063638.json");
+        GoogleCredentials credentials = GoogleCredentials.fromStream(serviceAccount);
+        FirebaseOptions options = FirebaseOptions.builder()
+                .setCredentials(credentials)
+                .build();
+        FirebaseApp.initializeApp(options);
     }
 }

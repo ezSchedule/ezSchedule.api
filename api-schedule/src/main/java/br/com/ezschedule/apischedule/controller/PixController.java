@@ -27,4 +27,9 @@ public class PixController {
         return pixService.getAllPixAttempts();
     }
 
+    @GetMapping("/test")
+    public ResponseEntity<String> version() {
+        return ResponseEntity.status(200).body("version 1.0");
+    }
+
 }
