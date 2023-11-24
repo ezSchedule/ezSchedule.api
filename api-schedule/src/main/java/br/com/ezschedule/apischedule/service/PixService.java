@@ -15,7 +15,14 @@ import java.util.Map;
 @Service
 public class PixService {
 
-    private static final Credentials credentials = new Credentials();
+    private static final Credentials credentials = new Credentials(
+            "Client_Id_ea51c78dc30dc85c5325d2842a18f7bf50524afc",
+           "Client_Secret_7e645fb18eae7850090e93c566671584ebc56545",
+             "api-schedule/homologacao-507903-ezSchedule.p12",
+            "efipay@sejaefi.com.br",
+             false,
+             true
+    );
     private static JSONObject options = new JSONObject();
 
     static {
@@ -28,10 +35,7 @@ public class PixService {
     public ResponseEntity<PixResponse> createPix(PixRequest pix) {
         try {
             Gerencianet gn = new Gerencianet(options);
-            System.out.println(pix.getObjectAsJson(credentials.getPixKey()));
             JSONObject response = gn.call("pixCreateImmediateCharge", new HashMap<String, String>(), pix.getObjectAsJson(credentials.getPixKey()));
-
-            System.out.println(response);
 
             int id = response.getJSONObject("loc").getInt("id");
 
@@ -62,6 +66,28 @@ public class PixService {
         HashMap<String, String> params = new HashMap<String, String>();
         params.put("inicio", "2023-01-01T16:01:35Z");
         params.put("fim", "2023-12-31T16:01:35Z");
+
+        try {
+            Gerencianet gn = new Gerencianet(options);
+            JSONObject response = gn.call("pixListCharges", params, new JSONObject());
+
+            return ResponseEntity.status(200).body(response.toMap());
+        } catch (GerencianetException e) {
+            System.out.println(e.getError());
+            System.out.println(e.getErrorDescription());
+            return ResponseEntity.status(400).build();
+        } catch (Exception e) {
+            System.out.println(e);
+            return ResponseEntity.status(400).build();
+        }
+    }
+
+
+    public ResponseEntity<Map<String, Object>> getAllPixAttemptsByCpf(String cpf) {
+        HashMap<String, String> params = new HashMap<String, String>();
+        params.put("inicio", "2023-01-01T16:01:35Z");
+        params.put("fim", "2023-12-31T16:01:35Z");
+        params.put("cpf",cpf);
 
         try {
             Gerencianet gn = new Gerencianet(options);

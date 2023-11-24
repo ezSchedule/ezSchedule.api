@@ -27,4 +27,14 @@ public class PixController {
         return pixService.getAllPixAttempts();
     }
 
+    @GetMapping("/test")
+    public ResponseEntity<String> version() {
+        return ResponseEntity.status(200).body("version 1.0");
+    }
+
+    @GetMapping("/list/{cpf}")
+    public ResponseEntity<Map<String, Object>> listCpf(@PathVariable String cpf) {
+        return pixService.getAllPixAttemptsByCpf(cpf);
+    }
+
 }

@@ -156,7 +156,7 @@ public interface JsonResponseAdapter {
     }
 
     static ScheduleDTO scheduleDTO(Schedule s) {
-        if(s == null) return null;
+        if (s == null) return null;
         return new ScheduleDTO(
                 s.getId(),
                 s.getNameEvent(),
@@ -188,7 +188,7 @@ public interface JsonResponseAdapter {
     }
 
     static List<ScheduleDTO> listScheduleDTO(List<Schedule> s) {
-        if (s == null) {
+        if (s == null || s.isEmpty()) {
             return null;
         }
 
@@ -217,7 +217,7 @@ public interface JsonResponseAdapter {
     }
 
     static SaloonDTO saloonDTO(Saloon s) {
-        if(s == null) return null;
+        if (s == null) return null;
         return new SaloonDTO(
                 s.getId(),
                 s.getSaloonName(),
@@ -226,7 +226,7 @@ public interface JsonResponseAdapter {
         );
     }
 
-    static Saloon UpdateSaloon(UpdateSaloonForm u ,Saloon s){
+    static Saloon UpdateSaloon(UpdateSaloonForm u, Saloon s) {
         return new Saloon(
                 s.getId(),
                 u.getSaloonName(),
@@ -276,7 +276,7 @@ public interface JsonResponseAdapter {
         return c.stream().map(JsonResponseAdapter::condominiumResponseDTO).toList();
     }
 
-    static Map<String,Object> reportHash(Schedule s){
+    static Map<String, Object> reportHash(Schedule s) {
         Map<String, Object> reportData = new HashMap<>();
         reportData.put("id", "");
         reportData.put("invoiceNumber", "");
@@ -285,12 +285,12 @@ public interface JsonResponseAdapter {
         reportData.put("paymentStatus", "ATIVO");
         reportData.put("schedule", scheduleHash(s));
         reportData.put("condominiumId", s.getTenant().getCondominium().getId());
-        reportData.put("saloon",saloonHash(s.getSaloon()));
+        reportData.put("saloon", saloonHash(s.getSaloon()));
         reportData.put("tenant", tenantHash(s.getTenant()));
         return reportData;
     }
 
-    static HashMap<String,Object> scheduleHash(Schedule s ){
+    static HashMap<String, Object> scheduleHash(Schedule s) {
         HashMap<String, Object> scheduleData = new HashMap<>();
         scheduleData.put("id", s.getId());
         scheduleData.put("nameEvent", s.getNameEvent());
@@ -301,7 +301,7 @@ public interface JsonResponseAdapter {
         return scheduleData;
     }
 
-    static Map<String,Object> tenantHash(Tenant t){
+    static Map<String, Object> tenantHash(Tenant t) {
         Map<String, Object> tenantData = new HashMap<>();
         tenantData.put("id", t.getId());
         tenantData.put("name", t.getName());
@@ -311,7 +311,7 @@ public interface JsonResponseAdapter {
         return tenantData;
     }
 
-    static Map<String,Object> saloonHash(Saloon s){
+    static Map<String, Object> saloonHash(Saloon s) {
         Map<String, Object> saloonData = new HashMap<>();
         saloonData.put("id", s.getId());
         saloonData.put("name", s.getSaloonName());

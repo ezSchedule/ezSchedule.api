@@ -487,4 +487,9 @@ public class TenantController {
         return txt.searchArchiveTxt(name);
     }
 
+    @GetMapping("/teste")
+    public ResponseEntity<String> teste(){
+        return ResponseEntity.status(200).body("Rota de testes");
+    }
+
 }
