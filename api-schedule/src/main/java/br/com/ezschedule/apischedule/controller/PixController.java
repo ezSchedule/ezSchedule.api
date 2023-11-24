@@ -32,4 +32,9 @@ public class PixController {
         return ResponseEntity.status(200).body("version 1.0");
     }
 
+    @GetMapping("/list/{cpf}")
+    public ResponseEntity<Map<String, Object>> listCpf(@PathVariable String cpf) {
+        return pixService.getAllPixAttemptsByCpf(cpf);
+    }
+
 }
