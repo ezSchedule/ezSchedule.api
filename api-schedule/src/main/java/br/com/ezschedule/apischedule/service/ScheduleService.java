@@ -8,8 +8,6 @@ import br.com.ezschedule.apischedule.model.DtoClasses.UpdateResponse.UpdateSched
 import br.com.ezschedule.apischedule.model.Schedule;
 import br.com.ezschedule.apischedule.repository.CondominumRepository;
 import br.com.ezschedule.apischedule.repository.ScheduleRepository;
-import com.google.cloud.firestore.Firestore;
-import com.google.firebase.cloud.FirestoreClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -20,6 +18,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.Month;
+import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
 import java.util.*;
 
@@ -237,6 +236,13 @@ public class ScheduleService {
             return ResponseEntity.status(204).build();
         }
         return ResponseEntity.status(200).body(JsonResponseAdapter.listScheduleResponse(scheduleList));
+    }
+
+    public ResponseEntity<Boolean> haveBeenScheduled(String dateEvent) {
+        String date = dateEvent.substring(0,19).replace("T", " ");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        LocalDateTime dateTime = LocalDateTime.parse(date, formatter);
+        return ResponseEntity.status(200).body(scheduleRepository.haveBeenScheduled(dateTime) > 0);
     }
 
 
