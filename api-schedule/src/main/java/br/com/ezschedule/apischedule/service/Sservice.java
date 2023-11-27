@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,7 +37,7 @@ public class Sservice {
         List<br.com.ezschedule.apischedule.model.Service> services = this.serviceRepository.listServiceByCondominium(id);
         if (!services.isEmpty())
             return ResponseEntity.status(200).body(JsonResponseAdapter.listServiceResponse(services));
-        return ResponseEntity.status(204).build();
+        return ResponseEntity.status(200).body(new ArrayList<>());
     }
 
     public ResponseEntity<br.com.ezschedule.apischedule.model.Service> add(br.com.ezschedule.apischedule.model.Service s) {

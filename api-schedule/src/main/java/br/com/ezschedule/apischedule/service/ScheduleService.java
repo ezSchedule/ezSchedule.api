@@ -170,7 +170,7 @@ public class ScheduleService {
     public ResponseEntity<List<ScheduleResponse>> findAllSchedulesByTenant(int id) {
         List<Schedule> allSchedules = scheduleRepository.findAllSchedulesByTenant(id);
         if (allSchedules.isEmpty()) {
-            return ResponseEntity.status(204).build();
+            return ResponseEntity.status(200).body(new ArrayList<>());
         }
         return ResponseEntity.status(200).body(JsonResponseAdapter.listScheduleResponse(allSchedules));
     }
@@ -188,7 +188,7 @@ public class ScheduleService {
     public ResponseEntity<ScheduleResponse> findById(@PathVariable int id) {
         Optional<Schedule> schedule = scheduleRepository.findById(id);
         if (schedule.isEmpty()) {
-            return ResponseEntity.status(404).build();
+            return ResponseEntity.status(204).build();
         }
         return ResponseEntity.status(200).body(JsonResponseAdapter.scheduleResponse(schedule.get()));
     }
