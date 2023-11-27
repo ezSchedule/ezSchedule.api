@@ -195,9 +195,13 @@ public class ScheduleService {
 
     public ResponseEntity<Map<String, Object>> add(Schedule s) {
         scheduleRepository.save(s);
-        Map<String, Object> data = JsonResponseAdapter.reportHash(s);
 
-        return ResponseEntity.status(201).body(data);
+        if (s.getIsCanceled() == 0) {
+            Map<String, Object> data = JsonResponseAdapter.reportHash(s);
+            return ResponseEntity.status(201).body(data);
+        } else {
+            return ResponseEntity.status(201).build();
+        }
     }
 
     public ResponseEntity<ScheduleResponse> update(UpdateScheduleForm newSchedule, int id) {
