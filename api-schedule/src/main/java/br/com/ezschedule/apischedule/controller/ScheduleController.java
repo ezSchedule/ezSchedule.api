@@ -93,4 +93,9 @@ public class ScheduleController {
         return service.getAllCanceledSchedules();
     }
 
+    @GetMapping("/validate/{dateEvent}")
+    public ResponseEntity<Boolean> haveBeenScheduled(@PathVariable String dateEvent) {
+        return service.haveBeenScheduled(dateEvent);
+    }
+
 }
