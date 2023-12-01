@@ -15,13 +15,13 @@ import java.util.Map;
 @Service
 public class PixService {
 
-    private static final Credentials credentials = new Credentials(
-            "Client_Id_ea51c78dc30dc85c5325d2842a18f7bf50524afc",
-           "Client_Secret_7e645fb18eae7850090e93c566671584ebc56545",
-             "api-schedule/homologacao-507903-ezSchedule.p12",
-            "efipay@sejaefi.com.br",
-             false,
-             true
+private static final Credentials credentials = new Credentials(
+            "Client_Id_658d492f2eddbfc9900f4984e45378f700917653",
+           "Client_Secret_934b37e235f6060d7a9d6315d99f64eccdd7fb05",
+             "api-schedule/producao-507903-ezSchedule.p12",
+            "0213dd27-5051-4d3a-8521-d2c93bf471bb",
+             true,
+             false
     );
     private static JSONObject options = new JSONObject();
 
